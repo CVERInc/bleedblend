@@ -295,6 +295,11 @@
       display: none; /* Hide scrollbar Chrome/Safari */
     }
 
+    .phone-screen.scroll-gradient-active {
+      background: linear-gradient(180deg, #3b82f6 0%, #8b5cf6 50%, #1e1b4b 100%) !important;
+      background-attachment: local !important;
+    }
+
     /* Phone Notch Simulator */
     .phone-notch {
       position: absolute;
@@ -409,7 +414,7 @@
       left: 0;
       width: 100%;
       padding-top: calc(8px + var(--sim-safe-top));
-      background: var(--active-bg);
+      background: var(--active-header-bg, var(--active-bg));
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important; /* Disables outer blur to paint safe area */
     }
@@ -440,7 +445,7 @@
       left: 0;
       width: 100%;
       padding-bottom: calc(8px + var(--sim-safe-bottom));
-      background: var(--active-bg);
+      background: var(--active-footer-bg, var(--active-bg));
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
     }
@@ -575,10 +580,13 @@
       <div class="panel-section">
         <h3>🎨 Theme / Background Color</h3>
         <div class="color-presets">
-          <button class="color-btn active" data-color="rgba(185, 28, 28, 0.95)" style="background: #b91c1c;"></button>
-          <button class="color-btn" data-color="rgba(15, 23, 42, 0.95)" style="background: #0f172a;"></button>
-          <button class="color-btn" data-color="rgba(4, 120, 87, 0.95)" style="background: #047857;"></button>
-          <button class="color-btn" data-color="linear-gradient(135deg, #4f46e5, #7c3aed)" style="background: linear-gradient(135deg, #4f46e5, #7c3aed);"></button>
+          <button class="color-btn active" data-color="rgba(185, 28, 28, 0.95)" style="background: #b91c1c;" title="Solid Red"></button>
+          <button class="color-btn" data-color="rgba(15, 23, 42, 0.95)" style="background: #0f172a;" title="Dark Blue"></button>
+          <button class="color-btn" data-color="rgba(4, 120, 87, 0.95)" style="background: #047857;" title="Green"></button>
+          <button class="color-btn" data-color="linear-gradient(135deg, #4f46e5, #7c3aed)" style="background: linear-gradient(135deg, #4f46e5, #7c3aed);" title="Purple Gradient"></button>
+          <button class="color-btn" data-color="scroll-gradient" style="background: linear-gradient(180deg, #3b82f6, #1e1b4b); position: relative;" title="Scroll-driven Gradient Interpolation">
+            <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: white;">⚡</span>
+          </button>
         </div>
       </div>
 
@@ -781,14 +789,81 @@
 
     // Theme Color Picker triggers
     const colorPresets = document.querySelector('.color-presets');
+    const phoneScreen = document.getElementById('phone-screen');
+
+    function hexToRgb(hex) {
+      const c = hex.replace('#', '');
+      const r = parseInt(c.substring(0, 2), 16);
+      const g = parseInt(c.substring(2, 4), 16);
+      const b = parseInt(c.substring(4, 6), 16);
+      return { r, g, b };
+    }
+
+    function rgbToHex(r, g, b) {
+      return '#' + [r, g, b].map(x => {
+        const hex = Math.min(255, Math.max(0, Math.round(x))).toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+      }).join('');
+    }
+
+    function interpolate(color1, color2, factor) {
+      const c1 = hexToRgb(color1);
+      const c2 = hexToRgb(color2);
+      const r = c1.r + factor * (c2.r - c1.r);
+      const g = c1.g + factor * (c2.g - c1.g);
+      const b = c1.b + factor * (c2.b - c1.b);
+      return rgbToHex(r, g, b);
+    }
+
+    function getGradientColorAt(ratio) {
+      // 0.0 -> #3b82f6 (blue)
+      // 0.5 -> #8b5cf6 (purple)
+      // 1.0 -> #1e1b4b (dark indigo)
+      if (ratio <= 0.5) {
+        return interpolate('#3b82f6', '#8b5cf6', ratio / 0.5);
+      } else {
+        return interpolate('#8b5cf6', '#1e1b4b', (ratio - 0.5) / 0.5);
+      }
+    }
+
+    function updateScrollGradientColors() {
+      if (!phoneScreen.classList.contains('scroll-gradient-active')) return;
+
+      const scrollTop = phoneScreen.scrollTop;
+      const scrollHeight = phoneScreen.scrollHeight;
+      const clientHeight = phoneScreen.clientHeight;
+
+      // Header is at the top of the viewport (y = scrollTop)
+      const headerRatio = scrollHeight > clientHeight ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1) : 0;
+      const headerColor = getGradientColorAt(headerRatio);
+
+      // Footer is at the bottom of the viewport (y = scrollTop + clientHeight)
+      const footerRatio = scrollHeight > clientHeight ? Math.min(Math.max((scrollTop + clientHeight) / scrollHeight, 0), 1) : 0;
+      const footerColor = getGradientColorAt(footerRatio);
+
+      root.style.setProperty('--active-header-bg', headerColor);
+      root.style.setProperty('--active-footer-bg', footerColor);
+    }
+
+    phoneScreen.addEventListener('scroll', updateScrollGradientColors, { passive: true });
+
     colorPresets.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('color-btn')) return;
+      const btn = e.target.closest('.color-btn');
+      if (!btn) return;
 
-      colorPresets.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
-      e.target.classList.add('active');
+      colorPresets.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
 
-      const colorVal = e.target.dataset.color;
-      root.style.setProperty('--active-bg', colorVal);
+      const colorVal = btn.dataset.color;
+      if (colorVal === 'scroll-gradient') {
+        phoneScreen.classList.add('scroll-gradient-active');
+        updateScrollGradientColors();
+      } else {
+        phoneScreen.classList.remove('scroll-gradient-active');
+        root.style.removeProperty('--active-header-bg');
+        root.style.removeProperty('--active-footer-bg');
+        root.style.setProperty('--active-bg', colorVal);
+      }
     });
 
     // Initial setup
