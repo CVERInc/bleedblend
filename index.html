@@ -142,15 +142,27 @@
           </div>
         </div>
 
-        <!-- SIMULATED SAFARI BOTTOM BAR -->
+        <!-- SIMULATED SAFARI BOTTOM BAR (Floating Tab Capsule) -->
         <div class="sim-safari-bottom-bar" id="safari-bottom-bar" style="display: none;">
           <div class="safari-address-box">
-            <span class="safari-icon-share">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
-            </span>
+            <span class="safari-icon-aA">aA</span>
             <span class="safari-url"><span class="safari-lock-icon">🔒</span>oss.cver.net</span>
             <span class="safari-icon-reload">↻</span>
           </div>
+        </div>
+
+        <!-- SIMULATED SAFARI BOTTOM TOOLBAR -->
+        <div class="sim-safari-bottom-toolbar" id="safari-bottom-toolbar" style="display: none;">
+          <!-- Back -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <!-- Forward -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          <!-- Share -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          <!-- Bookmarks -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <!-- Tabs -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2" ry="2"/><path d="M9 21h10a2 2 0 0 0 2-2V9"/></svg>
         </div>
 
         <!-- Phone Screen Content -->
@@ -398,23 +410,27 @@
     const shellModes = document.getElementById('shell-modes');
     const safariTopBar = document.getElementById('safari-top-bar');
     const safariBottomBar = document.getElementById('safari-bottom-bar');
+    const safariBottomToolbar = document.getElementById('safari-bottom-toolbar');
 
     function applyShellMode(mode) {
       if (mode === 'pwa') {
         safariTopBar.style.display = 'none';
         safariBottomBar.style.display = 'none';
+        safariBottomToolbar.style.display = 'none';
         topSlider.value = 59;
         bottomSlider.value = 34;
       } else if (mode === 'safari-bottom') {
         safariTopBar.style.display = 'none';
         safariBottomBar.style.display = 'flex';
+        safariBottomToolbar.style.display = 'flex';
         topSlider.value = 59;
-        bottomSlider.value = 83;
+        bottomSlider.value = 100;
       } else if (mode === 'safari-top') {
         safariTopBar.style.display = 'flex';
         safariBottomBar.style.display = 'none';
-        topSlider.value = 97;
-        bottomSlider.value = 34;
+        safariBottomToolbar.style.display = 'flex';
+        topSlider.value = 103;
+        bottomSlider.value = 83;
       }
       applySimSafeArea();
       updateScrollGradientColors();

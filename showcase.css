@@ -527,7 +527,7 @@ footer.site-footer {
   top: 59px; /* Directly below the notch/status bar area */
   left: 0;
   width: 100%;
-  height: 38px;
+  height: 44px;
   background: rgba(30, 30, 35, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -536,25 +536,53 @@ footer.site-footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1.25rem;
+  padding: 0 12px;
 }
 
 .sim-safari-bottom-bar {
   position: absolute;
-  bottom: 24px; /* Above the home indicator area */
+  bottom: 57px; /* Sits directly above the bottom toolbar */
   left: 12px;
   right: 12px;
   height: 42px;
-  background: rgba(30, 30, 35, 0.85);
+  background: rgba(45, 45, 50, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 1px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 0 1px rgba(255, 255, 255, 0.15);
   z-index: 1001;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1rem;
+  padding: 0 12px;
+}
+
+.sim-safari-bottom-toolbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 49px;
+  background: rgba(30, 30, 35, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem 8px; /* 8px bottom padding to leave room under home indicator */
+  color: #007aff; /* iOS standard blue */
+}
+
+.sim-safari-bottom-toolbar svg {
+  opacity: 0.9;
+  cursor: pointer;
+  transition: opacity 0.1s ease;
+}
+
+.sim-safari-bottom-toolbar svg:hover {
+  opacity: 1;
 }
 
 .safari-address-box {
@@ -583,12 +611,8 @@ footer.site-footer {
   font-size: 0.7rem;
 }
 
-.safari-icon-aA, .safari-icon-reload, .safari-icon-share {
-  font-size: 0.8rem;
+.safari-icon-aA, .safari-icon-reload {
+  font-size: 0.85rem;
   cursor: pointer;
   opacity: 0.8;
 }
-.safari-icon-share svg {
-  display: block;
-}
-
