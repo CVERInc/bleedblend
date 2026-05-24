@@ -277,6 +277,26 @@ footer.site-footer a:hover {
   color: white;
 }
 
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transition: width 250ms ease;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
 .footer-separator {
   color: rgba(255, 255, 255, 0.2);
 }
