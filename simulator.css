@@ -1,255 +1,7 @@
 :root {
-  --bg-gradient: radial-gradient(circle at 10% 20%, rgba(10, 140, 142, 0.15) 0%, transparent 40%),
-                 radial-gradient(circle at 90% 80%, rgba(226, 114, 91, 0.15) 0%, transparent 40%),
-                 #052829;
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --accent: #aceace;
-  --accent-hover: #4fd1ca;
-  --text: #f5fbfa;
-  --text-muted: rgba(245, 251, 250, 0.6);
-  
-  /* Simulated safe areas inside the phone mock (iPhone 14/15 Pro Dynamic Island is typically 59px) */
+  /* Simulated safe areas inside the phone mock (iOS 26 Liquid Glass Dynamic Island is typically 59px) */
   --sim-safe-top: 59px;
   --sim-safe-bottom: 34px;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Nunito', 'Plus Jakarta Sans', sans-serif;
-  background: var(--bg-gradient);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-}
-
-/* Premium Header */
-header {
-  padding: 2rem 4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--card-border);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.logo-badge {
-  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-  color: #084a4c;
-  font-weight: 700;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  box-shadow: 0 4px 15px rgba(79, 209, 202, 0.4);
-  font-family: 'Comfortaa', sans-serif;
-}
-
-h1 {
-  font-family: 'Comfortaa', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-}
-
-.github-link {
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--card-border);
-  transition: all 0.2s ease;
-}
-
-.github-link:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--accent);
-}
-
-/* Main Showcase Container */
-main {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding: 3rem 4rem;
-  gap: 4rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-  align-items: start;
-}
-
-@media (max-width: 1024px) {
-  main {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    padding: 2rem;
-  }
-}
-
-/* Left Control Panel */
-.control-panel {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 24px;
-  padding: 2.5rem;
-  backdrop-filter: blur(30px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-}
-
-.panel-section {
-  margin-bottom: 2rem;
-}
-
-.panel-section:last-child {
-  margin-bottom: 0;
-}
-
-.panel-section h3 {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* Custom Radio Buttons */
-.option-group {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 0.35rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.option-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  padding: 0.6rem 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-}
-
-.option-btn.active {
-  background: var(--accent);
-  color: #084a4c;
-  box-shadow: 0 4px 12px rgba(172, 234, 206, 0.35);
-}
-
-.option-btn:hover:not(.active) {
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* Sliders */
-.slider-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.slider-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.slider-header span.val {
-  font-weight: 600;
-  color: var(--accent-hover);
-}
-
-input[type="range"] {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
-  outline: none;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  background: var(--accent);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform 0.1s ease;
-}
-
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-}
-
-/* Color picker buttons */
-.color-presets {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.color-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.color-btn.active {
-  border-color: white;
-  transform: scale(1.1);
-}
-
-/* Real safe area log */
-.log-card {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 1rem;
-  font-family: monospace;
-  font-size: 0.85rem;
-}
-
-.log-line {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.25rem;
-}
-
-.log-line:last-child {
-  margin-bottom: 0;
 }
 
 /* Phone Simulator Column */
@@ -504,21 +256,19 @@ input[type="range"]::-webkit-slider-thumb:hover {
   font-size: 0.95rem;
   margin-bottom: 0.5rem;
   color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dummy-card h4 svg {
+  color: var(--accent);
 }
 
 .dummy-card p {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.5;
-}
-
-footer.site-footer {
-  text-align: center;
-  padding: 2rem;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  border-top: 1px solid var(--card-border);
-  margin-top: 4rem;
 }
 
 /* Simulated Safari Shell Elements */
@@ -539,23 +289,56 @@ footer.site-footer {
   padding: 0 12px;
 }
 
-.sim-safari-bottom-bar {
+.sim-safari-bottom-tab-bar {
   position: absolute;
-  bottom: 57px; /* Sits directly above the bottom toolbar */
+  bottom: 24px; /* Sits above the home indicator */
   left: 12px;
   right: 12px;
-  height: 42px;
-  background: rgba(45, 45, 50, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 0 1px rgba(255, 255, 255, 0.15);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   z-index: 1001;
+  pointer-events: none;
+}
+
+.safari-circle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 12px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
+
+.safari-address-capsule {
+  flex: 1;
+  height: 44px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 0.9rem;
+}
+
+/* Adjust colors when inside light themes if necessary, but white translucency usually works on gradients */
+
 
 .sim-safari-bottom-toolbar {
   position: absolute;
@@ -575,14 +358,11 @@ footer.site-footer {
   color: #007aff; /* iOS standard blue */
 }
 
+/* Note: iOS Simulator removes pointer cursors for realism */
 .sim-safari-bottom-toolbar svg {
   opacity: 0.9;
-  cursor: pointer;
+  cursor: default;
   transition: opacity 0.1s ease;
-}
-
-.sim-safari-bottom-toolbar svg:hover {
-  opacity: 1;
 }
 
 .safari-address-box {
@@ -608,11 +388,12 @@ footer.site-footer {
 }
 
 .safari-lock-icon {
-  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
 }
 
 .safari-icon-aA, .safari-icon-reload {
   font-size: 0.85rem;
-  cursor: pointer;
+  cursor: default;
   opacity: 0.8;
 }
