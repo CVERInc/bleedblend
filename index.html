@@ -53,6 +53,16 @@
         </div>
       </div>
 
+      <!-- BROWSER SHELL SETTING -->
+      <div class="panel-section">
+        <h3>🌐 Browser Shell Mode</h3>
+        <div class="option-group" id="shell-modes">
+          <button class="option-btn active" data-mode="pwa">PWA (Full)</button>
+          <button class="option-btn" data-mode="safari-bottom">Safari Bottom</button>
+          <button class="option-btn" data-mode="safari-top">Safari Top</button>
+        </div>
+      </div>
+
       <!-- DEVICE NOTCH & SAFE AREA SIMULATORS -->
       <div class="panel-section">
         <h3>⚙️ Safe Area Simulator</h3>
@@ -62,7 +72,7 @@
             <span>Simulated Safe Area Top (Notch)</span>
             <span class="val" id="safe-top-val">59px</span>
           </div>
-          <input type="range" id="safe-top-slider" min="0" max="80" value="59">
+          <input type="range" id="safe-top-slider" min="0" max="120" value="59">
         </div>
 
         <div class="slider-container">
@@ -70,7 +80,7 @@
             <span>Simulated Safe Area Bottom</span>
             <span class="val" id="safe-bottom-val">34px</span>
           </div>
-          <input type="range" id="safe-bottom-slider" min="0" max="50" value="34">
+          <input type="range" id="safe-bottom-slider" min="0" max="100" value="34">
         </div>
       </div>
 
@@ -120,6 +130,26 @@
             <span>5G</span>
             <svg width="14" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
             <svg width="16" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm4 4v6h2V9h-2z"/></svg>
+          </div>
+        </div>
+
+        <!-- SIMULATED SAFARI TOP BAR -->
+        <div class="sim-safari-top-bar" id="safari-top-bar" style="display: none;">
+          <div class="safari-address-box">
+            <span class="safari-icon-aA">aA</span>
+            <span class="safari-url"><span class="safari-lock-icon">🔒</span>oss.cver.net</span>
+            <span class="safari-icon-reload">↻</span>
+          </div>
+        </div>
+
+        <!-- SIMULATED SAFARI BOTTOM BAR -->
+        <div class="sim-safari-bottom-bar" id="safari-bottom-bar" style="display: none;">
+          <div class="safari-address-box">
+            <span class="safari-icon-share">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+            </span>
+            <span class="safari-url"><span class="safari-lock-icon">🔒</span>oss.cver.net</span>
+            <span class="safari-icon-reload">↻</span>
           </div>
         </div>
 
@@ -362,6 +392,43 @@
         root.style.removeProperty('--active-footer-bg');
         root.style.setProperty('--active-bg', colorVal);
       }
+    });
+
+    // Browser Shell Mode triggers
+    const shellModes = document.getElementById('shell-modes');
+    const safariTopBar = document.getElementById('safari-top-bar');
+    const safariBottomBar = document.getElementById('safari-bottom-bar');
+
+    function applyShellMode(mode) {
+      if (mode === 'pwa') {
+        safariTopBar.style.display = 'none';
+        safariBottomBar.style.display = 'none';
+        topSlider.value = 59;
+        bottomSlider.value = 34;
+      } else if (mode === 'safari-bottom') {
+        safariTopBar.style.display = 'none';
+        safariBottomBar.style.display = 'flex';
+        topSlider.value = 59;
+        bottomSlider.value = 83;
+      } else if (mode === 'safari-top') {
+        safariTopBar.style.display = 'flex';
+        safariBottomBar.style.display = 'none';
+        topSlider.value = 97;
+        bottomSlider.value = 34;
+      }
+      applySimSafeArea();
+      updateScrollGradientColors();
+    }
+
+    shellModes.addEventListener('click', (e) => {
+      const btn = e.target.closest('.option-btn');
+      if (!btn) return;
+
+      shellModes.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const mode = btn.dataset.mode;
+      applyShellMode(mode);
     });
 
     // Initial setup
