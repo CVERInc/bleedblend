@@ -334,6 +334,77 @@ function getBgColorUnderElement(statusBarHeight, baseColor, isFixedBg) {
   return isFixedBg ? null : baseColor;
 }
 
+let cachedHasFixedHeader = null;
+let lastCheckTime = 0;
+
+function checkFixedHeader(insets) {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return false;
+  }
+
+  // 1. Explicit user opt-in via classes
+  const explicitSelectors = ['.bleed-top', '.bleed-header'];
+  for (const sel of explicitSelectors) {
+    const hasEl = Array.from(document.querySelectorAll(sel)).some(el => {
+      return el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0;
+    });
+    if (hasEl) return true;
+  }
+
+  // 2. Dynamic auto-detection
+  const y = insets.top + 4;
+  const xPoints = [
+    window.innerWidth / 4,
+    window.innerWidth / 2,
+    (window.innerWidth * 3) / 4
+  ];
+
+  const statusBar = document.getElementById('bleed-status-bar-tint');
+  let originalDisplay = '';
+  if (statusBar) {
+    originalDisplay = statusBar.style.display;
+    statusBar.style.display = 'none';
+  }
+
+  let foundFixed = false;
+
+  try {
+    for (const x of xPoints) {
+      let element = document.elementFromPoint(x, y);
+      while (element && element !== document.documentElement && element !== document.body) {
+        const style = window.getComputedStyle(element);
+        if (style.position === 'fixed' || style.position === 'sticky') {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= insets.top + 10 && rect.bottom > insets.top) {
+            foundFixed = true;
+            break;
+          }
+        }
+        element = element.parentElement;
+      }
+      if (foundFixed) break;
+    }
+  } catch (e) {
+    // Fallback safe guard
+  }
+
+  if (statusBar) {
+    statusBar.style.display = originalDisplay;
+  }
+
+  return foundFixed;
+}
+
+function checkFixedHeaderCached(insets) {
+  const now = Date.now();
+  if (cachedHasFixedHeader !== null && now - lastCheckTime < 250) {
+    return cachedHasFixedHeader;
+  }
+  cachedHasFixedHeader = checkFixedHeader(insets);
+  lastCheckTime = now;
+  return cachedHasFixedHeader;
+}
+
 
 /**
  * Tracks scroll position and dynamically interpolates theme-color meta tag.
@@ -462,11 +533,21 @@ export function trackScrollColors(stops, options = {}) {
                     (/iPad|iPhone|iPod/.test(navigator.userAgent) || 
                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
       if (isIOS) {
-        statusBar.style.display = 'block';
-        statusBar.style.background = 'none';
-        statusBar.style.backgroundColor = opaqueColor;
         const topHeight = insets.top > 0 ? insets.top : 20;
         statusBar.style.paddingTop = `${topHeight}px`;
+        statusBar.style.background = 'none';
+        statusBar.style.backgroundColor = opaqueColor;
+
+        const hasFixed = checkFixedHeaderCached(insets);
+        if (hasFixed) {
+          statusBar.style.opacity = '1';
+          statusBar.style.display = 'block';
+        } else {
+          const threshold = 60;
+          const opacity = Math.max(0, 1 - scrollTop / threshold);
+          statusBar.style.opacity = opacity.toString();
+          statusBar.style.display = opacity === 0 ? 'none' : 'block';
+        }
       } else {
         statusBar.style.display = 'none';
       }
@@ -486,6 +567,8 @@ export function trackScrollColors(stops, options = {}) {
     if (statusBar && statusBar.parentNode) {
       statusBar.parentNode.removeChild(statusBar);
     }
+    cachedHasFixedHeader = null;
+    lastCheckTime = 0;
     scrollMetaCleanup();
     metaCleanup();
   };
