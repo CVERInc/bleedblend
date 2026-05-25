@@ -55,11 +55,12 @@
 
       <!-- BROWSER SHELL SETTING -->
       <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Browser Shell Mode</h3>
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Tabs Layout</h3>
         <div class="option-group" id="shell-modes">
-          <button class="option-btn active" data-mode="pwa">PWA (Full)</button>
-          <button class="option-btn" data-mode="safari-bottom">Safari Bottom</button>
-          <button class="option-btn" data-mode="safari-top">Safari Top</button>
+          <button class="option-btn active" data-mode="safari-compact">Compact</button>
+          <button class="option-btn" data-mode="safari-bottom">Bottom</button>
+          <button class="option-btn" data-mode="safari-top">Top</button>
+          <button class="option-btn" data-mode="pwa">PWA</button>
         </div>
       </div>
 
@@ -127,58 +128,108 @@
         
         <!-- Status Bar -->
         <div class="status-bar-info">
-          <div>9:41</div>
-          <div style="display: flex; gap: 4px; align-items: center;">
-            <span>5G</span>
-            <svg width="14" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
-            <svg width="16" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm4 4v6h2V9h-2z"/></svg>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <div id="status-time">01:32</div>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.95;">
+              <path d="M2 4v16"/>
+              <path d="M2 8h18a2 2 0 0 1 2 2v10"/>
+              <path d="M2 17h20"/>
+              <circle cx="6" cy="12" r="2"/>
+            </svg>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <!-- Cellular Signal (3 out of 4 bars filled) -->
+            <svg width="15" height="10" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.9;">
+              <rect x="1" y="16" width="3.5" height="5" rx="0.5" />
+              <rect x="6.5" y="12" width="3.5" height="9" rx="0.5" />
+              <rect x="12" y="7.5" width="3.5" height="13.5" rx="0.5" />
+              <rect x="17.5" y="3" width="3.5" height="18" rx="0.5" opacity="0.3" />
+            </svg>
+            <!-- Wifi Arc -->
+            <svg width="14" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.9;">
+              <path d="M12 20h.01"/>
+              <path d="M8.5 16.5a5 5 0 0 1 7 0"/>
+              <path d="M5 13a10 10 0 0 1 14 0"/>
+              <path d="M1.5 9.5a15 15 0 0 1 21 0"/>
+            </svg>
+            <!-- Battery Icon -->
+            <svg width="20" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 2px; opacity: 0.9;">
+              <rect x="1" y="5" width="18" height="14" rx="3" ry="3"/>
+              <line x1="22" y1="10" x2="22" y2="14"/>
+              <rect x="3" y="7" width="12" height="10" rx="1.5" ry="1.5" fill="currentColor"/>
+            </svg>
           </div>
         </div>
 
-        <!-- SIMULATED SAFARI TOP BAR -->
-        <div class="sim-safari-top-bar" id="safari-top-bar" style="display: none;">
-          <div class="safari-address-box">
-            <span class="safari-icon-aA">aA</span>
-            <span class="safari-url">
-              <span class="safari-lock-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              </span>
-              oss.cver.net
+        <!-- SIMULATED SAFARI TOP CAPSULE -->
+        <div class="sim-safari-top-capsule" id="safari-top-capsule" style="display: none;">
+          <div class="safari-capsule-address-box">
+            <!-- Monitor/Desktop Icon -->
+            <span class="safari-icon-page-menu">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
             </span>
-            <span class="safari-icon-reload">↻</span>
+            <span class="safari-url">cver.net</span>
+            <!-- Reload Icon -->
+            <span class="safari-icon-reload">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+            </span>
           </div>
         </div>
 
-        <!-- SIMULATED SAFARI BOTTOM BAR (iOS 26 Liquid Glass Floating Tab Bar) -->
-        <div class="sim-safari-bottom-tab-bar" id="safari-bottom-tab-bar" style="display: none;">
-          <!-- Back Button -->
-          <div class="safari-circle-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 2px;"><polyline points="15 18 9 12 15 6"/></svg>
+        <!-- SIMULATED SAFARI BOTTOM LIQUID BAR -->
+        <div class="sim-safari-bottom-liquid-bar" id="safari-bottom-liquid-bar" style="display: none;">
+          <!-- Address Row (shown in Compact and Bottom modes) -->
+          <div class="safari-liquid-address-row" id="safari-bottom-address-row">
+            <div class="safari-capsule-address-box">
+              <!-- Monitor/Desktop Icon -->
+              <span class="safari-icon-page-menu">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </span>
+              <span class="safari-url">cver.net</span>
+              <!-- Reload Icon -->
+              <span class="safari-icon-reload">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+              </span>
+            </div>
           </div>
-          <!-- Address Capsule -->
-          <div class="safari-address-capsule">
-            <svg class="safari-icon-aA" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2" ry="2"/><path d="M9 21h10a2 2 0 0 0 2-2V9"/></svg>
-            <span class="safari-url" style="font-weight: 500;">cver.net</span>
-            <svg class="safari-icon-reload" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 1 0 2.13-5.88L21 8"/></svg>
-          </div>
-          <!-- Options Button -->
-          <div class="safari-circle-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-          </div>
-        </div>
 
-        <!-- SIMULATED SAFARI BOTTOM TOOLBAR -->
-        <div class="sim-safari-bottom-toolbar" id="safari-bottom-toolbar" style="display: none;">
-          <!-- Back -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          <!-- Forward -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          <!-- Share -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-          <!-- Bookmarks -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-          <!-- Tabs -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2" ry="2"/><path d="M9 21h10a2 2 0 0 0 2-2V9"/></svg>
+          <!-- Buttons Row (shown in Bottom and Top modes) -->
+          <div class="safari-liquid-buttons-row" id="safari-bottom-buttons-row">
+            <!-- Back Button -->
+            <div class="safari-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </div>
+            <!-- Forward Button -->
+            <div class="safari-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <!-- Share Button -->
+            <div class="safari-btn">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            </div>
+            <!-- Bookmarks Button -->
+            <div class="safari-btn">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <!-- Tabs Button -->
+            <div class="safari-btn">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2" ry="2"/><path d="M9 21h10a2 2 0 0 0 2-2V9"/></svg>
+            </div>
+          </div>
         </div>
 
         <!-- Phone Screen Content -->
@@ -455,29 +506,44 @@
 
     // Browser Shell Mode triggers
     const shellModes = document.getElementById('shell-modes');
-    const safariTopBar = document.getElementById('safari-top-bar');
-    const safariBottomTabBar = document.getElementById('safari-bottom-tab-bar');
-    const safariBottomToolbar = document.getElementById('safari-bottom-toolbar');
+    const safariTopCapsule = document.getElementById('safari-top-capsule');
+    const safariBottomLiquidBar = document.getElementById('safari-bottom-liquid-bar');
+    const safariBottomAddressRow = document.getElementById('safari-bottom-address-row');
+    const safariBottomButtonsRow = document.getElementById('safari-bottom-buttons-row');
 
     function applyShellMode(mode) {
+      // Clear displays
+      safariTopCapsule.style.display = 'none';
+      safariBottomLiquidBar.style.display = 'none';
+      safariBottomAddressRow.style.display = 'none';
+      safariBottomButtonsRow.style.display = 'none';
+      
+      // Reset classes
+      safariBottomLiquidBar.className = 'sim-safari-bottom-liquid-bar';
+
       if (mode === 'pwa') {
-        safariTopBar.style.display = 'none';
-        safariBottomTabBar.style.display = 'none';
-        safariBottomToolbar.style.display = 'none';
         topSlider.value = 59;
         bottomSlider.value = 34; // Just home indicator
-      } else if (mode === 'safari-bottom') {
-        safariTopBar.style.display = 'none';
-        safariBottomTabBar.style.display = 'flex';
-        safariBottomToolbar.style.display = 'none';
+      } else if (mode === 'safari-compact') {
+        safariBottomLiquidBar.style.display = 'flex';
+        safariBottomAddressRow.style.display = 'block';
+        safariBottomLiquidBar.classList.add('mode-compact');
         topSlider.value = 59;
-        bottomSlider.value = 90; // Home indicator + floating tab bar
+        bottomSlider.value = 90; // Home indicator + compact capsule
+      } else if (mode === 'safari-bottom') {
+        safariBottomLiquidBar.style.display = 'flex';
+        safariBottomAddressRow.style.display = 'block';
+        safariBottomButtonsRow.style.display = 'flex';
+        safariBottomLiquidBar.classList.add('mode-bottom');
+        topSlider.value = 59;
+        bottomSlider.value = 140; // Home indicator + large bottom capsule
       } else if (mode === 'safari-top') {
-        safariTopBar.style.display = 'flex';
-        safariBottomTabBar.style.display = 'none';
-        safariBottomToolbar.style.display = 'flex';
-        topSlider.value = 103; // Status bar + top address bar
-        bottomSlider.value = 83; // Home indicator + old bottom toolbar
+        safariTopCapsule.style.display = 'flex';
+        safariBottomLiquidBar.style.display = 'flex';
+        safariBottomButtonsRow.style.display = 'flex';
+        safariBottomLiquidBar.classList.add('mode-top');
+        topSlider.value = 103; // Status bar + top floating address capsule
+        bottomSlider.value = 90; // Home indicator + bottom buttons capsule
       }
       applySimSafeArea();
       updateScrollGradientColors();
@@ -496,9 +562,21 @@
 
     // Initial setup
     root.style.setProperty('--active-bg', 'rgba(185, 28, 28, 0.95)');
-    applySimSafeArea();
+    applyShellMode('safari-compact');
     updateRealLogs();
     window.addEventListener('resize', updateRealLogs);
+
+    // Dynamic local time clock
+    function updateClock() {
+      const clockEl = document.getElementById('status-time');
+      if (!clockEl) return;
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      clockEl.innerText = `${hh}:${mm}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
   </script>
 </body>
 </html>
