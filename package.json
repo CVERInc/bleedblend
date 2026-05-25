@@ -1,0 +1,87 @@
+{
+  "name": "bleed",
+  "version": "1.0.0",
+  "description": "A lightweight CSS and Tailwind utility for tinting the iOS status bar while avoiding WebKit backdrop-filter safe-area clipping.",
+  "main": "src/tailwind-plugin.js",
+  "style": "src/index.css",
+  "exports": {
+    ".": {
+      "types": "./src/tailwind-plugin.d.ts",
+      "default": "./src/tailwind-plugin.js"
+    },
+    "./style": "./src/index.css",
+    "./react": {
+      "types": "./src/react.d.ts",
+      "default": "./src/react.js"
+    },
+    "./vue": {
+      "types": "./src/vue.d.ts",
+      "default": "./src/vue.js"
+    },
+    "./svelte": {
+      "types": "./src/svelte.d.ts",
+      "default": "./src/svelte.js"
+    },
+    "./unocss": {
+      "types": "./src/unocss.d.ts",
+      "default": "./src/unocss.js"
+    },
+    "./utils": {
+      "types": "./src/utils.d.ts",
+      "import": "./src/utils.mjs",
+      "default": "./src/utils.js"
+    }
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node -e \"require('./src/tailwind-plugin.js'); console.log('bleed loaded')\""
+  },
+  "keywords": [
+    "ios",
+    "safari",
+    "webkit",
+    "status-bar",
+    "safe-area",
+    "viewport-fit",
+    "tailwind",
+    "css",
+    "fixed"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CVERInc/bleed.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CVERInc/bleed/issues"
+  },
+  "homepage": "https://github.com/CVERInc/bleed#readme",
+  "peerDependencies": {
+    "tailwindcss": ">=3.0.0",
+    "react": ">=16.8.0",
+    "vue": ">=3.0.0",
+    "svelte": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

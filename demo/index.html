@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>bleed - Interactive Showcase & iOS Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Nunito:wght@300;400;600;700&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="cver-oss-showcase.css">
+  <link rel="stylesheet" href="simulator.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <a href="https://oss.cver.net/" class="logo-container" style="text-decoration: none; color: inherit;">
+      <h1>bleed</h1>
+      <span class="logo-badge">Showcase by CVER.NET</span>
+    </a>
+    <a href="https://github.com/CVERInc/bleed" class="github-link" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+      </svg>
+      GitHub
+    </a>
+  </header>
+
+  <!-- Main Grid Layout -->
+  <main>
+    
+    <!-- Left panel for control adjustments -->
+    <div class="control-panel">
+      
+      <!-- TOP FIXED HEADER SETTING -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner Mode</h3>
+        <div class="option-group" id="top-modes">
+          <button class="option-btn" data-mode="none">None</button>
+          <button class="option-btn active" data-mode="buggy">Buggy Blur</button>
+          <button class="option-btn" data-mode="bleed">Bleed Fix</button>
+        </div>
+      </div>
+
+      <!-- BOTTOM FIXED FOOTER SETTING -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action Mode</h3>
+        <div class="option-group" id="bottom-modes">
+          <button class="option-btn" data-mode="none">None</button>
+          <button class="option-btn active" data-mode="buggy">Buggy Blur</button>
+          <button class="option-btn" data-mode="bleed">Bleed Fix</button>
+        </div>
+      </div>
+
+      <!-- BROWSER SHELL SETTING -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Tabs Layout</h3>
+        <div class="option-group" id="shell-modes">
+          <button class="option-btn active" data-mode="safari-compact">Compact</button>
+          <button class="option-btn" data-mode="safari-bottom">Bottom</button>
+          <button class="option-btn" data-mode="safari-top">Top</button>
+          <button class="option-btn" data-mode="pwa">PWA</button>
+        </div>
+      </div>
+
+      <!-- DEVICE NOTCH & SAFE AREA SIMULATORS -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Safe Area Simulator</h3>
+        
+        <div class="slider-container">
+          <div class="slider-header">
+            <span>Simulated Safe Area Top (Notch)</span>
+            <span class="val" id="safe-top-val">59px</span>
+          </div>
+          <input type="range" id="safe-top-slider" min="0" max="120" value="59">
+        </div>
+
+        <div class="slider-container">
+          <div class="slider-header">
+            <span>Simulated Safe Area Bottom</span>
+            <span class="val" id="safe-bottom-val">34px</span>
+          </div>
+          <input type="range" id="safe-bottom-slider" min="0" max="100" value="34">
+        </div>
+      </div>
+
+      <!-- COLOR PRESETS -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg> Theme / Background Color</h3>
+        <div class="color-presets">
+          <button class="color-btn active" data-color="rgba(185, 28, 28, 0.95)" style="background: #b91c1c;" title="Solid Red"></button>
+          <button class="color-btn" data-color="rgba(15, 23, 42, 0.95)" style="background: #0f172a;" title="Dark Blue"></button>
+          <button class="color-btn" data-color="rgba(4, 120, 87, 0.95)" style="background: #047857;" title="Green"></button>
+          <button class="color-btn" data-color="linear-gradient(135deg, #4f46e5, #7c3aed)" style="background: linear-gradient(135deg, #4f46e5, #7c3aed);" title="Purple Gradient"></button>
+          <button class="color-btn" data-color="scroll-gradient" style="background: linear-gradient(180deg, #3b82f6, #1e1b4b); position: relative;" title="Scroll-driven Gradient Interpolation">
+            <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: white;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- JS DETECTOR LOG -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Real Device JS API (getSafeAreaInsets)</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+          These are the real physical pixel safe areas detected on your current web browser:
+        </p>
+        <div class="log-card">
+          <div class="log-line"><span>safeArea.top</span> <span id="js-top" style="color: var(--accent-hover);">0px</span></div>
+          <div class="log-line"><span>safeArea.bottom</span> <span id="js-bottom" style="color: var(--accent-hover);">0px</span></div>
+          <div class="log-line"><span>safeArea.left</span> <span id="js-left">0px</span></div>
+          <div class="log-line"><span>safeArea.right</span> <span id="js-right">0px</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Simulator Column -->
+    <div class="simulator-container">
+      
+      <!-- Phone Mock -->
+      <div class="phone-frame">
+        
+        <!-- Camera Notch -->
+        <div class="phone-notch"></div>
+        
+        <!-- Status Bar -->
+        <div class="status-bar-info">
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <div id="status-time">01:32</div>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.95;">
+              <path d="M2 4v16"/>
+              <path d="M2 8h18a2 2 0 0 1 2 2v10"/>
+              <path d="M2 17h20"/>
+              <circle cx="6" cy="12" r="2"/>
+            </svg>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <!-- Cellular Signal (3 out of 4 bars filled) -->
+            <svg width="15" height="10" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.9;">
+              <rect x="1" y="16" width="3.5" height="5" rx="0.5" />
+              <rect x="6.5" y="12" width="3.5" height="9" rx="0.5" />
+              <rect x="12" y="7.5" width="3.5" height="13.5" rx="0.5" />
+              <rect x="17.5" y="3" width="3.5" height="18" rx="0.5" opacity="0.3" />
+            </svg>
+            <!-- Wifi Arc -->
+            <svg width="14" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.9;">
+              <path d="M12 20h.01"/>
+              <path d="M8.5 16.5a5 5 0 0 1 7 0"/>
+              <path d="M5 13a10 10 0 0 1 14 0"/>
+              <path d="M1.5 9.5a15 15 0 0 1 21 0"/>
+            </svg>
+            <!-- Battery Icon -->
+            <svg width="20" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 2px; opacity: 0.9;">
+              <rect x="1" y="5" width="18" height="14" rx="3" ry="3"/>
+              <line x1="22" y1="10" x2="22" y2="14"/>
+              <rect x="3" y="7" width="12" height="10" rx="1.5" ry="1.5" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- SIMULATED SAFARI TOP CAPSULE -->
+        <div class="sim-safari-top-capsule" id="safari-top-capsule" style="display: none;">
+          <div class="safari-capsule-address-box">
+            <!-- Monitor/Desktop Icon -->
+            <span class="safari-icon-page-menu">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </span>
+            <span class="safari-url">cver.net</span>
+            <!-- Reload Icon -->
+            <span class="safari-icon-reload">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- SIMULATED SAFARI BOTTOM LIQUID BAR -->
+        <div class="sim-safari-bottom-liquid-bar" id="safari-bottom-liquid-bar" style="display: none;">
+          <!-- Address Row (shown in Compact and Bottom modes) -->
+          <div class="safari-liquid-address-row" id="safari-bottom-address-row">
+            <div class="safari-capsule-address-box">
+              <!-- Monitor/Desktop Icon -->
+              <span class="safari-icon-page-menu">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </span>
+              <span class="safari-url">cver.net</span>
+              <!-- Reload Icon -->
+              <span class="safari-icon-reload">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Buttons Row (shown in Bottom and Top modes) -->
+          <div class="safari-liquid-buttons-row" id="safari-bottom-buttons-row">
+            <!-- Back Button -->
+            <div class="safari-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </div>
+            <!-- Forward Button -->
+            <div class="safari-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <!-- Share Button -->
+            <div class="safari-btn">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            </div>
+            <!-- Bookmarks Button -->
+            <div class="safari-btn">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <!-- Tabs Button -->
+            <div class="safari-btn">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2" ry="2"/><path d="M9 21h10a2 2 0 0 0 2-2V9"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Screen Content -->
+        <div class="phone-screen" id="phone-screen">
+          
+          <!-- Dummy Text Scroll Container -->
+          <div class="dummy-content">
+            <div class="dummy-card">
+              <h4>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                iOS WebKit Clipping Bug
+              </h4>
+              <p>When backdrop-filter is applied to a fixed element at top: 0, Safari clips the blur region right at the status bar boundary. Scroll down to see the scrollable cards below the status bar.</p>
+            </div>
+            <div class="dummy-card">
+              <h4>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                Try the Controls
+              </h4>
+              <p>Switch between "Buggy Blur" and "Bleed Fix" to see how the status bar color transitions. In Buggy Blur mode, you will see a sharp line where the status bar refuses to blend, exposing the background.</p>
+            </div>
+            <div class="dummy-card">
+              <h4>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>
+                Custom Colors
+              </h4>
+              <p>Change themes to test solid red, emerald green, midnight blue, or neon gradients. The status bar inherits the header color seamlessly in Bleed mode.</p>
+            </div>
+            <div class="dummy-card">
+              <h4>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18"></rect><rect x="10" y="8" width="4" height="13"></rect><rect x="2" y="13" width="4" height="8"></rect></svg>
+                Dynamic Safe Areas
+              </h4>
+              <p>Use the sliders to simulate different notches, from iPhone 12 to newer iOS 26 Liquid Glass dynamic island heights. The layout automatically recalculates using CSS env values.</p>
+            </div>
+            <div class="dummy-card">
+              <h4>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+                Bottom indicator Bleed
+              </h4>
+              <p>Enable the bottom action mode. The bottom safe indicator gets cleanly dyed to avoid showing the page base layout under the indicator bar.</p>
+            </div>
+            <div class="dummy-card">
+              <h4>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Zero Gaps
+              </h4>
+              <p>Notice how our Bleed Top solution stretches all the way to the screen edges, maintaining a premium native iOS app feel.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SIMULATED TOP HEADER -->
+        <div class="sim-header header-buggy" id="sim-header">
+          <div class="nav-content">
+            <span style="display: flex; align-items: center; gap: 0.25rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg> System Warning
+            </span>
+            <span style="font-weight: 400; text-decoration: underline; font-size: 0.75rem;">Fix now</span>
+          </div>
+          <!-- Optional Inner Blur container (Shown in Bleed Fix Mode) -->
+          <div class="bleed-inner-blur-demo" id="inner-blur-box" style="display: none;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg> Option: Inside blur elements render correctly!
+          </div>
+        </div>
+
+        <!-- SIMULATED BOTTOM FOOTER -->
+        <div class="sim-footer footer-buggy" id="sim-footer">
+          <div class="nav-content">
+            <span style="display: flex; align-items: center; gap: 0.25rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Proceed to checkout
+            </span>
+            <span>→</span>
+          </div>
+        </div>
+
+        <!-- Bottom Home Indicator Line -->
+        <div class="home-indicator-area">
+          <div class="home-indicator"></div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="site-footer bg-primary-dark">
+    <div class="footer-links">
+      <a href="https://cver.net/legal/terms" class="link-underline">Terms of Service</a>
+      <span class="footer-separator">|</span>
+      <a href="https://cver.net/legal/privacy" class="link-underline">Privacy Policy</a>
+      <span class="footer-separator">|</span>
+      <a href="https://cver.net/contact" class="link-underline">Contact Us</a>
+    </div>
+
+    <a href="https://cver.net" class="footer-logo">
+      <img src="https://cver.net/cver-logo-small.png" alt="CVER" draggable="false" />
+    </a>
+
+    <div class="footer-links" style="font-size: 0.75rem;">
+      <a href="https://cver.net/about" class="link-underline">© 2026 CVER Inc. licensed under MIT.</a>
+    </div>
+  </footer>
+
+  <!-- Mock JS Utilities implementation -->
+  <script>
+    // Live JS Insets logging (using our implementation logic)
+    function getRealSafeAreaInsets() {
+      const div = document.createElement('div');
+      div.style.position = 'fixed';
+      div.style.visibility = 'hidden';
+      div.style.top = 'env(safe-area-inset-top, 0px)';
+      div.style.bottom = 'env(safe-area-inset-bottom, 0px)';
+      div.style.left = 'env(safe-area-inset-left, 0px)';
+      div.style.right = 'env(safe-area-inset-right, 0px)';
+      document.body.appendChild(div);
+      const styles = window.getComputedStyle(div);
+      const insets = {
+        top: parseFloat(styles.top) || 0,
+        bottom: parseFloat(styles.bottom) || 0,
+        left: parseFloat(styles.left) || 0,
+        right: parseFloat(styles.right) || 0
+      };
+      document.body.removeChild(div);
+      return insets;
+    }
+
+    function updateRealLogs() {
+      const insets = getRealSafeAreaInsets();
+      document.getElementById('js-top').innerText = `${insets.top}px`;
+      document.getElementById('js-bottom').innerText = `${insets.bottom}px`;
+      document.getElementById('js-left').innerText = `${insets.left}px`;
+      document.getElementById('js-right').innerText = `${insets.right}px`;
+    }
+
+    // Interactive sliders for Notch/Safe Area simulation
+    const topSlider = document.getElementById('safe-top-slider');
+    const bottomSlider = document.getElementById('safe-bottom-slider');
+    const topVal = document.getElementById('safe-top-val');
+    const bottomVal = document.getElementById('safe-bottom-val');
+    const root = document.documentElement;
+
+    function applySimSafeArea() {
+      topVal.innerText = `${topSlider.value}px`;
+      bottomVal.innerText = `${bottomSlider.value}px`;
+      root.style.setProperty('--sim-safe-top', `${topSlider.value}px`);
+      root.style.setProperty('--sim-safe-bottom', `${bottomSlider.value}px`);
+    }
+
+    topSlider.addEventListener('input', applySimSafeArea);
+    bottomSlider.addEventListener('input', applySimSafeArea);
+
+    // Modes triggers
+    const topModes = document.getElementById('top-modes');
+    const bottomModes = document.getElementById('bottom-modes');
+    const simHeader = document.getElementById('sim-header');
+    const simFooter = document.getElementById('sim-footer');
+    const innerBlurBox = document.getElementById('inner-blur-box');
+
+    topModes.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('option-btn')) return;
+      
+      // Update buttons active class
+      topModes.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+      e.target.classList.add('active');
+      
+      const mode = e.target.dataset.mode;
+      simHeader.className = 'sim-header'; // reset
+      innerBlurBox.style.display = 'none';
+
+      if (mode === 'none') {
+        simHeader.classList.add('header-none');
+      } else if (mode === 'buggy') {
+        simHeader.classList.add('header-buggy');
+      } else if (mode === 'bleed') {
+        simHeader.classList.add('header-bleed');
+        innerBlurBox.style.display = 'block'; // Show options child element blur
+      }
+    });
+
+    bottomModes.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('option-btn')) return;
+
+      bottomModes.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+      e.target.classList.add('active');
+
+      const mode = e.target.dataset.mode;
+      simFooter.className = 'sim-footer'; // reset
+
+      if (mode === 'none') {
+        simFooter.classList.add('footer-none');
+      } else if (mode === 'buggy') {
+        simFooter.classList.add('footer-buggy');
+      } else if (mode === 'bleed') {
+        simFooter.classList.add('footer-bleed');
+      }
+    });
+
+    // Theme Color Picker triggers
+    const colorPresets = document.querySelector('.color-presets');
+    const phoneScreen = document.getElementById('phone-screen');
+
+    function hexToRgb(hex) {
+      const c = hex.replace('#', '');
+      const r = parseInt(c.substring(0, 2), 16);
+      const g = parseInt(c.substring(2, 4), 16);
+      const b = parseInt(c.substring(4, 6), 16);
+      return { r, g, b };
+    }
+
+    function rgbToHex(r, g, b) {
+      return '#' + [r, g, b].map(x => {
+        const hex = Math.min(255, Math.max(0, Math.round(x))).toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+      }).join('');
+    }
+
+    function interpolate(color1, color2, factor) {
+      const c1 = hexToRgb(color1);
+      const c2 = hexToRgb(color2);
+      const r = c1.r + factor * (c2.r - c1.r);
+      const g = c1.g + factor * (c2.g - c1.g);
+      const b = c1.b + factor * (c2.b - c1.b);
+      return rgbToHex(r, g, b);
+    }
+
+    function getGradientColorAt(ratio) {
+      if (ratio <= 0.5) {
+        return interpolate('#3b82f6', '#8b5cf6', ratio / 0.5);
+      } else {
+        return interpolate('#8b5cf6', '#1e1b4b', (ratio - 0.5) / 0.5);
+      }
+    }
+
+    function updateScrollGradientColors() {
+      if (!phoneScreen.classList.contains('scroll-gradient-active')) return;
+
+      const scrollTop = phoneScreen.scrollTop;
+      const scrollHeight = phoneScreen.scrollHeight;
+      const clientHeight = phoneScreen.clientHeight;
+
+      const headerRatio = scrollHeight > clientHeight ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1) : 0;
+      const headerColor = getGradientColorAt(headerRatio);
+
+      const footerRatio = scrollHeight > clientHeight ? Math.min(Math.max((scrollTop + clientHeight) / scrollHeight, 0), 1) : 0;
+      const footerColor = getGradientColorAt(footerRatio);
+
+      root.style.setProperty('--active-header-bg', headerColor);
+      root.style.setProperty('--active-footer-bg', footerColor);
+    }
+
+    phoneScreen.addEventListener('scroll', updateScrollGradientColors, { passive: true });
+
+    colorPresets.addEventListener('click', (e) => {
+      const btn = e.target.closest('.color-btn');
+      if (!btn) return;
+
+      colorPresets.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const colorVal = btn.dataset.color;
+      if (colorVal === 'scroll-gradient') {
+        phoneScreen.classList.add('scroll-gradient-active');
+        updateScrollGradientColors();
+      } else {
+        phoneScreen.classList.remove('scroll-gradient-active');
+        root.style.removeProperty('--active-header-bg');
+        root.style.removeProperty('--active-footer-bg');
+        root.style.setProperty('--active-bg', colorVal);
+      }
+    });
+
+    // Browser Shell Mode triggers
+    const shellModes = document.getElementById('shell-modes');
+    const safariTopCapsule = document.getElementById('safari-top-capsule');
+    const safariBottomLiquidBar = document.getElementById('safari-bottom-liquid-bar');
+    const safariBottomAddressRow = document.getElementById('safari-bottom-address-row');
+    const safariBottomButtonsRow = document.getElementById('safari-bottom-buttons-row');
+
+    function applyShellMode(mode) {
+      // Clear displays
+      safariTopCapsule.style.display = 'none';
+      safariBottomLiquidBar.style.display = 'none';
+      safariBottomAddressRow.style.display = 'none';
+      safariBottomButtonsRow.style.display = 'none';
+      
+      // Reset classes
+      safariBottomLiquidBar.className = 'sim-safari-bottom-liquid-bar';
+
+      if (mode === 'pwa') {
+        topSlider.value = 59;
+        bottomSlider.value = 34; // Just home indicator
+      } else if (mode === 'safari-compact') {
+        safariBottomLiquidBar.style.display = 'flex';
+        safariBottomAddressRow.style.display = 'block';
+        safariBottomLiquidBar.classList.add('mode-compact');
+        topSlider.value = 59;
+        bottomSlider.value = 90; // Home indicator + compact capsule
+      } else if (mode === 'safari-bottom') {
+        safariBottomLiquidBar.style.display = 'flex';
+        safariBottomAddressRow.style.display = 'block';
+        safariBottomButtonsRow.style.display = 'flex';
+        safariBottomLiquidBar.classList.add('mode-bottom');
+        topSlider.value = 59;
+        bottomSlider.value = 140; // Home indicator + large bottom capsule
+      } else if (mode === 'safari-top') {
+        safariTopCapsule.style.display = 'flex';
+        safariBottomLiquidBar.style.display = 'flex';
+        safariBottomButtonsRow.style.display = 'flex';
+        safariBottomLiquidBar.classList.add('mode-top');
+        topSlider.value = 103; // Status bar + top floating address capsule
+        bottomSlider.value = 90; // Home indicator + bottom buttons capsule
+      }
+      applySimSafeArea();
+      updateScrollGradientColors();
+    }
+
+    shellModes.addEventListener('click', (e) => {
+      const btn = e.target.closest('.option-btn');
+      if (!btn) return;
+
+      shellModes.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const mode = btn.dataset.mode;
+      applyShellMode(mode);
+    });
+
+    // Initial setup
+    root.style.setProperty('--active-bg', 'rgba(185, 28, 28, 0.95)');
+    applyShellMode('safari-compact');
+    updateRealLogs();
+    window.addEventListener('resize', updateRealLogs);
+
+    // Dynamic local time clock
+    function updateClock() {
+      const clockEl = document.getElementById('status-time');
+      if (!clockEl) return;
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      clockEl.innerText = `${hh}:${mm}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
