@@ -127,9 +127,6 @@
         <div class="status-bar-info" id="sim-status-bar">
           <div style="display: flex; gap: 6px; align-items: center;">
             <div id="status-time">9:41</div>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.95;">
-              <path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><circle cx="6" cy="12" r="2"/>
-            </svg>
           </div>
           <div style="display: flex; gap: 6px; align-items: center;">
             <svg width="15" height="10" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.9;">
@@ -544,6 +541,16 @@
       return { state: 'BLEED_OVERRIDE', color: boundary.color };
     }
 
+    // Pick contrasting text color (black on light bg, white on dark bg) for
+    // the status bar — matches iOS's auto-inverting clock / icons.
+    function pickStatusFg(rgbStr) {
+      const c = parseColor(rgbStr);
+      if (!c) return '#fff';
+      // Perceived luminance (Rec. 601).
+      const lum = (0.299 * c.r + 0.587 * c.g + 0.114 * c.b) / 255;
+      return lum > 0.62 ? '#000' : '#fff';
+    }
+
     // Paint a chrome element with either a solid fill (bleed override / banner)
     // or a translucent fill + backdrop-filter blur (Safari's native sampling
     // look when bleed steps back). Mirrors how iOS 26 Liquid Glass chrome
@@ -645,6 +652,12 @@
       applyChromePaint(statusBar, topPaint);
       applyChromePaint(safariBottomBar, botPaint);
       if (homeIndicatorArea) applyChromePaint(homeIndicatorArea, botPaint);
+
+      // Auto-contrast for status bar text. For translucent paint the page
+      // content shows through, so we estimate the effective bg from the
+      // sampled top color rather than the half-opacity paint.
+      const statusBg = topPaint.color || fallback;
+      statusBar.style.setProperty('--status-fg', pickStatusFg(statusBg));
 
       // Diagnostics
       logTopState.textContent = topResolved.state;
