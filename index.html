@@ -34,15 +34,41 @@
     <!-- Left panel for control adjustments -->
     <div class="control-panel">
 
-      <!-- BLEED MODE -->
+      <!-- BLEED MASTER TOGGLE -->
       <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18"></path><path d="M3 12h18"></path></svg> bleed tinting mode</h3>
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18"></path><path d="M3 12h18"></path></svg> bleed v2 auto-tint</h3>
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          Toggle bleed on the simulator chrome (status bar + Safari capsule).
+          The smart per-edge chrome tinting based on scrolling content. Turn off to see iOS's broken fallback.
         </p>
         <div class="option-group" id="bleed-modes">
           <button class="option-btn" data-mode="off">Off (broken)</button>
           <button class="option-btn active" data-mode="on">On (smart bleed)</button>
+        </div>
+      </div>
+
+      <!-- TOP BANNER MODE (the v1 .bleed-top story) -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner Mode</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+          Drop a sticky top banner into the page — and see how it interacts with the chrome tinting.
+        </p>
+        <div class="option-group" id="top-modes">
+          <button class="option-btn active" data-mode="none">None</button>
+          <button class="option-btn" data-mode="buggy">Buggy Blur</button>
+          <button class="option-btn" data-mode="bleed">Bleed Fix</button>
+        </div>
+      </div>
+
+      <!-- BOTTOM BANNER MODE -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action Mode</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+          A sticky bottom CTA (think "Add to cart") — same buggy / bleed showcase as above.
+        </p>
+        <div class="option-group" id="bottom-modes">
+          <button class="option-btn active" data-mode="none">None</button>
+          <button class="option-btn" data-mode="buggy">Buggy Blur</button>
+          <button class="option-btn" data-mode="bleed">Bleed Fix</button>
         </div>
       </div>
 
@@ -54,27 +80,6 @@
           <button class="option-btn" data-mode="safari-bottom">Bottom</button>
           <button class="option-btn" data-mode="safari-top">Top</button>
           <button class="option-btn" data-mode="pwa">PWA</button>
-        </div>
-      </div>
-
-      <!-- DEVICE NOTCH & SAFE AREA SIMULATORS -->
-      <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Safe Area Simulator</h3>
-
-        <div class="slider-container">
-          <div class="slider-header">
-            <span>Simulated Safe Area Top (Notch)</span>
-            <span class="val" id="safe-top-val">59px</span>
-          </div>
-          <input type="range" id="safe-top-slider" min="0" max="120" value="59">
-        </div>
-
-        <div class="slider-container">
-          <div class="slider-header">
-            <span>Simulated Safe Area Bottom</span>
-            <span class="val" id="safe-bottom-val">34px</span>
-          </div>
-          <input type="range" id="safe-bottom-slider" min="0" max="100" value="34">
         </div>
       </div>
 
@@ -204,45 +209,85 @@
           </div>
         </div>
 
+        <!-- SIMULATED TOP STICKY BANNER (the v1 .bleed-top showcase).
+             Hidden by default; mode buttons toggle .header-none / .header-buggy
+             / .header-bleed. When in Bleed Fix mode it also carries `.bleed-top`,
+             which the v2 controller picks up as STICKY_OWNED → step back. -->
+        <div class="sim-header header-none" id="sim-header">
+          <div class="nav-content">
+            <span style="display: flex; align-items: center; gap: 0.25rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+              System Warning
+            </span>
+            <span style="font-weight: 400; text-decoration: underline; font-size: 0.75rem;">Fix now</span>
+          </div>
+          <div class="bleed-inner-blur-demo" id="inner-blur-box" style="display: none;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            Inner-blur elements render correctly!
+          </div>
+        </div>
+
+        <!-- SIMULATED BOTTOM STICKY BANNER -->
+        <div class="sim-footer footer-none" id="sim-footer">
+          <div class="nav-content">
+            <span style="display: flex; align-items: center; gap: 0.25rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Proceed to checkout
+            </span>
+            <span>→</span>
+          </div>
+        </div>
+
         <!-- Phone Screen — v2 demo page (gradient hero + belt + footer) -->
         <div class="phone-screen" id="phone-screen">
 
           <div class="demo-page">
 
-            <!-- Hero (gradient territory) -->
+            <!-- Hero (cver.net home: logo + tagline) -->
             <section class="demo-hero">
-              <div class="demo-logo">b</div>
-              <h2 class="demo-title">Charming Vision</h2>
-              <p class="demo-tagline">Endless Recreation.</p>
-              <p class="demo-scroll-hint">↓ scroll to see the tint follow ↓</p>
+              <img class="demo-logo" src="https://cver.net/cver-logo.png" alt="cver" draggable="false" />
+              <h2 class="demo-title">Charming Vision,<br>Endless Recreation.</h2>
             </section>
 
-            <!-- Belt section (opaque mid-page) -->
+            <!-- Intro (transparent — gradient continues behind) -->
+            <section class="demo-intro">
+              <p>A small studio building digital tools people actually keep. Since 2011.</p>
+            </section>
+
+            <!-- Belt: "What we make" with three product cards -->
             <section class="demo-belt">
               <p class="demo-belt-tag">WHAT WE MAKE</p>
-              <h3 class="demo-belt-title">Smart tinting per edge</h3>
               <div class="demo-card">
-                <h4>Gradient territory</h4>
-                <p>Extend the gradient color into chrome.</p>
+                <h4>MixFairy</h4>
+                <p class="demo-card-tag">The Discord companion your community actually talks to.</p>
+                <p>Welcomes new members, replies when you're asleep, runs silly slot machines, and quietly keeps track of your VIPs. Free to start.</p>
+                <p class="demo-card-cta">Try MixFairy →</p>
               </div>
               <div class="demo-card">
-                <h4>Mid-page section</h4>
-                <p>step back — Safari renders translucent chrome.</p>
+                <h4>REEF</h4>
+                <p class="demo-card-tag">Give every community a home on the web.</p>
+                <p>Public landing page, private dashboard, quiet engine — keeps scattered community info in one calm, presentable home.</p>
+                <p class="demo-card-cta">Visit REEF →</p>
               </div>
               <div class="demo-card">
-                <h4>Page-end section</h4>
-                <p>engage — paint chrome + overwrite html/body/body::before.</p>
+                <h4>Open Source</h4>
+                <p class="demo-card-tag">Tools we wrote for ourselves. Now yours too.</p>
+                <p>MIT-licensed tools for problems we actually run into. We share what helps — no enterprise tiers or upsell playbook.</p>
+                <p class="demo-card-cta">Explore OSS →</p>
               </div>
             </section>
 
-            <!-- Footer (last opaque section) -->
+            <!-- Footer (cver.net page-end) -->
             <footer class="demo-footer">
               <div class="demo-footer-links">
-                <span>Terms</span>
-                <span>Privacy</span>
-                <span>Contact</span>
+                <span>Terms of Service</span>
+                <span class="demo-footer-sep">|</span>
+                <span>Privacy Policy</span>
+                <span class="demo-footer-sep">|</span>
+                <span>Contact Us</span>
               </div>
-              <div class="demo-footer-copy">© 2026 bleed demo · MIT</div>
+              <img class="demo-footer-logo" src="https://cver.net/cver-logo-small.png" alt="cver" draggable="false" />
+              <div class="demo-footer-copy">CVER.NET © 2011–2026 CVER Inc.  |  Language</div>
             </footer>
 
           </div>
@@ -346,12 +391,13 @@
     const safariBottomAddressRow = document.getElementById('safari-bottom-address-row');
     const safariBottomButtonsRow = document.getElementById('safari-bottom-buttons-row');
     const bleedModes = document.getElementById('bleed-modes');
+    const topModes = document.getElementById('top-modes');
+    const bottomModes = document.getElementById('bottom-modes');
     const shellModes = document.getElementById('shell-modes');
-    const topSlider = document.getElementById('safe-top-slider');
-    const bottomSlider = document.getElementById('safe-bottom-slider');
-    const topVal = document.getElementById('safe-top-val');
-    const bottomVal = document.getElementById('safe-bottom-val');
     const themePresets = document.getElementById('theme-presets');
+    const simHeader = document.getElementById('sim-header');
+    const simFooter = document.getElementById('sim-footer');
+    const innerBlurBox = document.getElementById('inner-blur-box');
 
     const logTopState = document.getElementById('log-top-state');
     const logBotState = document.getElementById('log-bot-state');
@@ -472,6 +518,14 @@
     }
 
     function resolveEdge(edge, boundary, lastSection, probeY) {
+      // STICKY_OWNED — a user .bleed-top / .bleed-bottom banner is visible.
+      // The banner owns the chrome edge; v2 steps back entirely.
+      if (edge === 'top' && topBannerMode === 'bleed') {
+        return { state: 'STICKY_OWNED', color: null };
+      }
+      if (edge === 'bottom' && bottomBannerMode === 'bleed') {
+        return { state: 'STICKY_OWNED', color: null };
+      }
       if (edge === 'top') {
         return { state: 'SAFE_NATURAL', color: null };
       }
@@ -519,33 +573,43 @@
         lastInView = r.top < rect.bottom && r.bottom > rect.top;
       }
 
-      // Apply tinting to chrome elements.
+      // Banner colors when Bleed Fix mode is on — match the solid
+      // outer-wrapper colors in simulator.css (.header-bleed / .footer-bleed).
+      const BANNER_TOP_COLOR = '#b91c1c';
+      const BANNER_BOT_COLOR = '#047857';
+
+      // Determine chrome colors. Priority:
+      //   1. A `.bleed-top/-bottom` banner染色 chrome via Safari's NATIVE
+      //      edge sampling — works regardless of our v2 controller.
+      //   2. Bleed v2 ON: smart per-edge染色 (the gradient / section / page-end
+      //      state machine).
+      //   3. Bleed v2 OFF or banner buggy/none: chrome stays on html-bg
+      //      fallback — the "broken" iOS look.
       const fallback = themes[currentTheme].top;
       let topColor = fallback;
       let botColor = fallback;
 
-      if (bleedEnabled) {
-        // Top chrome: top probe samples the actual edge content (gradient
-        // start in Hero, belt color when belt at top, etc.).
-        if (topC) topColor = colorToRgb(topC.color);
+      if (topBannerMode === 'bleed') {
+        topColor = BANNER_TOP_COLOR;
+      } else if (bleedEnabled && topC) {
+        topColor = colorToRgb(topC.color);
+      }
 
-        // Bottom chrome: per-state tinting.
+      if (bottomBannerMode === 'bleed') {
+        botColor = BANNER_BOT_COLOR;
+      } else if (bleedEnabled) {
         if (botResolved.state === 'BLEED_OVERRIDE' && botResolved.color) {
           botColor = colorToRgb(botResolved.color);
         } else if (botC) {
           botColor = colorToRgb(botC.color);
         }
+      }
 
-        // Last-section overscroll tinting: when footer in view, overwrite the
-        // phone-screen bg (= body / body::before equivalent).
-        if (lastInView) {
-          phoneScreen.style.backgroundColor = themes[currentTheme].footer;
-        } else {
-          phoneScreen.style.backgroundColor = '';
-        }
+      // Last-section overscroll染色 — only active when v2 is on AND no
+      // bottom banner is taking over the bottom edge.
+      if (bleedEnabled && lastInView && bottomBannerMode !== 'bleed') {
+        phoneScreen.style.backgroundColor = themes[currentTheme].footer;
       } else {
-        // Bleed OFF — chrome tinting stuck on html-bg fallback. This is the
-        // broken iOS state without bleed.
         phoneScreen.style.backgroundColor = '';
       }
 
@@ -573,21 +637,63 @@
     });
 
     // ─────────────────────────────────────────────────────────────
-    // Safe-area sliders
+    // Top / Bottom banner modes (the v1 .bleed-top / .bleed-bottom story).
+    //   None  — banner hidden, just the page underneath.
+    //   Buggy — banner with `backdrop-filter`, hits WebKit's safe-area
+    //           clip bug (visible sharp line below the status bar).
+    //   Bleed — banner uses the `.bleed-top` / `.bleed-bottom` CSS class:
+    //           opaque outer wrapper, inner-blur element. v2's controller
+    //           also detects this and enters STICKY_OWNED on that edge.
     // ─────────────────────────────────────────────────────────────
-    function applySimSafeArea() {
-      topVal.innerText = `${topSlider.value}px`;
-      bottomVal.innerText = `${bottomSlider.value}px`;
-      root.style.setProperty('--sim-safe-top', `${topSlider.value}px`);
-      root.style.setProperty('--sim-safe-bottom', `${bottomSlider.value}px`);
+    let topBannerMode = 'none';
+    let bottomBannerMode = 'none';
+
+    function applyTopBanner(mode) {
+      topBannerMode = mode;
+      simHeader.className = 'sim-header';
+      innerBlurBox.style.display = 'none';
+      if (mode === 'none') simHeader.classList.add('header-none');
+      else if (mode === 'buggy') simHeader.classList.add('header-buggy');
+      else if (mode === 'bleed') {
+        simHeader.classList.add('header-bleed', 'bleed-top');
+        innerBlurBox.style.display = 'block';
+      }
       update();
     }
-    topSlider.addEventListener('input', applySimSafeArea);
-    bottomSlider.addEventListener('input', applySimSafeArea);
+    function applyBottomBanner(mode) {
+      bottomBannerMode = mode;
+      simFooter.className = 'sim-footer';
+      if (mode === 'none') simFooter.classList.add('footer-none');
+      else if (mode === 'buggy') simFooter.classList.add('footer-buggy');
+      else if (mode === 'bleed') simFooter.classList.add('footer-bleed', 'bleed-bottom');
+      update();
+    }
+
+    topModes.addEventListener('click', (e) => {
+      const btn = e.target.closest('.option-btn');
+      if (!btn) return;
+      topModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyTopBanner(btn.dataset.mode);
+    });
+    bottomModes.addEventListener('click', (e) => {
+      const btn = e.target.closest('.option-btn');
+      if (!btn) return;
+      bottomModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyBottomBanner(btn.dataset.mode);
+    });
 
     // ─────────────────────────────────────────────────────────────
-    // Shell modes (Compact / Bottom / Top / PWA)
+    // Shell modes (Compact / Bottom / Top / PWA) — sets the simulated
+    // safe-area inset values directly on the root.
     // ─────────────────────────────────────────────────────────────
+    function setSimInsets(top, bottom) {
+      root.style.setProperty('--sim-safe-top', top + 'px');
+      root.style.setProperty('--sim-safe-bottom', bottom + 'px');
+      update();
+    }
+
     function applyShellMode(mode) {
       safariTopCapsule.style.display = 'none';
       safariBottomBar.style.display = 'none';
@@ -596,30 +702,25 @@
       safariBottomBar.className = 'sim-safari-bottom-liquid-bar';
 
       if (mode === 'pwa') {
-        topSlider.value = 59;
-        bottomSlider.value = 34;
+        setSimInsets(59, 34);
       } else if (mode === 'safari-compact') {
         safariBottomBar.style.display = 'flex';
         safariBottomAddressRow.style.display = 'block';
         safariBottomBar.classList.add('mode-compact');
-        topSlider.value = 59;
-        bottomSlider.value = 90;
+        setSimInsets(59, 90);
       } else if (mode === 'safari-bottom') {
         safariBottomBar.style.display = 'flex';
         safariBottomAddressRow.style.display = 'block';
         safariBottomButtonsRow.style.display = 'flex';
         safariBottomBar.classList.add('mode-bottom');
-        topSlider.value = 59;
-        bottomSlider.value = 140;
+        setSimInsets(59, 140);
       } else if (mode === 'safari-top') {
         safariTopCapsule.style.display = 'flex';
         safariBottomBar.style.display = 'flex';
         safariBottomButtonsRow.style.display = 'flex';
         safariBottomBar.classList.add('mode-top');
-        topSlider.value = 103;
-        bottomSlider.value = 90;
+        setSimInsets(103, 90);
       }
-      applySimSafeArea();
     }
 
     shellModes.addEventListener('click', (e) => {
@@ -655,7 +756,10 @@
     // ─────────────────────────────────────────────────────────────
     applyTheme('teal');
     applyShellMode('safari-compact');
+    applyTopBanner('none');
+    applyBottomBanner('none');
     requestAnimationFrame(update);
   </script>
 </body>
 </html>
+
