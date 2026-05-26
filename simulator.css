@@ -231,7 +231,7 @@
   color: rgba(255, 255, 255, 0.92);
   z-index: 1000;
   pointer-events: none;
-  /* Background dynamically染色 by JS — Safari chrome染色 in real life. */
+  /* Background dynamically tinted by JS — Safari chrome tinting in real life. */
   background-color: var(--chrome-top, transparent);
   transition: background-color 400ms ease;
 }
@@ -249,7 +249,7 @@
   align-items: flex-end;
   padding-bottom: 8px;
   pointer-events: none;
-  /* The home-indicator area is "below" the Safari bottom bar;染色 it too
+  /* The home-indicator area is "below" the Safari bottom bar;tinting it too
      so the rubber-band-overscroll equivalent is visually consistent. */
   background-color: var(--chrome-bot, transparent);
   transition: background-color 400ms ease;

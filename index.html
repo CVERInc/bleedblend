@@ -18,7 +18,7 @@
   <header>
     <a href="https://github.com/CVERInc/bleed" class="logo-container" style="text-decoration: none; color: inherit;">
       <h1>bleed</h1>
-      <span class="logo-badge">v2.0.1 — Smart染色 by CVER.NET</span>
+      <span class="logo-badge">v2.0.1 — Smart tinting by CVER.NET</span>
     </a>
     <a href="https://github.com/CVERInc/bleed" class="github-link" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -36,13 +36,13 @@
 
       <!-- BLEED MODE -->
       <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18"></path><path d="M3 12h18"></path></svg> bleed染色 mode</h3>
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18"></path><path d="M3 12h18"></path></svg> bleed tinting mode</h3>
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          Toggle bleed染色 on the simulator chrome (status bar + Safari capsule).
+          Toggle bleed on the simulator chrome (status bar + Safari capsule).
         </p>
         <div class="option-group" id="bleed-modes">
           <button class="option-btn" data-mode="off">Off (broken)</button>
-          <button class="option-btn active" data-mode="on">On (smart染色)</button>
+          <button class="option-btn active" data-mode="on">On (smart bleed)</button>
         </div>
       </div>
 
@@ -82,7 +82,7 @@
       <div class="panel-section">
         <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg> Page Theme</h3>
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          Pick a brand palette — bleed will染色 chrome to match every viewport edge.
+          Pick a brand palette — bleed will tint chrome to match every viewport edge.
         </p>
         <div class="color-presets" id="theme-presets">
           <button class="color-btn active" data-theme="teal" style="background: linear-gradient(180deg, #aceace 10%, #084a4c 100%);" title="Teal (cver.net)"></button>
@@ -118,7 +118,7 @@
         <!-- Camera Notch -->
         <div class="phone-notch"></div>
 
-        <!-- Status Bar (bleed染色 target #1) -->
+        <!-- Status Bar (bleed tinting target #1) -->
         <div class="status-bar-info" id="sim-status-bar">
           <div style="display: flex; gap: 6px; align-items: center;">
             <div id="status-time">9:41</div>
@@ -164,7 +164,7 @@
           </div>
         </div>
 
-        <!-- SIMULATED SAFARI BOTTOM LIQUID BAR (bleed染色 target #2 chrome bg) -->
+        <!-- SIMULATED SAFARI BOTTOM LIQUID BAR (bleed tinting target #2 chrome bg) -->
         <div class="sim-safari-bottom-liquid-bar" id="safari-bottom-liquid-bar" style="display: none;">
           <div class="safari-liquid-address-row" id="safari-bottom-address-row">
             <div class="safari-capsule-address-box">
@@ -214,24 +214,24 @@
               <div class="demo-logo">b</div>
               <h2 class="demo-title">Charming Vision</h2>
               <p class="demo-tagline">Endless Recreation.</p>
-              <p class="demo-scroll-hint">↓ scroll to see染色 follow ↓</p>
+              <p class="demo-scroll-hint">↓ scroll to see the tint follow ↓</p>
             </section>
 
             <!-- Belt section (opaque mid-page) -->
             <section class="demo-belt">
               <p class="demo-belt-tag">WHAT WE MAKE</p>
-              <h3 class="demo-belt-title">Smart染色 per edge</h3>
+              <h3 class="demo-belt-title">Smart tinting per edge</h3>
               <div class="demo-card">
                 <h4>Gradient territory</h4>
                 <p>Extend the gradient color into chrome.</p>
               </div>
               <div class="demo-card">
                 <h4>Mid-page section</h4>
-                <p>退場 — Safari renders translucent chrome.</p>
+                <p>step back — Safari renders translucent chrome.</p>
               </div>
               <div class="demo-card">
                 <h4>Page-end section</h4>
-                <p>進場 — paint chrome + overwrite html/body/body::before.</p>
+                <p>engage — paint chrome + overwrite html/body/body::before.</p>
               </div>
             </section>
 
@@ -274,15 +274,64 @@
     </div>
   </footer>
 
-  <!-- bleed v2 simulator script -->
+  <!-- bleed v2 simulator script — helpers inlined for static demo deploy
+       (gh-pages serves /demo only, no /src). Source of truth lives in
+       /src/utils.mjs of the bleed repo. -->
   <script type="module">
-    import {
-      parseColor,
-      parseColorWithAlpha,
-      colorToRgb,
-      colorToHex,
-      colorsClose,
-    } from '../src/utils.mjs';
+    function parseColor(str) {
+      if (!str) return null;
+      const s = str.trim();
+      if (s.startsWith('#')) {
+        const hex = s.slice(1);
+        if (hex.length === 3) {
+          return { r: parseInt(hex[0]+hex[0],16), g: parseInt(hex[1]+hex[1],16), b: parseInt(hex[2]+hex[2],16), a: 1 };
+        }
+        if (hex.length === 6) {
+          return { r: parseInt(hex.slice(0,2),16), g: parseInt(hex.slice(2,4),16), b: parseInt(hex.slice(4,6),16), a: 1 };
+        }
+        if (hex.length === 8) {
+          return { r: parseInt(hex.slice(0,2),16), g: parseInt(hex.slice(2,4),16), b: parseInt(hex.slice(4,6),16), a: parseInt(hex.slice(6,8),16)/255 };
+        }
+      }
+      const m = s.match(/rgba?\(([^)]+)\)/);
+      if (m) {
+        const parts = m[1].split(',').map(p => p.trim());
+        return {
+          r: parseFloat(parts[0]),
+          g: parseFloat(parts[1]),
+          b: parseFloat(parts[2]),
+          a: parts[3] != null ? parseFloat(parts[3]) : 1,
+        };
+      }
+      return null;
+    }
+
+    function parseColorWithAlpha(str) {
+      if (!str) return null;
+      const c = parseColor(str);
+      if (!c) return null;
+      if (str.trim().startsWith('rgba')) {
+        const m = str.match(/[\d.]+/g);
+        if (m && m.length >= 4) c.a = parseFloat(m[3]);
+      }
+      return c;
+    }
+
+    function colorToRgb(c) {
+      return c ? 'rgb(' + Math.round(c.r) + ', ' + Math.round(c.g) + ', ' + Math.round(c.b) + ')' : null;
+    }
+
+    function colorToHex(c) {
+      if (!c) return null;
+      const h = (n) => Math.round(n).toString(16).padStart(2,'0');
+      return '#' + h(c.r) + h(c.g) + h(c.b);
+    }
+
+    function colorsClose(a, b, threshold) {
+      if (!a || !b) return false;
+      const t = threshold == null ? 8 : threshold;
+      return Math.abs(a.r - b.r) < t && Math.abs(a.g - b.g) < t && Math.abs(a.b - b.b) < t;
+    }
 
     // ─────────────────────────────────────────────────────────────
     // DOM refs
@@ -330,7 +379,7 @@
       phoneScreen.style.setProperty('--demo-grad-bot', t.bot);
       phoneScreen.style.setProperty('--demo-belt', t.belt);
       phoneScreen.style.setProperty('--demo-footer', t.footer);
-      // When bleed is OFF, chrome染色 stays on the html-bg fallback
+      // When bleed is OFF, chrome tinting stays on the html-bg fallback
       // (gradient START color = same as html bg in real cver.net usage).
       phoneScreen.style.setProperty('--chrome-fallback', t.top);
       update();
@@ -470,7 +519,7 @@
         lastInView = r.top < rect.bottom && r.bottom > rect.top;
       }
 
-      // Apply染色 to chrome elements.
+      // Apply tinting to chrome elements.
       const fallback = themes[currentTheme].top;
       let topColor = fallback;
       let botColor = fallback;
@@ -480,14 +529,14 @@
         // start in Hero, belt color when belt at top, etc.).
         if (topC) topColor = colorToRgb(topC.color);
 
-        // Bottom chrome: per-state染色.
+        // Bottom chrome: per-state tinting.
         if (botResolved.state === 'BLEED_OVERRIDE' && botResolved.color) {
           botColor = colorToRgb(botResolved.color);
         } else if (botC) {
           botColor = colorToRgb(botC.color);
         }
 
-        // Last-section overscroll染色: when footer in view, overwrite the
+        // Last-section overscroll tinting: when footer in view, overwrite the
         // phone-screen bg (= body / body::before equivalent).
         if (lastInView) {
           phoneScreen.style.backgroundColor = themes[currentTheme].footer;
@@ -495,7 +544,7 @@
           phoneScreen.style.backgroundColor = '';
         }
       } else {
-        // Bleed OFF — chrome染色 stuck on html-bg fallback. This is the
+        // Bleed OFF — chrome tinting stuck on html-bg fallback. This is the
         // broken iOS state without bleed.
         phoneScreen.style.backgroundColor = '';
       }
