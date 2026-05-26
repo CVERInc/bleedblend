@@ -108,55 +108,44 @@
       <!-- Phone Mock -->
       <div class="phone-frame">
 
-        <!-- Camera Notch -->
+        <!-- Camera Notch — stays on the bezel hardware (not clipped by
+             phone-screen so it overlays the screen edge like a real island). -->
         <div class="phone-notch"></div>
 
-        <!-- Status Bar (bleed tinting target #1) -->
-        <div class="status-bar-info" id="sim-status-bar">
-          <div style="display: flex; gap: 6px; align-items: center;">
-            <div id="status-time">9:41</div>
-          </div>
-          <div style="display: flex; gap: 6px; align-items: center;">
-            <svg width="19" height="13" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.9;">
-              <rect x="1" y="16" width="3.5" height="5" rx="0.5" />
-              <rect x="6.5" y="12" width="3.5" height="9" rx="0.5" />
-              <rect x="12" y="7.5" width="3.5" height="13.5" rx="0.5" />
-              <rect x="17.5" y="3" width="3.5" height="18" rx="0.5" opacity="0.3" />
-            </svg>
-            <svg width="18" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.9;">
-              <path d="M12 20h.01"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M5 13a10 10 0 0 1 14 0"/><path d="M1.5 9.5a15 15 0 0 1 21 0"/>
-            </svg>
-            <svg width="25" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 2px; opacity: 0.9;">
-              <rect x="1" y="5" width="18" height="14" rx="3" ry="3"/>
-              <line x1="22" y1="10" x2="22" y2="14"/>
-              <rect x="3" y="7" width="12" height="10" rx="1.5" ry="1.5" fill="currentColor"/>
-            </svg>
-          </div>
-        </div>
+        <!-- Phone Screen — v2 demo page (gradient hero + belt + footer).
+             All overlays (status bar, Safari capsules, banners, safe-area
+             tint band) live INSIDE the screen so they're clipped by its
+             squircle border-radius. Putting them in phone-frame instead
+             leaves their corners sharp — Chrome's overflow clip on a
+             rounded border is unreliable when the parent also has a
+             non-zero border. -->
+        <div class="phone-screen" id="phone-screen">
 
-        <!-- SIMULATED SAFARI TOP CAPSULE -->
-        <div class="sim-safari-top-capsule" id="safari-top-capsule" style="display: none;">
-          <div class="safari-capsule-address-box">
-            <span class="safari-icon-page-menu">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
+          <!-- Status Bar (bleed tinting target #1) -->
+          <div class="status-bar-info" id="sim-status-bar">
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <div id="status-time">9:41</div>
+            </div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <svg width="19" height="13" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.9;">
+                <rect x="1" y="16" width="3.5" height="5" rx="0.5" />
+                <rect x="6.5" y="12" width="3.5" height="9" rx="0.5" />
+                <rect x="12" y="7.5" width="3.5" height="13.5" rx="0.5" />
+                <rect x="17.5" y="3" width="3.5" height="18" rx="0.5" opacity="0.3" />
               </svg>
-            </span>
-            <span class="safari-url">bleed.dev</span>
-            <span class="safari-icon-reload">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="23 4 23 10 17 10"></polyline>
-                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              <svg width="18" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.9;">
+                <path d="M12 20h.01"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M5 13a10 10 0 0 1 14 0"/><path d="M1.5 9.5a15 15 0 0 1 21 0"/>
               </svg>
-            </span>
+              <svg width="25" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 2px; opacity: 0.9;">
+                <rect x="1" y="5" width="18" height="14" rx="3" ry="3"/>
+                <line x1="22" y1="10" x2="22" y2="14"/>
+                <rect x="3" y="7" width="12" height="10" rx="1.5" ry="1.5" fill="currentColor"/>
+              </svg>
+            </div>
           </div>
-        </div>
 
-        <!-- SIMULATED SAFARI BOTTOM LIQUID BAR (bleed tinting target #2 chrome bg) -->
-        <div class="sim-safari-bottom-liquid-bar" id="safari-bottom-liquid-bar" style="display: none;">
-          <div class="safari-liquid-address-row" id="safari-bottom-address-row">
+          <!-- SIMULATED SAFARI TOP CAPSULE -->
+          <div class="sim-safari-top-capsule" id="safari-top-capsule" style="display: none;">
             <div class="safari-capsule-address-box">
               <span class="safari-icon-page-menu">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -175,56 +164,74 @@
             </div>
           </div>
 
-          <div class="safari-liquid-buttons-row" id="safari-bottom-buttons-row">
-            <div class="safari-btn">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <!-- SIMULATED SAFARI BOTTOM LIQUID BAR (bleed tinting target #2 chrome bg) -->
+          <div class="sim-safari-bottom-liquid-bar" id="safari-bottom-liquid-bar" style="display: none;">
+            <div class="safari-liquid-address-row" id="safari-bottom-address-row">
+              <div class="safari-capsule-address-box">
+                <span class="safari-icon-page-menu">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                  </svg>
+                </span>
+                <span class="safari-url">bleed.dev</span>
+                <span class="safari-icon-reload">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                  </svg>
+                </span>
+              </div>
             </div>
-            <div class="safari-btn">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </div>
-            <div class="safari-btn">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-            </div>
-            <div class="safari-btn">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            </div>
-            <div class="safari-btn">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2" ry="2"/><path d="M9 21h10a2 2 0 0 0 2-2V9"/></svg>
-            </div>
-          </div>
-        </div>
 
-        <!-- SIMULATED TOP STICKY BANNER (the v1 .bleed-top showcase).
-             Hidden by default; mode buttons toggle .header-none / .header-buggy
-             / .header-bleed. When in Bleed Fix mode it also carries `.bleed-top`,
-             which the v2 controller picks up as STICKY_OWNED → step back. -->
-        <div class="sim-header header-none" id="sim-header">
-          <div class="nav-content">
-            <span style="display: flex; align-items: center; gap: 0.25rem;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-              System Warning
-            </span>
-            <span style="font-weight: 400; text-decoration: underline; font-size: 0.75rem;">Fix now</span>
+            <div class="safari-liquid-buttons-row" id="safari-bottom-buttons-row">
+              <div class="safari-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              </div>
+              <div class="safari-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+              <div class="safari-btn">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              </div>
+              <div class="safari-btn">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              </div>
+              <div class="safari-btn">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="2" ry="2"/><path d="M9 21h10a2 2 0 0 0 2-2V9"/></svg>
+              </div>
+            </div>
           </div>
-          <div class="bleed-inner-blur-demo" id="inner-blur-box" style="display: none;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-            Inner-blur elements render correctly!
-          </div>
-        </div>
 
-        <!-- SIMULATED BOTTOM STICKY BANNER -->
-        <div class="sim-footer footer-none" id="sim-footer">
-          <div class="nav-content">
-            <span style="display: flex; align-items: center; gap: 0.25rem;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              Proceed to checkout
-            </span>
-            <span>→</span>
+          <!-- SIMULATED TOP STICKY BANNER (the v1 .bleed-top showcase).
+               Hidden by default; mode buttons toggle .header-none / .header-buggy
+               / .header-bleed. When in Bleed Fix mode it also carries `.bleed-top`,
+               which the v2 controller picks up as STICKY_OWNED → step back. -->
+          <div class="sim-header header-none" id="sim-header">
+            <div class="nav-content">
+              <span style="display: flex; align-items: center; gap: 0.25rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+                System Warning
+              </span>
+              <span style="font-weight: 400; text-decoration: underline; font-size: 0.75rem;">Fix now</span>
+            </div>
+            <div class="bleed-inner-blur-demo" id="inner-blur-box" style="display: none;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              Inner-blur elements render correctly!
+            </div>
           </div>
-        </div>
 
-        <!-- Phone Screen — v2 demo page (gradient hero + belt + footer) -->
-        <div class="phone-screen" id="phone-screen">
+          <!-- SIMULATED BOTTOM STICKY BANNER -->
+          <div class="sim-footer footer-none" id="sim-footer">
+            <div class="nav-content">
+              <span style="display: flex; align-items: center; gap: 0.25rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Proceed to checkout
+              </span>
+              <span>→</span>
+            </div>
+          </div>
 
           <div class="demo-page">
 
@@ -274,10 +281,10 @@
 
           </div>
 
-        </div>
+          <!-- Bottom safe-area tint band (rubber-band overscroll region) -->
+          <div class="home-indicator-area"></div>
 
-        <!-- Bottom Home Indicator Line -->
-        <div class="home-indicator-area"></div>
+        </div>
 
       </div>
 
