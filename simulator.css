@@ -12,12 +12,16 @@
   justify-content: center;
 }
 
-/* Phone Frame */
+/* Phone Frame — iPhone 15/16/17 corner geometry. Apple uses a G2-
+   curvature-continuous squircle, not a circular border-radius; the
+   asymmetric `X / Y` shorthand stretches the arc transition zone and
+   approximates the squircle look in pure CSS. Values are tuned for the
+   "standard" (non-Max) class around 6.1–6.3". */
 .phone-frame {
   width: 375px;
   height: 812px;
   background: #000;
-  border-radius: 48px;
+  border-radius: 48px 48px 48px 48px / 50px 50px 50px 50px;
   border: 12px solid #27272a;
   box-shadow: 0 30px 100px rgba(0, 0, 0, 0.8),
               inset 0 0 10px rgba(255, 255, 255, 0.1);
@@ -43,6 +47,8 @@
   overflow-y: scroll;
   scrollbar-width: none;
   transition: background-color 400ms ease;
+  /* Inner screen squircle, paired with .phone-frame above. */
+  border-radius: 38px 38px 38px 38px / 40px 40px 40px 40px;
   /* Expose the screen height as a container-query unit so .demo-hero
      can size itself to the full viewport on initial load — mirroring
      a real iPhone where the hero fills the screen before scroll. */
