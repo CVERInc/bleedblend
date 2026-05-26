@@ -90,11 +90,13 @@
           Pick a brand palette — bleed will tint chrome to match every viewport edge.
         </p>
         <div class="color-presets" id="theme-presets">
-          <button class="color-btn active" data-theme="teal" style="background: linear-gradient(180deg, #aceace 10%, #084a4c 100%);" title="Teal (cver.net)"></button>
-          <button class="color-btn" data-theme="rose" style="background: linear-gradient(180deg, #fecdd3 10%, #881337 100%);" title="Rose"></button>
-          <button class="color-btn" data-theme="violet" style="background: linear-gradient(180deg, #ddd6fe 10%, #1e1b4b 100%);" title="Violet"></button>
-          <button class="color-btn" data-theme="sun" style="background: linear-gradient(180deg, #fed7aa 10%, #7c2d12 100%);" title="Sunset"></button>
-          <button class="color-btn" data-theme="forest" style="background: linear-gradient(180deg, #bbf7d0 10%, #14532d 100%);" title="Forest"></button>
+          <button class="color-btn active" data-theme="teal"   title="Teal (cver.net)"></button>
+          <button class="color-btn"        data-theme="ocean"  title="Ocean"></button>
+          <button class="color-btn"        data-theme="violet" title="Violet"></button>
+          <button class="color-btn"        data-theme="rose"   title="Rose"></button>
+          <button class="color-btn"        data-theme="forest" title="Forest"></button>
+          <button class="color-btn"        data-theme="white"  title="Solid white"></button>
+          <button class="color-btn"        data-theme="black"  title="Solid black"></button>
         </div>
       </div>
 
@@ -403,15 +405,58 @@
 
     // ─────────────────────────────────────────────────────────────
     // Themes — gradient + section + footer color triples.
-    // The "hero gradient" goes from top to bot. "belt" + "footer"
-    // are the opaque sections inside the simulator's demo page.
+    // Gradient palettes are derived from the CVER teal shape by rotating
+    // hue while preserving saturation/lightness, so every preset reads
+    // as the same "shape" of light → deep tinted background. Solid
+    // presets at the end paint a single color across the entire screen,
+    // for testing chrome tinting on edge cases (max contrast / no
+    // contrast at the viewport edges).
+    //
+    //   CVER reference  top: hsl(153°, 60%, 80%)  → #aceace
+    //                   bot: hsl(181°, 87%, 30%)  → #0a8c8e (+28° hue)
+    //                   belt: hsl(182°, 81%, 16%) → #084a4c
     // ─────────────────────────────────────────────────────────────
+    function hslToHex(h, s, l) {
+      s /= 100; l /= 100;
+      const c = (1 - Math.abs(2 * l - 1)) * s;
+      const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+      const m = l - c / 2;
+      let r = 0, g = 0, b = 0;
+      if (h < 60)       [r, g, b] = [c, x, 0];
+      else if (h < 120) [r, g, b] = [x, c, 0];
+      else if (h < 180) [r, g, b] = [0, c, x];
+      else if (h < 240) [r, g, b] = [0, x, c];
+      else if (h < 300) [r, g, b] = [x, 0, c];
+      else              [r, g, b] = [c, 0, x];
+      const hex = (v) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
+      return '#' + hex(r) + hex(g) + hex(b);
+    }
+
+    // Build a CVER-shaped gradient theme rotated to `hueTop`, with bot
+    // shifted +28° to match the original mint→teal feel.
+    function gradientTheme(hueTop) {
+      const hueBot = (hueTop + 28) % 360;
+      return {
+        top:    hslToHex(hueTop, 60, 80),
+        bot:    hslToHex(hueBot, 87, 30),
+        belt:   hslToHex(hueBot, 81, 16),
+        footer: hslToHex(hueBot, 87, 30),
+      };
+    }
+
+    function solidTheme(hex, beltHex) {
+      return { top: hex, bot: hex, belt: beltHex, footer: hex };
+    }
+
     const themes = {
-      teal:   { top: '#aceace', bot: '#0a8c8e', belt: '#084a4c', footer: '#0a8c8e' },
-      rose:   { top: '#fecdd3', bot: '#881337', belt: '#4c0519', footer: '#881337' },
-      violet: { top: '#ddd6fe', bot: '#1e1b4b', belt: '#0c0a2c', footer: '#312e81' },
-      sun:    { top: '#fed7aa', bot: '#7c2d12', belt: '#431407', footer: '#9a3412' },
-      forest: { top: '#bbf7d0', bot: '#14532d', belt: '#052e16', footer: '#166534' },
+      teal:   gradientTheme(153),       // CVER original
+      ocean:  gradientTheme(200),
+      violet: gradientTheme(270),
+      rose:   gradientTheme(330),
+      forest: gradientTheme(100),
+      // Solids — single-color screens for testing chrome edge cases.
+      white:  solidTheme('#ffffff', '#e5e5e5'),
+      black:  solidTheme('#0a0a0a', '#1a1a1a'),
     };
     let currentTheme = 'teal';
 
@@ -427,6 +472,14 @@
       phoneScreen.style.setProperty('--chrome-fallback', t.top);
       update();
     }
+
+    // Paint each preset swatch with its own theme gradient so the dot
+    // previews the actual look users get when they click it.
+    themePresets.querySelectorAll('.color-btn').forEach((btn) => {
+      const t = themes[btn.dataset.theme];
+      if (!t) return;
+      btn.style.background = 'linear-gradient(180deg, ' + t.top + ' 10%, ' + t.bot + ' 100%)';
+    });
 
     themePresets.addEventListener('click', (e) => {
       const btn = e.target.closest('.color-btn');
@@ -551,36 +604,17 @@
       return lum > 0.62 ? '#000' : '#fff';
     }
 
-    // Paint a chrome element. Two modes:
-    //   solid       — flat fill (bleed override / sticky banner染色)
-    //   translucent — page content shows THROUGH with blur (mimics iOS
-    //                 Liquid Glass: Safari's native sampling looks like
-    //                 chrome painted with very low alpha + heavy blur,
-    //                 not a tinted box). Alpha is intentionally tiny so
-    //                 the band doesn't read as a "solid color block".
+    // Paint a chrome element with the sampled edge color as a SOLID fill.
+    // Mirrors iOS 26 Safari's chrome-tinting behavior: the chrome strip
+    // gets painted with the color Safari samples from the viewport edge —
+    // visually it reads as an opaque tint that matches the adjacent page
+    // content, not a frosted-glass overlay.
     function applyChromePaint(el, paint) {
       if (!paint || !paint.color) {
         el.style.backgroundColor = '';
-        el.style.backdropFilter = '';
-        el.style.webkitBackdropFilter = '';
         return;
       }
-      if (paint.mode === 'translucent') {
-        const c = parseColor(paint.color);
-        if (c) {
-          // Very low alpha — let blur do the work; avoids a visible
-          // colored "band" sitting on top of the page content.
-          el.style.backgroundColor = 'rgba(' + Math.round(c.r) + ',' + Math.round(c.g) + ',' + Math.round(c.b) + ',0.12)';
-        } else {
-          el.style.backgroundColor = 'transparent';
-        }
-        el.style.backdropFilter = 'blur(20px) saturate(160%)';
-        el.style.webkitBackdropFilter = 'blur(20px) saturate(160%)';
-      } else {
-        el.style.backgroundColor = paint.color;
-        el.style.backdropFilter = '';
-        el.style.webkitBackdropFilter = '';
-      }
+      el.style.backgroundColor = paint.color;
     }
 
     let rafScheduled = false;
@@ -618,28 +652,26 @@
       const BANNER_BOT_COLOR = '#047857';
       const fallback = themes[currentTheme].top;
 
-      // Per-edge resolution: { color, mode } where mode is
-      //   'solid'       — flat fill (BLEED_OVERRIDE / sticky banner / Off fallback)
-      //   'translucent' — iOS Liquid Glass look: low alpha + backdrop-filter
-      //                   (SAFE_NATURAL — bleed display:none, Safari natively
-      //                   tints via blur+translucent sampling over page content)
-      let topPaint = { color: fallback, mode: 'solid' };
-      let botPaint = { color: fallback, mode: 'solid' };
+      // Per-edge resolution: { color } — solid sampled fill in all cases.
+      // iOS 26 Safari tints the chrome strip with an opaque sample of the
+      // viewport edge; both SAFE_NATURAL and BLEED_OVERRIDE paths land on
+      // a solid color, only the source differs.
+      let topPaint = { color: fallback };
+      let botPaint = { color: fallback };
 
       if (topBannerMode === 'bleed') {
-        topPaint = { color: BANNER_TOP_COLOR, mode: 'solid' };
+        topPaint = { color: BANNER_TOP_COLOR };
       } else if (bleedEnabled && topC) {
-        // Top is always SAFE_NATURAL in v2 (unless STICKY_OWNED handled above)
-        topPaint = { color: colorToRgb(topC.color), mode: 'translucent' };
+        topPaint = { color: colorToRgb(topC.color) };
       }
 
       if (bottomBannerMode === 'bleed') {
-        botPaint = { color: BANNER_BOT_COLOR, mode: 'solid' };
+        botPaint = { color: BANNER_BOT_COLOR };
       } else if (bleedEnabled) {
         if (botResolved.state === 'BLEED_OVERRIDE' && botResolved.color) {
-          botPaint = { color: colorToRgb(botResolved.color), mode: 'solid' };
+          botPaint = { color: colorToRgb(botResolved.color) };
         } else if (botResolved.state === 'SAFE_NATURAL' && botC) {
-          botPaint = { color: colorToRgb(botC.color), mode: 'translucent' };
+          botPaint = { color: colorToRgb(botC.color) };
         }
       }
 
@@ -668,7 +700,7 @@
       logTopState.textContent = topResolved.state;
       logBotState.textContent = botResolved.state;
       logChromeTop.textContent = colorToHex(parseColor(statusBar.style.backgroundColor)) || '—';
-      logChromeBot.textContent = colorToHex(parseColor(safariBottomBar.style.background)) || '—';
+      logChromeBot.textContent = colorToHex(parseColor(safariBottomBar.style.backgroundColor)) || '—';
     }
 
     // ─────────────────────────────────────────────────────────────
