@@ -1,13 +1,13 @@
-# bleed
+# bleedblend
 
 > **Zero-config iOS Safari chrome tinting.** Paints the status bar and URL bar to match your page content at each viewport edge — gradients, sections, rubber-band overscroll, all handled automatically. One import. No theme-color juggling. No tint configuration. It just works.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![NPM Version](https://img.shields.io/npm/v/bleed.svg?color=blue)](https://www.npmjs.com/package/bleed)
+[![NPM Version](https://img.shields.io/npm/v/bleedblend.svg?color=blue)](https://www.npmjs.com/package/bleedblend)
 [![iOS Safari 26](https://img.shields.io/badge/iOS%20Safari-26+-blue?logo=safari&logoColor=white)](#)
 [![Zero Config](https://img.shields.io/badge/Zero-Config-success)](#)
 
-> 🎮 **[Live Demo →](https://cverinc.github.io/bleed/)**
+> 🎮 **[Live Demo →](https://cverinc.github.io/bleedblend/)**
 
 ---
 
@@ -22,21 +22,21 @@ iOS Safari tints the chrome (status bar + URL bar) with **whatever happens to be
 - `position: fixed` elements tint chrome correctly… except when they don't, depending on `opacity`, `display`, viewport edge proximity, and dark-mode mood.
 - You add `body::before { position: fixed; gradient }` to fake the bg — but it **stretches into the overscroll exposed area** and overrides whatever you set on `<html>` and `<body>`.
 
-This is a four-day rabbit hole. `bleed` walks it for you.
+This is a four-day rabbit hole. `bleedblend` walks it for you.
 
 ---
 
 ## What you get
 
 ```js
-import 'bleed/auto';
+import 'bleedblend/auto';
 ```
 
-That's it. After that one import, `bleed` watches scroll, resize, and `visualViewport` events, and:
+That's it. After that one import, `bleedblend` watches scroll, resize, and `visualViewport` events, and:
 
 - **Top chrome tinting** stays light and unobtrusive (Safari's natural sampling of whatever's at viewport top).
 - **Bottom chrome tinting** mirrors the page content: gradient interp when you're in gradient territory, section color when an opaque section reaches the edge, footer color when you're at page-end.
-- **Overscroll tinting** when the page-end section enters viewport — `bleed` overwrites `<html>`, `<body>`, AND `body::before` so the rubber-band exposed area tints the same color, not your fallback bg.
+- **Overscroll tinting** when the page-end section enters viewport — `bleedblend` overwrites `<html>`, `<body>`, AND `body::before` so the rubber-band exposed area tints the same color, not your fallback bg.
 - **No flickering** between belt and footer sections — boundary probe and last-section check use the same Y so state transitions are clean.
 
 ---
@@ -44,7 +44,7 @@ That's it. After that one import, `bleed` watches scroll, resize, and `visualVie
 ## Install
 
 ```bash
-npm install bleed
+npm install bleedblend
 ```
 
 Make sure your page has the cover viewport:
@@ -60,7 +60,7 @@ Make sure your page has the cover viewport:
 ### Zero-config (recommended)
 
 ```js
-import 'bleed/auto';
+import 'bleedblend/auto';
 ```
 
 Anywhere in your entry point. That's the whole API.
@@ -70,14 +70,14 @@ Anywhere in your entry point. That's the whole API.
 If you need to pass options (custom section selector, framework page-transition hook) or hold a reference to destroy later:
 
 ```js
-import { createBleedAuto } from 'bleed/utils';
+import { createBleedblendAuto } from 'bleedblend/utils';
 
-const bleed = createBleedAuto({
+const bleed = createBleedblendAuto({
   // CSS selector for "section"-like elements. Default:
   //   'main section, main > *, footer'
   sectionSelector: 'main > section, footer',
 
-  // Re-run bleed on framework page transitions:
+  // Re-run bleedblend on framework page transitions:
   onPageLoad: (update) => {
     document.addEventListener('astro:page-load', update);
   },
@@ -87,37 +87,35 @@ const bleed = createBleedAuto({
 bleed.destroy();
 ```
 
-### Sticky banners (`.bleed-top` / `.bleed-bottom`)
+### Sticky banners (`.bleedblend-top` / `.bleedblend-bottom`)
 
-If you have your own sticky header or footer banner that already tints chrome correctly, mark it with `.bleed-top` / `.bleed-bottom`. `bleed` will detect it and **step out of the way** on that edge.
+If you have your own sticky header or footer banner that already tints chrome correctly, mark it with `.bleedblend-top` / `.bleedblend-bottom`. `bleedblend` will detect it and **step out of the way** on that edge.
 
 ```html
-<header class="bleed-top">
-  <!-- Your sticky nav. bleed defers to you. -->
+<header class="bleedblend-top">
+  <!-- Your sticky nav. bleedblend defers to you. -->
 </header>
 ```
 
 The class also pins it `position: fixed` with proper safe-area padding and disables `backdrop-filter` on the outer wrapper (preventing WebKit's safe-area clipping bug). Import the stylesheet:
 
 ```js
-import 'bleed/style';
+import 'bleedblend/style';
 ```
-
-Or via Tailwind plugin (see below).
 
 ### Tailwind CSS integration
 
 ```js
 // tailwind.config.js
 module.exports = {
-  plugins: [require('bleed')],
+  plugins: [require('bleedblend')],
 };
 ```
 
-Then use `bleed-top`, `bleed-bottom`, and `bleed-inner-blur` utility classes:
+Then use `bleedblend-top`, `bleedblend-bottom`, and `bleedblend-inner-blur` utility classes:
 
 ```html
-<header class="bleed-top bg-emerald-700 text-white p-4">
+<header class="bleedblend-top bg-emerald-700 text-white p-4">
   <!-- Sticky header, no clipping bug -->
 </header>
 ```
@@ -126,12 +124,12 @@ Then use `bleed-top`, `bleed-bottom`, and `bleed-inner-blur` utility classes:
 
 ## How it works (mental model)
 
-`bleed`'s state machine, per viewport edge:
+`bleedblend`'s state machine, per viewport edge:
 
-| State | When | What bleed does |
+| State | When | What bleedblend does |
 |---|---|---|
-| `STICKY_OWNED` | User has a visible `.bleed-top` / `.bleed-bottom` | Steps back entirely. |
-| `SAFE_NATURAL` | Page content at viewport edge already produces the right chrome tinting (e.g. top edge, mid-page section) | Hides the bleed tint (`display:none`) so Safari tints chrome with its native edge sampling. |
+| `STICKY_OWNED` | User has a visible `.bleedblend-top` / `.bleedblend-bottom` | Steps back entirely. |
+| `SAFE_NATURAL` | Page content at viewport edge already produces the right chrome tinting (e.g. top edge, mid-page section) | Hides the bleedblend tint (`display:none`) so Safari tints chrome with its native edge sampling. |
 | `BLEED_OVERRIDE` | Page content at viewport edge would tint the wrong color (e.g. gradient terminal ≠ html bg, or page-end section needs explicit tinting) | Renders a 12px tint at the edge with the correct color. Safari samples it for chrome tinting. |
 
 For the bottom edge specifically:
@@ -140,13 +138,13 @@ For the bottom edge specifically:
 - **Mid-page section** (e.g. a belt between gradient and footer): step back — let Safari's edge sampling render the natural translucent chrome.
 - **Last section** (footer at page-end): engage and tint the section color. Also overwrites `<html>`, `<body>`, and `body::before` so iOS rubber-band overscroll tints the same color and you don't see the html-bg mint leak through.
 
-For the top edge: always `SAFE_NATURAL` unless the user owns it via `.bleed-top`. Top chrome should feel light.
+For the top edge: always `SAFE_NATURAL` unless the user owns it via `.bleedblend-top`. Top chrome should feel light.
 
 ---
 
 ## iOS quirks navigated
 
-Things `bleed` figured out (the hard way) so you don't have to:
+Things `bleedblend` figured out (the hard way) so you don't have to:
 
 - **`theme-color` is ignored on iOS 26**. Don't rely on it.
 - **Safari samples non-fixed sections at the viewport edge**, not just fixed elements. The official docs and prior research suggested fixed-only.
@@ -161,27 +159,27 @@ Things `bleed` figured out (the hard way) so you don't have to:
 
 ## API
 
-### `import 'bleed/auto'`
+### `import 'bleedblend/auto'`
 
-Side-effect import. Calls `createBleedAuto()` and attaches the controller to `window.__bleed_auto`.
+Side-effect import. Calls `createBleedblendAuto()` and attaches the controller to `window.__bleedblend_auto`.
 
-### `createBleedAuto(options?) → BleedController`
+### `createBleedblendAuto(options?) → BleedblendController`
 
 ```ts
-import { createBleedAuto } from 'bleed/utils';
+import { createBleedblendAuto } from 'bleedblend/utils';
 
-interface BleedAutoOptions {
+interface BleedblendAutoOptions {
   sectionSelector?: string;
   onPageLoad?: (update: () => void) => void;
 }
 
-interface BleedController {
+interface BleedblendController {
   update(): void;
   destroy(): void;
 }
 ```
 
-### `bleed/utils` — building blocks
+### `bleedblend/utils` — building blocks
 
 All the internals are exported in case you want to roll your own controller:
 
@@ -222,14 +220,14 @@ trackScrollColors([
 ### v2 (auto)
 
 ```js
-import 'bleed/auto';
+import 'bleedblend/auto';
 ```
 
-`bleed` figures out gradient stops from your `body::before` (or `body`, or `<html>`) automatically. No more hand-tuned stop arrays.
+`bleedblend` figures out gradient stops from your `body::before` (or `body`, or `<html>`) automatically. No more hand-tuned stop arrays.
 
-The React / Vue / Svelte / UnoCSS framework wrappers from v1 have been removed — `import 'bleed/auto'` works from any framework.
+The React / Vue / Svelte / UnoCSS framework wrappers from v1 have been removed — `import 'bleedblend/auto'` works from any framework.
 
-The `.bleed-top` / `.bleed-bottom` CSS classes and the Tailwind plugin remain unchanged.
+The `.bleedblend-top` / `.bleedblend-bottom` CSS classes and the Tailwind plugin remain unchanged.
 
 ---
 

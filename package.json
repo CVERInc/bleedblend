@@ -1,5 +1,5 @@
 {
-  "name": "bleed",
+  "name": "bleedblend",
   "version": "2.0.1",
   "description": "Zero-config iOS Safari chrome tinting — paints the status bar and URL bar to match your page content at each viewport edge. Handles gradients, sections, and rubber-band overscroll.",
   "main": "src/tailwind-plugin.js",
@@ -27,7 +27,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node -e \"require('./src/tailwind-plugin.js'); console.log('bleed loaded')\""
+    "test": "node -e \"require('./src/tailwind-plugin.js'); console.log('bleedblend loaded')\""
   },
   "keywords": [
     "ios",
@@ -46,12 +46,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CVERInc/bleed.git"
+    "url": "git+https://github.com/CVERInc/bleedblend.git"
   },
   "bugs": {
-    "url": "https://github.com/CVERInc/bleed/issues"
+    "url": "https://github.com/CVERInc/bleedblend/issues"
   },
-  "homepage": "https://github.com/CVERInc/bleed#readme",
+  "homepage": "https://github.com/CVERInc/bleedblend#readme",
   "peerDependencies": {
     "tailwindcss": ">=3.0.0"
   },

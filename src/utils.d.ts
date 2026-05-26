@@ -1,5 +1,5 @@
 /**
- * bleed v2 — type declarations.
+ * bleedblend v2 — type declarations.
  */
 
 export interface Rgba {
@@ -19,15 +19,15 @@ export type BackgroundFill =
   | { kind: 'solid'; color: Rgba }
   | null;
 
-export interface BleedAutoOptions {
+export interface BleedblendAutoOptions {
   /**
-   * CSS selector for opaque "section"-like elements that bleed uses to
+   * CSS selector for opaque "section"-like elements that bleedblend uses to
    * find the page-end section. Default: 'main section, main > *, footer'.
    */
   sectionSelector?: string;
   /**
    * Called once at init with the update function. Use it to wire up
-   * framework page-transition events so bleed re-runs after them.
+   * framework page-transition events so bleedblend re-runs after them.
    *
    * @example
    *   onPageLoad: (update) =>
@@ -36,7 +36,7 @@ export interface BleedAutoOptions {
   onPageLoad?: (update: () => void) => void;
 }
 
-export interface BleedController {
+export interface BleedblendController {
   /** Manually trigger a re-evaluation. */
   update(): void;
   /** Tear down all listeners and remove injected DOM. */
@@ -68,5 +68,5 @@ export declare function isInsideSection(y: number, lastSection: Element | null, 
 export declare function setMetaThemeColor(hex: string | null | undefined): void;
 
 // ── Main controller ────────────────────────────────────────────────────────
-export declare function createBleedAuto(options?: BleedAutoOptions): BleedController;
-export default createBleedAuto;
+export declare function createBleedblendAuto(options?: BleedblendAutoOptions): BleedblendController;
+export default createBleedblendAuto;

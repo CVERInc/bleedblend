@@ -1,9 +1,9 @@
 const plugin = require('tailwindcss/plugin');
 
-module.exports = plugin(function bleed({ addUtilities }) {
+module.exports = plugin(function bleedblend({ addUtilities }) {
   addUtilities(
     {
-      '.bleed-top': {
+      '.bleedblend-top': {
         position: 'fixed',
         top: '0',
         left: '0',
@@ -15,7 +15,7 @@ module.exports = plugin(function bleed({ addUtilities }) {
         '-webkit-backdrop-filter': 'none !important',
         backdropFilter: 'none !important',
       },
-      '.bleed-bottom': {
+      '.bleedblend-bottom': {
         position: 'fixed',
         bottom: '0',
         left: '0',
@@ -27,7 +27,7 @@ module.exports = plugin(function bleed({ addUtilities }) {
         '-webkit-backdrop-filter': 'none !important',
         backdropFilter: 'none !important',
       },
-      '.bleed-inner-blur': {
+      '.bleedblend-inner-blur': {
         '-webkit-backdrop-filter': 'blur(10px) saturate(140%)',
         backdropFilter: 'blur(10px) saturate(140%)',
       },

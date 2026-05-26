@@ -1,13 +1,13 @@
 /**
- * bleed/auto — zero-config entry (CommonJS mirror of auto.mjs).
+ * bleedblend/auto — zero-config entry (CommonJS mirror of auto.mjs).
  */
 
 'use strict';
 
-const { createBleedAuto } = require('./utils.js');
+const { createBleedblendAuto } = require('./utils.js');
 
 if (typeof window !== 'undefined') {
-  window.__bleed_auto = createBleedAuto();
+  window.__bleedblend_auto = createBleedblendAuto();
 }
 
 module.exports = {};

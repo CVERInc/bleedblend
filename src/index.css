@@ -1,13 +1,13 @@
 /**
- * bleed - v1.0.0
+ * bleedblend - v2.1.0
  * Seamlessly tints the iOS status bar and avoids WebKit backdrop-filter clipping.
  */
 
 :root {
-  --bleed-dynamic-bar-height: calc(100lvh - 100svh);
+  --bleedblend-dynamic-bar-height: calc(100lvh - 100svh);
 }
 
-.bleed-top {
+.bleedblend-top {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
@@ -22,19 +22,19 @@
   backdrop-filter: none !important;
 }
 
-.bleed-top[class*="blur"],
-.bleed-top[class*="backdrop-filter"] {
+.bleedblend-top[class*="blur"],
+.bleedblend-top[class*="backdrop-filter"] {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
 
-.bleed-bottom {
+.bleedblend-bottom {
   position: fixed !important;
   bottom: 0 !important;
   left: 0 !important;
   width: 100% !important;
   min-height: auto !important;
-  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px) + var(--bleed-dynamic-bar-height, 0px)) !important;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px) + var(--bleedblend-dynamic-bar-height, 0px)) !important;
   box-sizing: border-box !important;
   z-index: 50;
 
@@ -43,17 +43,17 @@
   backdrop-filter: none !important;
 }
 
-.bleed-bottom[class*="blur"],
-.bleed-bottom[class*="backdrop-filter"] {
+.bleedblend-bottom[class*="blur"],
+.bleedblend-bottom[class*="backdrop-filter"] {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
 
-.bleed-bottom-safe-padding {
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--bleed-dynamic-bar-height, 0px)) !important;
+.bleedblend-bottom-safe-padding {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--bleedblend-dynamic-bar-height, 0px)) !important;
 }
 
-.bleed-inner-blur {
+.bleedblend-inner-blur {
   -webkit-backdrop-filter: blur(10px) saturate(140%);
   backdrop-filter: blur(10px) saturate(140%);
 }

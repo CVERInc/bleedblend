@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>bleed v2 — interactive iOS simulator</title>
+  <title>bleedblend v2 — interactive iOS simulator</title>
   <meta name="theme-color" content="#0a8c8e">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,11 +16,11 @@
 
   <!-- Top Navigation Header -->
   <header>
-    <a href="https://github.com/CVERInc/bleed" class="logo-container" style="text-decoration: none; color: inherit;">
-      <h1>bleed</h1>
-      <span class="logo-badge">v2.0.1 — Smart tinting by CVER.NET</span>
+    <a href="https://github.com/CVERInc/bleedblend" class="logo-container" style="text-decoration: none; color: inherit;">
+      <h1>bleedblend</h1>
+      <span class="logo-badge">v2.1.0 — Smart tinting by CVER.NET</span>
     </a>
-    <a href="https://github.com/CVERInc/bleed" class="github-link" target="_blank">
+    <a href="https://github.com/CVERInc/bleedblend" class="github-link" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
       </svg>
@@ -34,19 +34,19 @@
     <!-- Left panel for control adjustments -->
     <div class="control-panel">
 
-      <!-- BLEED MASTER TOGGLE -->
+      <!-- BLEEDBLEND MASTER TOGGLE -->
       <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18"></path><path d="M3 12h18"></path></svg> bleed v2 auto-tint</h3>
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18"></path><path d="M3 12h18"></path></svg> bleedblend v2 auto-tint</h3>
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
           The smart per-edge chrome tinting based on scrolling content. Turn off to see iOS's broken fallback.
         </p>
-        <div class="option-group" id="bleed-modes" style="--cols: 2;">
+        <div class="option-group" id="bleedblend-modes" style="--cols: 2;">
           <button class="option-btn" data-mode="off">Off</button>
           <button class="option-btn active" data-mode="on">On</button>
         </div>
       </div>
 
-      <!-- TOP BANNER MODE (the v1 .bleed-top story) -->
+      <!-- TOP BANNER MODE (the v1 .bleedblend-top story) -->
       <div class="panel-section">
         <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner Mode</h3>
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
@@ -55,7 +55,7 @@
         <div class="option-group" id="top-modes" style="--cols: 3;">
           <button class="option-btn active" data-mode="none">None</button>
           <button class="option-btn" data-mode="buggy">Buggy</button>
-          <button class="option-btn" data-mode="bleed">Bleed</button>
+          <button class="option-btn" data-mode="bleedblend">Bleedblend</button>
         </div>
       </div>
 
@@ -63,12 +63,12 @@
       <div class="panel-section">
         <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action Mode</h3>
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          A sticky bottom CTA (think "Add to cart") — same buggy / bleed showcase as above.
+          A sticky bottom CTA (think "Add to cart") — same buggy / bleedblend showcase as above.
         </p>
         <div class="option-group" id="bottom-modes" style="--cols: 3;">
           <button class="option-btn active" data-mode="none">None</button>
           <button class="option-btn" data-mode="buggy">Buggy</button>
-          <button class="option-btn" data-mode="bleed">Bleed</button>
+          <button class="option-btn" data-mode="bleedblend">Bleedblend</button>
         </div>
       </div>
 
@@ -87,7 +87,7 @@
       <div class="panel-section">
         <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg> Page Theme</h3>
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          Pick a brand palette — bleed will tint chrome to match every viewport edge.
+          Pick a brand palette — bleedblend will tint chrome to match every viewport edge.
         </p>
         <div class="color-presets" id="theme-presets">
           <button class="color-btn active" data-theme="teal"   title="Teal (cver.net)"></button>
@@ -121,7 +121,7 @@
              non-zero border. -->
         <div class="phone-screen" id="phone-screen">
 
-          <!-- Status Bar (bleed tinting target #1) -->
+          <!-- Status Bar (bleedblend tinting target #1) -->
           <div class="status-bar-info" id="sim-status-bar">
             <div style="display: flex; gap: 6px; align-items: center;">
               <div id="status-time">9:41</div>
@@ -154,7 +154,7 @@
                   <line x1="12" y1="17" x2="12" y2="21"></line>
                 </svg>
               </span>
-              <span class="safari-url">bleed.dev</span>
+              <span class="safari-url">bleedblend.dev</span>
               <span class="safari-icon-reload">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="23 4 23 10 17 10"></polyline>
@@ -164,7 +164,7 @@
             </div>
           </div>
 
-          <!-- SIMULATED SAFARI BOTTOM LIQUID BAR (bleed tinting target #2 chrome bg) -->
+          <!-- SIMULATED SAFARI BOTTOM LIQUID BAR (bleedblend tinting target #2 chrome bg) -->
           <div class="sim-safari-bottom-liquid-bar" id="safari-bottom-liquid-bar" style="display: none;">
             <div class="safari-liquid-address-row" id="safari-bottom-address-row">
               <div class="safari-capsule-address-box">
@@ -175,7 +175,7 @@
                     <line x1="12" y1="17" x2="12" y2="21"></line>
                   </svg>
                 </span>
-                <span class="safari-url">bleed.dev</span>
+                <span class="safari-url">bleedblend.dev</span>
                 <span class="safari-icon-reload">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="23 4 23 10 17 10"></polyline>
@@ -204,9 +204,9 @@
             </div>
           </div>
 
-          <!-- SIMULATED TOP STICKY BANNER (the v1 .bleed-top showcase).
+          <!-- SIMULATED TOP STICKY BANNER (the v1 .bleedblend-top showcase).
                Hidden by default; mode buttons toggle .header-none / .header-buggy
-               / .header-bleed. When in Bleed Fix mode it also carries `.bleed-top`,
+               / .header-bleedblend. When in Bleedblend Fix mode it also carries `.bleedblend-top`,
                which the v2 controller picks up as STICKY_OWNED → step back. -->
           <div class="sim-header header-none" id="sim-header">
             <div class="nav-content">
@@ -216,7 +216,7 @@
               </span>
               <span style="font-weight: 400; text-decoration: underline; font-size: 0.75rem;">Fix now</span>
             </div>
-            <div class="bleed-inner-blur-demo" id="inner-blur-box" style="display: none;">
+            <div class="bleedblend-inner-blur-demo" id="inner-blur-box" style="display: none;">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
               Inner-blur elements render correctly!
             </div>
@@ -276,7 +276,7 @@
                 <span>Privacy</span>
                 <span>Contact</span>
               </div>
-              <div class="demo-footer-copy">© 2026 bleed demo · MIT</div>
+              <div class="demo-footer-copy">© 2026 bleedblend demo · MIT</div>
             </footer>
 
           </div>
@@ -294,21 +294,21 @@
 
   <footer class="site-footer bg-primary-dark">
     <div class="footer-links">
-      <a href="https://github.com/CVERInc/bleed" class="link-underline">GitHub</a>
+      <a href="https://github.com/CVERInc/bleedblend" class="link-underline">GitHub</a>
       <span class="footer-separator">|</span>
-      <a href="https://github.com/CVERInc/bleed#readme" class="link-underline">Docs</a>
+      <a href="https://github.com/CVERInc/bleedblend#readme" class="link-underline">Docs</a>
       <span class="footer-separator">|</span>
-      <a href="https://github.com/CVERInc/bleed/blob/main/HANDOFF.md" class="link-underline">Mental model</a>
+      <a href="https://github.com/CVERInc/bleedblend/blob/main/HANDOFF.md" class="link-underline">Mental model</a>
     </div>
 
     <div class="footer-links" style="font-size: 0.75rem;">
-      <span class="link-underline">© 2026 CVER Inc. · MIT · v2.0.1</span>
+      <span class="link-underline">© 2026 CVER Inc. · MIT · v2.1.0</span>
     </div>
   </footer>
 
-  <!-- bleed v2 simulator script — helpers inlined for static demo deploy
+  <!-- bleedblend v2 simulator script — helpers inlined for static demo deploy
        (gh-pages serves /demo only, no /src). Source of truth lives in
-       /src/utils.mjs of the bleed repo. -->
+       /src/utils.mjs of the bleedblend repo. -->
   <script type="module">
     function parseColor(str) {
       if (!str) return null;
@@ -362,7 +362,8 @@
     // ─────────────────────────────────────────────────────────────
     // DOM refs
     // ─────────────────────────────────────────────────────────────
-    const root = document.documentElement;
+    const STORAGE_ENABLED = 'cver-bleedblend-sim-enabled';
+    const STORAGE_STATE = 'cver-bleedblend-sim-state';
     const phoneScreen = document.getElementById('phone-screen');
     const statusBar = document.getElementById('sim-status-bar');
     const safariBottomBar = document.getElementById('safari-bottom-liquid-bar');
@@ -371,7 +372,7 @@
     const safariTopCapsule = document.getElementById('safari-top-capsule');
     const safariBottomAddressRow = document.getElementById('safari-bottom-address-row');
     const safariBottomButtonsRow = document.getElementById('safari-bottom-buttons-row');
-    const bleedModes = document.getElementById('bleed-modes');
+    const bleedblendModes = document.getElementById('bleedblend-modes');
     const topModes = document.getElementById('top-modes');
     const bottomModes = document.getElementById('bottom-modes');
     const shellModes = document.getElementById('shell-modes');
@@ -444,7 +445,7 @@
       phoneScreen.style.setProperty('--demo-grad-bot', t.bot);
       phoneScreen.style.setProperty('--demo-belt', t.belt);
       phoneScreen.style.setProperty('--demo-footer', t.footer);
-      // When bleed is OFF, chrome tinting stays on the html-bg fallback
+      // When bleedblend is OFF, chrome tinting stays on the html-bg fallback
       // (gradient START color = same as html bg in real cver.net usage).
       phoneScreen.style.setProperty('--chrome-fallback', t.top);
       update();
@@ -469,9 +470,9 @@
     // ─────────────────────────────────────────────────────────────
     // Mini-bleed: sample colors at top/bottom of phone-screen and
     // render to chrome elements (status bar + Safari bottom bar).
-    // Mirrors createBleedAuto's logic, scoped to the phone container.
+    // Mirrors createBleedblendAuto's logic, scoped to the phone container.
     // ─────────────────────────────────────────────────────────────
-    let bleedEnabled = true;
+    let bleedblendEnabled = true;
     const TINT_PX = 12;
 
     function sampleInContainer(container, x, y) {
@@ -545,12 +546,12 @@
     }
 
     function resolveEdge(edge, boundary, lastSection, probeY) {
-      // STICKY_OWNED — a user .bleed-top / .bleed-bottom banner is visible.
+      // STICKY_OWNED — a user .bleedblend-top / .bleedblend-bottom banner is visible.
       // The banner owns the chrome edge; v2 steps back entirely.
-      if (edge === 'top' && topBannerMode === 'bleed') {
+      if (edge === 'top' && topBannerMode === 'bleedblend') {
         return { state: 'STICKY_OWNED', color: null };
       }
-      if (edge === 'bottom' && bottomBannerMode === 'bleed') {
+      if (edge === 'bottom' && bottomBannerMode === 'bleedblend') {
         return { state: 'STICKY_OWNED', color: null };
       }
       if (edge === 'top') {
@@ -623,8 +624,8 @@
         lastInView = r.top < rect.bottom && r.bottom > rect.top;
       }
 
-      // Banner colors when Bleed Fix mode is on — match the solid
-      // outer-wrapper colors in simulator.css (.header-bleed / .footer-bleed).
+      // Banner colors when Bleedblend Fix mode is on — match the solid
+      // outer-wrapper colors in simulator.css (.header-bleedblend / .footer-bleedblend).
       const BANNER_TOP_COLOR = '#b91c1c';
       const BANNER_BOT_COLOR = '#047857';
       const fallback = themes[currentTheme].top;
@@ -636,15 +637,15 @@
       let topPaint = { color: fallback };
       let botPaint = { color: fallback };
 
-      if (topBannerMode === 'bleed') {
+      if (topBannerMode === 'bleedblend') {
         topPaint = { color: BANNER_TOP_COLOR };
-      } else if (bleedEnabled && topC) {
+      } else if (bleedblendEnabled && topC) {
         topPaint = { color: colorToRgb(topC.color) };
       }
 
-      if (bottomBannerMode === 'bleed') {
+      if (bottomBannerMode === 'bleedblend') {
         botPaint = { color: BANNER_BOT_COLOR };
-      } else if (bleedEnabled) {
+      } else if (bleedblendEnabled) {
         if (botResolved.state === 'BLEED_OVERRIDE' && botResolved.color) {
           botPaint = { color: colorToRgb(botResolved.color) };
         } else if (botResolved.state === 'SAFE_NATURAL' && botC) {
@@ -654,7 +655,7 @@
 
       // Last-section overscroll tinting — only active when v2 is on AND no
       // bottom banner is taking over the bottom edge.
-      if (bleedEnabled && lastInView && bottomBannerMode !== 'bleed') {
+      if (bleedblendEnabled && lastInView && bottomBannerMode !== 'bleedblend') {
         phoneScreen.style.backgroundColor = themes[currentTheme].footer;
       } else {
         phoneScreen.style.backgroundColor = '';
@@ -675,23 +676,23 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    // Bleed mode toggle
+    // Bleedblend mode toggle
     // ─────────────────────────────────────────────────────────────
-    bleedModes.addEventListener('click', (e) => {
+    bleedblendModes.addEventListener('click', (e) => {
       const btn = e.target.closest('.option-btn');
       if (!btn) return;
-      bleedModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
+      bleedblendModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
-      bleedEnabled = btn.dataset.mode === 'on';
+      bleedblendEnabled = btn.dataset.mode === 'on';
       update();
     });
 
     // ─────────────────────────────────────────────────────────────
-    // Top / Bottom banner modes (the v1 .bleed-top / .bleed-bottom story).
+    // Top / Bottom banner modes (the v1 .bleedblend-top / .bleedblend-bottom story).
     //   None  — banner hidden, just the page underneath.
     //   Buggy — banner with `backdrop-filter`, hits WebKit's safe-area
     //           clip bug (visible sharp line below the status bar).
-    //   Bleed — banner uses the `.bleed-top` / `.bleed-bottom` CSS class:
+    //   Bleed — banner uses the `.bleedblend-top` / `.bleedblend-bottom` CSS class:
     //           opaque outer wrapper, inner-blur element. v2's controller
     //           also detects this and enters STICKY_OWNED on that edge.
     // ─────────────────────────────────────────────────────────────
@@ -704,8 +705,8 @@
       innerBlurBox.style.display = 'none';
       if (mode === 'none') simHeader.classList.add('header-none');
       else if (mode === 'buggy') simHeader.classList.add('header-buggy');
-      else if (mode === 'bleed') {
-        simHeader.classList.add('header-bleed', 'bleed-top');
+      else if (mode === 'bleedblend') {
+        simHeader.classList.add('header-bleedblend', 'bleedblend-top');
         innerBlurBox.style.display = 'block';
       }
       update();
@@ -715,7 +716,7 @@
       simFooter.className = 'sim-footer';
       if (mode === 'none') simFooter.classList.add('footer-none');
       else if (mode === 'buggy') simFooter.classList.add('footer-buggy');
-      else if (mode === 'bleed') simFooter.classList.add('footer-bleed', 'bleed-bottom');
+      else if (mode === 'bleedblend') simFooter.classList.add('footer-bleedblend', 'bleedblend-bottom');
       update();
     }
 

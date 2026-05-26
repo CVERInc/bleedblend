@@ -1,5 +1,5 @@
 /**
- * bleed v2 — utils (CommonJS)
+ * bleedblend v2 — utils (CommonJS)
  *
  * CommonJS mirror of utils.mjs. Keep these two files in sync.
  * See utils.mjs for documentation and HANDOFF.md for the mental model.
@@ -285,8 +285,8 @@ const isIOS =
   (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
 
-const TINT_TOP_ID = 'bleed-tint-top';
-const TINT_BOT_ID = 'bleed-tint-bottom';
+const TINT_TOP_ID = 'bleedblend-tint-top';
+const TINT_BOT_ID = 'bleedblend-tint-bottom';
 const IGNORE_IDS = [TINT_TOP_ID, TINT_BOT_ID];
 
 function ensureTint(id, isTop) {
@@ -304,19 +304,19 @@ function ensureTint(id, isTop) {
 }
 
 function ensureBeforeOverride() {
-  let el = document.getElementById('bleed-before-override');
+  let el = document.getElementById('bleedblend-before-override');
   if (el) return el;
   el = document.createElement('style');
-  el.id = 'bleed-before-override';
+  el.id = 'bleedblend-before-override';
   document.head.appendChild(el);
   return el;
 }
 
 function ensureTransitionStyle() {
-  let el = document.getElementById('bleed-transition-style');
+  let el = document.getElementById('bleedblend-transition-style');
   if (el) return el;
   el = document.createElement('style');
-  el.id = 'bleed-transition-style';
+  el.id = 'bleedblend-transition-style';
   el.textContent =
     'html, body { transition: background-color 400ms ease; } ' +
     'body::before { transition: background 400ms ease; }';
@@ -324,7 +324,7 @@ function ensureTransitionStyle() {
   return el;
 }
 
-function createBleedAuto(options) {
+function createBleedblendAuto(options) {
   const opts = options || {};
   if (typeof document === 'undefined') return { update() {}, destroy() {} };
 
@@ -397,8 +397,8 @@ function createBleedAuto(options) {
     ensureTransitionStyle();
     const htmlEl = document.documentElement;
 
-    const userTop = pickVisible('.bleed-top:not(#' + TINT_TOP_ID + ')');
-    const userBottom = pickVisible('.bleed-bottom:not(#' + TINT_BOT_ID + ')');
+    const userTop = pickVisible('.bleedblend-top:not(#' + TINT_TOP_ID + ')');
+    const userBottom = pickVisible('.bleedblend-bottom:not(#' + TINT_BOT_ID + ')');
 
     const fill = detectBackgroundFill();
 
@@ -416,9 +416,9 @@ function createBleedAuto(options) {
     const topResolved = resolveEdge('top', !!userTop, topC, lastSection, probeYTop);
     const botResolved = resolveEdge('bottom', !!userBottom, botC, lastSection, probeYBot);
 
-    window.__bleed_top_state = topResolved.state;
-    window.__bleed_bot_state = botResolved.state;
-    window.__bleed_has_fixed = !!userTop;
+    window.__bleedblend_top_state = topResolved.state;
+    window.__bleedblend_bot_state = botResolved.state;
+    window.__bleedblend_has_fixed = !!userTop;
 
     if (!isIOS) {
       topEl.style.display = 'none';
@@ -497,9 +497,9 @@ function createBleedAuto(options) {
         const el = document.getElementById(id);
         if (el) el.remove();
       });
-      const before = document.getElementById('bleed-before-override');
+      const before = document.getElementById('bleedblend-before-override');
       if (before) before.remove();
-      const transition = document.getElementById('bleed-transition-style');
+      const transition = document.getElementById('bleedblend-transition-style');
       if (transition) transition.remove();
       document.documentElement.style.backgroundColor = '';
       document.body.style.backgroundColor = '';
@@ -524,6 +524,6 @@ module.exports = {
   findLastOpaqueSection,
   isInsideSection,
   setMetaThemeColor,
-  createBleedAuto,
-  default: createBleedAuto,
+  createBleedblendAuto,
+  default: createBleedblendAuto,
 };
