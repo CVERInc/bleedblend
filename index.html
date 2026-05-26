@@ -701,25 +701,32 @@
       safariBottomButtonsRow.style.display = 'none';
       safariBottomBar.className = 'sim-safari-bottom-liquid-bar';
 
+      // Safe-area values picked so the chrome region is just big enough to
+      // contain the simulated pill(s) (pill height + 14px bottom anchor +
+      // small breathing room). Matches what iOS reports for these layouts.
       if (mode === 'pwa') {
         setSimInsets(59, 34);
       } else if (mode === 'safari-compact') {
         safariBottomBar.style.display = 'flex';
         safariBottomAddressRow.style.display = 'block';
         safariBottomBar.classList.add('mode-compact');
-        setSimInsets(59, 90);
+        // Compact pill = 48 + 14 anchor + 16 indicator/breathing = ~78
+        setSimInsets(59, 78);
       } else if (mode === 'safari-bottom') {
         safariBottomBar.style.display = 'flex';
         safariBottomAddressRow.style.display = 'block';
         safariBottomButtonsRow.style.display = 'flex';
         safariBottomBar.classList.add('mode-bottom');
-        setSimInsets(59, 140);
+        // Bottom double-row = 98 + 14 + 16 = 128
+        setSimInsets(59, 128);
       } else if (mode === 'safari-top') {
         safariTopCapsule.style.display = 'flex';
         safariBottomBar.style.display = 'flex';
         safariBottomButtonsRow.style.display = 'flex';
         safariBottomBar.classList.add('mode-top');
-        setSimInsets(103, 90);
+        // Top: URL pill (42) + 12 anchor + 50 status bar = 104
+        // Bottom: buttons pill (48) + 14 + 16 = ~78
+        setSimInsets(104, 78);
       }
     }
 

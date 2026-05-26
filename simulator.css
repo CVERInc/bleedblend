@@ -430,18 +430,22 @@
   line-height: 1.5;
 }
 
-/* Simulated Safari Shell Elements */
+/* Simulated Safari Shell Elements
+   iOS Liquid Glass capsule — sits INSIDE the safe-area region near the
+   viewport edge, on top of the page content, with translucent backdrop. */
 .sim-safari-top-capsule {
   position: absolute;
-  top: 67px; /* Sits below the notch/status bar */
+  /* Anchored to bottom of safe-area-top: capsule sits right below the
+     status bar, hugging the chrome edge — matches iOS Top mode. */
+  top: calc(var(--sim-safe-top) - 50px);
   left: 16px;
   right: 16px;
-  height: 44px;
-  background: rgba(255, 255, 255, 0.15);
+  height: 42px;
+  background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(25px) saturate(180%);
   -webkit-backdrop-filter: blur(25px) saturate(180%);
   border-radius: 99px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   z-index: 1001;
   display: flex;
@@ -487,16 +491,19 @@
   letter-spacing: -0.01em;
 }
 
-/* Unified Bottom Liquid Bar (iOS 26 Liquid Glass) */
+/* Unified Bottom Liquid Bar (iOS 26 Liquid Glass)
+   Sits INSIDE the safe-area-bottom region (right against the chrome edge),
+   not above it — that's how iOS actually positions the URL pill / button
+   row in Compact / Bottom / Top modes. */
 .sim-safari-bottom-liquid-bar {
   position: absolute;
-  bottom: calc(var(--sim-safe-bottom) + 8px);
+  bottom: 14px;
   left: 16px;
   right: 16px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(25px) saturate(180%);
   -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   z-index: 1001;
   display: flex;
