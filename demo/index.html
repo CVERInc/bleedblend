@@ -544,6 +544,33 @@
       return { state: 'BLEED_OVERRIDE', color: boundary.color };
     }
 
+    // Paint a chrome element with either a solid fill (bleed override / banner)
+    // or a translucent fill + backdrop-filter blur (Safari's native sampling
+    // look when bleed steps back). Mirrors how iOS 26 Liquid Glass chrome
+    // actually looks vs. a flat-painted tint.
+    function applyChromePaint(el, paint) {
+      if (!paint || !paint.color) {
+        el.style.backgroundColor = '';
+        el.style.backdropFilter = '';
+        el.style.webkitBackdropFilter = '';
+        return;
+      }
+      if (paint.mode === 'translucent') {
+        const c = parseColor(paint.color);
+        if (c) {
+          el.style.backgroundColor = 'rgba(' + Math.round(c.r) + ',' + Math.round(c.g) + ',' + Math.round(c.b) + ',0.55)';
+        } else {
+          el.style.backgroundColor = paint.color;
+        }
+        el.style.backdropFilter = 'blur(20px) saturate(160%)';
+        el.style.webkitBackdropFilter = 'blur(20px) saturate(160%)';
+      } else {
+        el.style.backgroundColor = paint.color;
+        el.style.backdropFilter = '';
+        el.style.webkitBackdropFilter = '';
+      }
+    }
+
     let rafScheduled = false;
     function update() {
       if (rafScheduled) return;
@@ -577,31 +604,30 @@
       // outer-wrapper colors in simulator.css (.header-bleed / .footer-bleed).
       const BANNER_TOP_COLOR = '#b91c1c';
       const BANNER_BOT_COLOR = '#047857';
-
-      // Determine chrome colors. Priority:
-      //   1. A `.bleed-top/-bottom` banner tinting chrome via Safari's NATIVE
-      //      edge sampling — works regardless of our v2 controller.
-      //   2. Bleed v2 ON: smart per-edge tinting (the gradient / section / page-end
-      //      state machine).
-      //   3. Bleed v2 OFF or banner buggy/none: chrome stays on html-bg
-      //      fallback — the "broken" iOS look.
       const fallback = themes[currentTheme].top;
-      let topColor = fallback;
-      let botColor = fallback;
+
+      // Per-edge resolution: { color, mode } where mode is
+      //   'solid'       — flat fill (BLEED_OVERRIDE / sticky banner / Off fallback)
+      //   'translucent' — iOS Liquid Glass look: low alpha + backdrop-filter
+      //                   (SAFE_NATURAL — bleed display:none, Safari natively
+      //                   tints via blur+translucent sampling over page content)
+      let topPaint = { color: fallback, mode: 'solid' };
+      let botPaint = { color: fallback, mode: 'solid' };
 
       if (topBannerMode === 'bleed') {
-        topColor = BANNER_TOP_COLOR;
+        topPaint = { color: BANNER_TOP_COLOR, mode: 'solid' };
       } else if (bleedEnabled && topC) {
-        topColor = colorToRgb(topC.color);
+        // Top is always SAFE_NATURAL in v2 (unless STICKY_OWNED handled above)
+        topPaint = { color: colorToRgb(topC.color), mode: 'translucent' };
       }
 
       if (bottomBannerMode === 'bleed') {
-        botColor = BANNER_BOT_COLOR;
+        botPaint = { color: BANNER_BOT_COLOR, mode: 'solid' };
       } else if (bleedEnabled) {
         if (botResolved.state === 'BLEED_OVERRIDE' && botResolved.color) {
-          botColor = colorToRgb(botResolved.color);
-        } else if (botC) {
-          botColor = colorToRgb(botC.color);
+          botPaint = { color: colorToRgb(botResolved.color), mode: 'solid' };
+        } else if (botResolved.state === 'SAFE_NATURAL' && botC) {
+          botPaint = { color: colorToRgb(botC.color), mode: 'translucent' };
         }
       }
 
@@ -613,9 +639,12 @@
         phoneScreen.style.backgroundColor = '';
       }
 
-      statusBar.style.backgroundColor = topColor;
-      safariBottomBar.style.background = botColor;
-      if (homeIndicatorArea) homeIndicatorArea.style.backgroundColor = botColor;
+      // Apply paint to chrome elements. Translucent mode shows page content
+      // through with blur — that's iOS Safari's native sampling look when
+      // bleed steps back (display:none on the tint element).
+      applyChromePaint(statusBar, topPaint);
+      applyChromePaint(safariBottomBar, botPaint);
+      if (homeIndicatorArea) applyChromePaint(homeIndicatorArea, botPaint);
 
       // Diagnostics
       logTopState.textContent = topResolved.state;
