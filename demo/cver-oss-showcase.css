@@ -222,26 +222,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.1);
 }
 
-/* Real safe area log */
-.log-card {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 1rem;
-  font-family: monospace;
-  font-size: 0.85rem;
-}
-
-.log-line {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.25rem;
-}
-
-.log-line:last-child {
-  margin-bottom: 0;
-}
-
 /* Shared SVG Icon wrapper */
 .svg-icon {
   display: inline-block;
