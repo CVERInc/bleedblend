@@ -315,38 +315,39 @@
 
 /* HEADER MODES */
 /* Mode: Buggy backdrop-filter */
+/* Mode: Buggy — backdrop-filter blur on the outer wrapper hits iOS Safari's
+   safe-area clip bug. clip-path simulates the chopped-off blur region: the
+   status-bar slice goes back to the page bg, leaving a sharp line. */
 .header-buggy {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  /* WebKit Bug: Padding is correct, but backdrop-filter clips at safe area boundary! */
-  padding-top: var(--sim-safe-top); 
+  padding-top: var(--sim-safe-top);
   -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
   backdrop-filter: blur(12px) saturate(140%) !important;
-  background: rgba(239, 68, 68, 0.5); /* translucent red */
-  clip-path: inset(var(--sim-safe-top) 0 0 0); /* Simulating the WebKit Safe Area clipping glitch! */
+  background: rgba(239, 68, 68, 0.55); /* translucent crimson — the actual banner color */
+  color: #fff;
+  clip-path: inset(var(--sim-safe-top) 0 0 0);
 }
 
-/* Mode: Bleed Fixed */
+/* Mode: Bleed Fix — opaque outer wrapper bleeds into safe-area cleanly.
+   The blur lives on an inner element instead (.bleed-inner-blur-demo). */
 .header-bleed {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   padding-top: calc(8px + var(--sim-safe-top));
-  background: var(--active-header-bg, var(--active-bg));
+  background: #b91c1c; /* solid crimson */
+  color: #fff;
   -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important; /* Disables outer blur to paint safe area */
+  backdrop-filter: none !important;
 }
 
-/* Mode: None */
-.header-none {
-  display: none;
-}
+.header-none { display: none; }
 
-/* FOOTER MODES */
-/* Mode: Buggy backdrop-filter */
+/* FOOTER MODES — symmetric, but emerald CTA color */
 .footer-buggy {
   position: absolute;
   bottom: 0;
@@ -355,26 +356,24 @@
   padding-bottom: var(--sim-safe-bottom);
   -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
   backdrop-filter: blur(12px) saturate(140%) !important;
-  background: rgba(239, 68, 68, 0.5);
-  clip-path: inset(0 0 var(--sim-safe-bottom) 0); /* Simulating the WebKit Safe Area clipping glitch! */
+  background: rgba(5, 150, 105, 0.55); /* translucent emerald */
+  color: #fff;
+  clip-path: inset(0 0 var(--sim-safe-bottom) 0);
 }
 
-/* Mode: Bleed Fixed */
 .footer-bleed {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
   padding-bottom: calc(8px + var(--sim-safe-bottom));
-  background: var(--active-footer-bg, var(--active-bg));
+  background: #047857; /* solid emerald */
+  color: #fff;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
 
-/* Mode: None */
-.footer-none {
-  display: none;
-}
+.footer-none { display: none; }
 
 /* Outer/Inner Blur Layout for Bleed Demo */
 .bleed-inner-blur-demo {
