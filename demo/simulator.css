@@ -78,13 +78,12 @@
   text-align: center;
 }
 .demo-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.4rem;
-  color: #fff;
+  width: min(180px, 60%);
+  height: auto;
+  display: block;
+  margin: 0 auto 1.4rem;
+  user-select: none;
 }
-.demo-logo svg { display: block; }
 .demo-title {
   font-family: 'Comfortaa', sans-serif;
   font-size: 1.35rem;
@@ -185,12 +184,16 @@
   opacity: 0.4;
 }
 .demo-footer-logo {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.1rem;
-  color: rgba(255, 255, 255, 0.85);
+  display: block;
+  width: 40px;
+  height: auto;
+  margin: 0 auto 1.1rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 4px;
+  box-sizing: border-box;
+  user-select: none;
 }
-.demo-footer-logo svg { display: block; }
 .demo-footer-copy {
   font-size: 0.65rem;
   color: rgba(255, 255, 255, 0.42);
