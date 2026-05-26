@@ -242,7 +242,10 @@
   box-sizing: border-box;
 }
 
-/* Bottom Home Indicator */
+/* Bottom safe-area tint band — sits "below" the Safari bottom bar so the
+   rubber-band-overscroll equivalent is visually consistent. iOS 26 Safari
+   no longer paints a visible home indicator pill here, so this is just a
+   tinted strip. */
 .home-indicator-area {
   position: absolute;
   bottom: 0;
@@ -250,23 +253,9 @@
   width: 100%;
   height: var(--sim-safe-bottom);
   z-index: 999;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding-bottom: 8px;
   pointer-events: none;
-  /* The home-indicator area is "below" the Safari bottom bar;tinting it too
-     so the rubber-band-overscroll equivalent is visually consistent. */
   background-color: var(--chrome-bot, transparent);
   transition: background-color 400ms ease;
-}
-
-.home-indicator {
-  width: 120px;
-  height: 5px;
-  background: white;
-  border-radius: 99px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* Simulated Headers/Footers */
