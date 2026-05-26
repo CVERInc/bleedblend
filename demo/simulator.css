@@ -255,6 +255,10 @@
 .status-bar-info > div {
   height: 30px;
   align-items: center !important;
+  /* Tighten the line box so text glyphs sit at the optical center of
+     the 30px row — default line-height of 1.2 leaves leading that
+     makes the time read as floating above the SVG icons. */
+  line-height: 1;
 }
 
 /* Bottom safe-area tint band — sits "below" the Safari bottom bar so the
