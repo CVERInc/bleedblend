@@ -100,20 +100,6 @@
         </div>
       </div>
 
-      <!-- DIAGNOSTICS -->
-      <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Live diagnostics</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          State machine output from <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">bleed/utils</code> as you scroll the phone:
-        </p>
-        <div class="log-card">
-          <div class="log-line"><span>top.state</span> <span id="log-top-state" style="color: var(--accent-hover);">—</span></div>
-          <div class="log-line"><span>bot.state</span> <span id="log-bot-state" style="color: var(--accent-hover);">—</span></div>
-          <div class="log-line"><span>chrome.top</span> <span id="log-chrome-top">—</span></div>
-          <div class="log-line"><span>chrome.bot</span> <span id="log-chrome-bot">—</span></div>
-        </div>
-      </div>
-
     </div>
 
     <!-- Right Simulator Column -->
@@ -362,12 +348,6 @@
       return c ? 'rgb(' + Math.round(c.r) + ', ' + Math.round(c.g) + ', ' + Math.round(c.b) + ')' : null;
     }
 
-    function colorToHex(c) {
-      if (!c) return null;
-      const h = (n) => Math.round(n).toString(16).padStart(2,'0');
-      return '#' + h(c.r) + h(c.g) + h(c.b);
-    }
-
     function colorsClose(a, b, threshold) {
       if (!a || !b) return false;
       const t = threshold == null ? 8 : threshold;
@@ -394,11 +374,6 @@
     const simHeader = document.getElementById('sim-header');
     const simFooter = document.getElementById('sim-footer');
     const innerBlurBox = document.getElementById('inner-blur-box');
-
-    const logTopState = document.getElementById('log-top-state');
-    const logBotState = document.getElementById('log-bot-state');
-    const logChromeTop = document.getElementById('log-chrome-top');
-    const logChromeBot = document.getElementById('log-chrome-bot');
 
     // ─────────────────────────────────────────────────────────────
     // Themes — gradient + section + footer color triples.
@@ -692,12 +667,6 @@
       // sampled top color rather than the half-opacity paint.
       const statusBg = topPaint.color || fallback;
       statusBar.style.setProperty('--status-fg', pickStatusFg(statusBg));
-
-      // Diagnostics
-      logTopState.textContent = topResolved.state;
-      logBotState.textContent = botResolved.state;
-      logChromeTop.textContent = colorToHex(parseColor(statusBar.style.backgroundColor)) || '—';
-      logChromeBot.textContent = colorToHex(parseColor(safariBottomBar.style.backgroundColor)) || '—';
     }
 
     // ─────────────────────────────────────────────────────────────
