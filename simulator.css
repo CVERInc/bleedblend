@@ -320,9 +320,9 @@
   clip-path: inset(var(--sim-safe-top) 0 0 0);
 }
 
-/* Mode: Bleed Fix — opaque outer wrapper bleeds into safe-area cleanly.
-   The blur lives on an inner element instead (.bleed-inner-blur-demo). */
-.header-bleed {
+/* Mode: Bleedblend Fix — opaque outer wrapper bleeds into safe-area cleanly.
+   The blur lives on an inner element instead (.bleedblend-inner-blur-demo). */
+.header-bleedblend {
   position: absolute;
   top: 0;
   left: 0;
@@ -350,7 +350,7 @@
   clip-path: inset(0 0 var(--sim-safe-bottom) 0);
 }
 
-.footer-bleed {
+.footer-bleedblend {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -364,8 +364,8 @@
 
 .footer-none { display: none; }
 
-/* Outer/Inner Blur Layout for Bleed Demo */
-.bleed-inner-blur-demo {
+/* Outer/Inner Blur Layout for Bleedblend Demo */
+.bleedblend-inner-blur-demo {
   -webkit-backdrop-filter: blur(10px) saturate(140%);
   backdrop-filter: blur(10px) saturate(140%);
   background: rgba(255, 255, 255, 0.1);
