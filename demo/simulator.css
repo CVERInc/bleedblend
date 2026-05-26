@@ -43,6 +43,11 @@
   overflow-y: scroll;
   scrollbar-width: none;
   transition: background-color 400ms ease;
+  /* Expose the screen height as a container-query unit so .demo-hero
+     can size itself to the full viewport on initial load — mirroring
+     a real iPhone where the hero fills the screen before scroll. */
+  container-type: size;
+  container-name: phone;
 }
 
 .phone-screen::-webkit-scrollbar { display: none; }
@@ -64,7 +69,7 @@
 .demo-hero {
   position: relative;
   z-index: 1;
-  min-height: 100%;
+  min-height: 100cqh;
   padding: 80px 24px 40px;
   display: flex;
   flex-direction: column;
