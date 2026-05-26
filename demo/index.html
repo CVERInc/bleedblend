@@ -551,10 +551,13 @@
       return lum > 0.62 ? '#000' : '#fff';
     }
 
-    // Paint a chrome element with either a solid fill (bleed override / banner)
-    // or a translucent fill + backdrop-filter blur (Safari's native sampling
-    // look when bleed steps back). Mirrors how iOS 26 Liquid Glass chrome
-    // actually looks vs. a flat-painted tint.
+    // Paint a chrome element. Two modes:
+    //   solid       — flat fill (bleed override / sticky banner染色)
+    //   translucent — page content shows THROUGH with blur (mimics iOS
+    //                 Liquid Glass: Safari's native sampling looks like
+    //                 chrome painted with very low alpha + heavy blur,
+    //                 not a tinted box). Alpha is intentionally tiny so
+    //                 the band doesn't read as a "solid color block".
     function applyChromePaint(el, paint) {
       if (!paint || !paint.color) {
         el.style.backgroundColor = '';
@@ -565,9 +568,11 @@
       if (paint.mode === 'translucent') {
         const c = parseColor(paint.color);
         if (c) {
-          el.style.backgroundColor = 'rgba(' + Math.round(c.r) + ',' + Math.round(c.g) + ',' + Math.round(c.b) + ',0.55)';
+          // Very low alpha — let blur do the work; avoids a visible
+          // colored "band" sitting on top of the page content.
+          el.style.backgroundColor = 'rgba(' + Math.round(c.r) + ',' + Math.round(c.g) + ',' + Math.round(c.b) + ',0.12)';
         } else {
-          el.style.backgroundColor = paint.color;
+          el.style.backgroundColor = 'transparent';
         }
         el.style.backdropFilter = 'blur(20px) saturate(160%)';
         el.style.webkitBackdropFilter = 'blur(20px) saturate(160%)';
