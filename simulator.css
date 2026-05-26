@@ -223,21 +223,21 @@
   opacity: 0.7;
 }
 
-/* Status Bar Info */
+/* Status Bar Info — the band itself spans the full safe-area-top (so
+   chrome tinting paints all the way to the top edge), but its contents
+   sit at the dynamic island's vertical center (.phone-notch is at
+   top:11 height:30, center = 26px). */
 .status-bar-info {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: var(--sim-safe-top);
-  padding: 14px 2rem 0;
-  /* Pin icons to top of safe-area so position stays consistent across
-     shell modes — Top mode makes --sim-safe-top taller, but the time /
-     icons should still sit where they do in Compact / Bottom. */
+  padding: 11px 2rem 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--status-fg, #fff);
   z-index: 1000;
@@ -245,6 +245,10 @@
   background-color: var(--chrome-top, transparent);
   transition: background-color 400ms ease, color 250ms ease;
   box-sizing: border-box;
+}
+.status-bar-info > div {
+  height: 30px;
+  align-items: center !important;
 }
 
 /* Bottom safe-area tint band — sits "below" the Safari bottom bar so the
