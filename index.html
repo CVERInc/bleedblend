@@ -40,9 +40,9 @@
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
           The smart per-edge chrome tinting based on scrolling content. Turn off to see iOS's broken fallback.
         </p>
-        <div class="option-group" id="bleed-modes">
-          <button class="option-btn" data-mode="off">Off (broken)</button>
-          <button class="option-btn active" data-mode="on">On (smart bleed)</button>
+        <div class="option-group" id="bleed-modes" style="--cols: 2;">
+          <button class="option-btn" data-mode="off">Off</button>
+          <button class="option-btn active" data-mode="on">On</button>
         </div>
       </div>
 
@@ -52,10 +52,10 @@
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
           Drop a sticky top banner into the page — and see how it interacts with the chrome tinting.
         </p>
-        <div class="option-group" id="top-modes">
+        <div class="option-group" id="top-modes" style="--cols: 3;">
           <button class="option-btn active" data-mode="none">None</button>
-          <button class="option-btn" data-mode="buggy">Buggy Blur</button>
-          <button class="option-btn" data-mode="bleed">Bleed Fix</button>
+          <button class="option-btn" data-mode="buggy">Buggy</button>
+          <button class="option-btn" data-mode="bleed">Bleed</button>
         </div>
       </div>
 
@@ -65,17 +65,17 @@
         <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
           A sticky bottom CTA (think "Add to cart") — same buggy / bleed showcase as above.
         </p>
-        <div class="option-group" id="bottom-modes">
+        <div class="option-group" id="bottom-modes" style="--cols: 3;">
           <button class="option-btn active" data-mode="none">None</button>
-          <button class="option-btn" data-mode="buggy">Buggy Blur</button>
-          <button class="option-btn" data-mode="bleed">Bleed Fix</button>
+          <button class="option-btn" data-mode="buggy">Buggy</button>
+          <button class="option-btn" data-mode="bleed">Bleed</button>
         </div>
       </div>
 
       <!-- BROWSER SHELL SETTING -->
       <div class="panel-section">
         <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Tabs Layout</h3>
-        <div class="option-group" id="shell-modes">
+        <div class="option-group" id="shell-modes" style="--cols: 2;">
           <button class="option-btn active" data-mode="safari-compact">Compact</button>
           <button class="option-btn" data-mode="safari-bottom">Bottom</button>
           <button class="option-btn" data-mode="safari-top">Top</button>
