@@ -1,7 +1,7 @@
 {
   "name": "bleed",
   "version": "2.0.1",
-  "description": "Zero-config iOS Safari chrome染色 — paints the status bar and URL bar to match your page content at each viewport edge. Handles gradients, sections, and rubber-band overscroll.",
+  "description": "Zero-config iOS Safari chrome tinting — paints the status bar and URL bar to match your page content at each viewport edge. Handles gradients, sections, and rubber-band overscroll.",
   "main": "src/tailwind-plugin.js",
   "style": "src/index.css",
   "exports": {

@@ -1,7 +1,7 @@
 /**
  * bleed v2 — utils (ESM)
  *
- * Smart iOS Safari chrome染色 helpers. The exported `createBleedAuto()`
+ * Smart iOS Safari chrome tinting helpers. The exported `createBleedAuto()`
  * controller and the `bleed/auto` entry give you a zero-config setup that
  * paints status bar + URL bar to match the page content at each viewport
  * edge — gradient interp, opaque sections, page-end overscroll all handled.
@@ -247,7 +247,7 @@ export function sampleColorAt(x, y, ignoreIds = []) {
   return r;
 }
 
-// Color Safari染色 chrome with NATURALLY (no tint override): body bg if
+// Color Safari tints chrome with NATURALLY (no tint override): body bg if
 // opaque, else html bg.
 export function naturalSafariColor() {
   const bodyBg = parseColorWithAlpha(getComputedStyle(document.body).backgroundColor);
@@ -309,7 +309,7 @@ export function setMetaThemeColor(hex) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Main controller — creates tints, runs the smart染色 state machine
+// Main controller — creates tints, runs the smart tinting state machine
 // ─────────────────────────────────────────────────────────────────────────────
 
 const TINT_ACTIVE_PX = 12; // just above iOS Safari's 3px sampling threshold
@@ -407,22 +407,22 @@ export function createBleedAuto(options = {}) {
     if (userOwned) return { state: 'STICKY_OWNED', color: null };
     if (edge === 'top') {
       // Top永遠 SAFE_NATURAL: chrome top stays light/unobtrusive. Safari
-      // naturally samples top edge content — that's correct染色 without
+      // naturally samples top edge content — that's correct tinting without
       // bleed intervention. Sticky-navs take STICKY_OWNED above.
       return { state: 'SAFE_NATURAL', color: null };
     }
     if (!boundary) return { state: 'SAFE_NATURAL', color: null };
     if (boundary.source === 'section') {
-      // Section reaches bottom edge. OVERRIDE染色 only if it's the LAST
-      // opaque section in DOM (page-end); mid-page sections should退場
-      // so chrome染色 stays light via Safari's edge sampling.
+      // Section reaches bottom edge. OVERRIDE tinting only if it's the LAST
+      // opaque section in DOM (page-end); mid-page sections shouldstep back
+      // so chrome tinting stays light via Safari's edge sampling.
       if (isInsideSection(probeY, lastSection, IGNORE_IDS)) {
         return { state: 'BLEED_OVERRIDE', color: boundary.color };
       }
       return { state: 'SAFE_NATURAL', color: boundary.color };
     }
-    // boundary.source === 'gradient' → OVERRIDE染色 only if it would visually
-    // differ from Safari's natural染色 (html/body bg).
+    // boundary.source === 'gradient' → OVERRIDE tinting only if it would visually
+    // differ from Safari's natural tinting (html/body bg).
     const natural = naturalSafariColor();
     if (colorsClose(natural, boundary.color)) {
       return { state: 'SAFE_NATURAL', color: boundary.color };
@@ -500,7 +500,7 @@ export function createBleedAuto(options = {}) {
     const topHex = colorToHex(topC && topC.color);
     if (topHex) setMetaThemeColor(topHex);
 
-    // Page-end overscroll染色 — body::before stretches into iOS rubber-band
+    // Page-end overscroll tinting — body::before stretches into iOS rubber-band
     // exposed area, so html bg alone isn't enough. Overwrite html, body,
     // AND body::before together. Only when LAST opaque section is in view.
     let lastSectionColor = null;
