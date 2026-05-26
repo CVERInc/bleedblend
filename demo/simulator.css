@@ -160,39 +160,22 @@
   position: relative;
   z-index: 1;
   background-color: var(--demo-footer, #0a8c8e);
-  padding: 36px 22px 56px;
+  padding: 30px 22px 50px;
   text-align: center;
   color: rgba(255, 255, 255, 0.9);
 }
 .demo-footer-links {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: 0.72rem;
-  font-weight: 400;
-  margin-bottom: 1.1rem;
-  flex-wrap: wrap;
+  gap: 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
   color: rgba(255, 255, 255, 0.78);
 }
-.demo-footer-sep {
-  opacity: 0.4;
-}
-.demo-footer-logo {
-  display: block;
-  width: 40px;
-  height: auto;
-  margin: 0 auto 1.1rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
-  padding: 4px;
-  box-sizing: border-box;
-  user-select: none;
-}
 .demo-footer-copy {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.42);
-  letter-spacing: 0.02em;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 /* Phone Notch Simulator (Dynamic Island Style) */
