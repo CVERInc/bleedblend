@@ -209,40 +209,66 @@
 
           <div class="demo-page">
 
-            <!-- Hero (gradient territory) -->
+            <!-- Hero (cver.net home: logo + tagline) -->
             <section class="demo-hero">
-              <div class="demo-logo">b</div>
-              <h2 class="demo-title">Charming Vision</h2>
-              <p class="demo-tagline">Endless Recreation.</p>
-              <p class="demo-scroll-hint">↓ scroll to see the tint follow ↓</p>
+              <div class="demo-logo" aria-hidden="true">
+                <!-- Stylized cver mark (a C shape with eyes + check, like cver.net's logo). -->
+                <svg viewBox="0 0 100 100" width="64" height="64" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M82 30 A36 36 0 1 0 82 70" />
+                  <circle cx="42" cy="42" r="3.5" fill="currentColor" stroke="none" />
+                  <circle cx="58" cy="42" r="3.5" fill="currentColor" stroke="none" />
+                  <path d="M38 58 L48 68 L66 50" />
+                </svg>
+              </div>
+              <h2 class="demo-title">Charming Vision,<br>Endless Recreation.</h2>
             </section>
 
-            <!-- Belt section (opaque mid-page) -->
+            <!-- Intro (transparent — gradient continues behind) -->
+            <section class="demo-intro">
+              <p>A small studio building digital tools people actually keep. Since 2011.</p>
+            </section>
+
+            <!-- Belt: "What we make" with three product cards -->
             <section class="demo-belt">
               <p class="demo-belt-tag">WHAT WE MAKE</p>
-              <h3 class="demo-belt-title">Smart tinting per edge</h3>
               <div class="demo-card">
-                <h4>Gradient territory</h4>
-                <p>Extend the gradient color into chrome.</p>
+                <h4>MixFairy</h4>
+                <p class="demo-card-tag">The Discord companion your community actually talks to.</p>
+                <p>Welcomes new members, replies when you're asleep, runs silly slot machines, and quietly keeps track of your VIPs. Free to start.</p>
+                <p class="demo-card-cta">Try MixFairy →</p>
               </div>
               <div class="demo-card">
-                <h4>Mid-page section</h4>
-                <p>step back — Safari renders translucent chrome.</p>
+                <h4>REEF</h4>
+                <p class="demo-card-tag">Give every community a home on the web.</p>
+                <p>Public landing page, private dashboard, quiet engine — keeps scattered community info in one calm, presentable home.</p>
+                <p class="demo-card-cta">Visit REEF →</p>
               </div>
               <div class="demo-card">
-                <h4>Page-end section</h4>
-                <p>engage — paint chrome + overwrite html/body/body::before.</p>
+                <h4>Open Source</h4>
+                <p class="demo-card-tag">Tools we wrote for ourselves. Now yours too.</p>
+                <p>MIT-licensed tools for problems we actually run into. We share what helps — no enterprise tiers or upsell playbook.</p>
+                <p class="demo-card-cta">Explore OSS →</p>
               </div>
             </section>
 
-            <!-- Footer (last opaque section) -->
+            <!-- Footer (cver.net page-end) -->
             <footer class="demo-footer">
               <div class="demo-footer-links">
-                <span>Terms</span>
-                <span>Privacy</span>
-                <span>Contact</span>
+                <span>Terms of Service</span>
+                <span class="demo-footer-sep">|</span>
+                <span>Privacy Policy</span>
+                <span class="demo-footer-sep">|</span>
+                <span>Contact Us</span>
               </div>
-              <div class="demo-footer-copy">© 2026 bleed demo · MIT</div>
+              <div class="demo-footer-logo" aria-hidden="true">
+                <svg viewBox="0 0 100 100" width="32" height="32" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M82 30 A36 36 0 1 0 82 70" />
+                  <circle cx="42" cy="42" r="3.5" fill="currentColor" stroke="none" />
+                  <circle cx="58" cy="42" r="3.5" fill="currentColor" stroke="none" />
+                  <path d="M38 58 L48 68 L66 50" />
+                </svg>
+              </div>
+              <div class="demo-footer-copy">CVER.NET © 2011–2026 CVER Inc.  |  Language</div>
             </footer>
 
           </div>
