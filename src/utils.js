@@ -312,6 +312,18 @@ function ensureBeforeOverride() {
   return el;
 }
 
+function ensureTransitionStyle() {
+  let el = document.getElementById('bleed-transition-style');
+  if (el) return el;
+  el = document.createElement('style');
+  el.id = 'bleed-transition-style';
+  el.textContent =
+    'html, body { transition: background-color 400ms ease; } ' +
+    'body::before { transition: background 400ms ease; }';
+  document.head.appendChild(el);
+  return el;
+}
+
 function createBleedAuto(options) {
   const opts = options || {};
   if (typeof document === 'undefined') return { update() {}, destroy() {} };
@@ -382,6 +394,7 @@ function createBleedAuto(options) {
     const topEl = ensureTint(TINT_TOP_ID, true);
     const botEl = ensureTint(TINT_BOT_ID, false);
     const beforeOverrideEl = ensureBeforeOverride();
+    ensureTransitionStyle();
     const htmlEl = document.documentElement;
 
     const userTop = pickVisible('.bleed-top:not(#' + TINT_TOP_ID + ')');
@@ -486,6 +499,8 @@ function createBleedAuto(options) {
       });
       const before = document.getElementById('bleed-before-override');
       if (before) before.remove();
+      const transition = document.getElementById('bleed-transition-style');
+      if (transition) transition.remove();
       document.documentElement.style.backgroundColor = '';
       document.body.style.backgroundColor = '';
     },
