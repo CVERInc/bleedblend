@@ -1,7 +1,7 @@
 {
   "name": "bleed",
-  "version": "1.0.0",
-  "description": "A lightweight CSS and Tailwind utility for tinting the iOS status bar while avoiding WebKit backdrop-filter safe-area clipping.",
+  "version": "2.0.0",
+  "description": "Zero-config iOS Safari chrome染色 — paints the status bar and URL bar to match your page content at each viewport edge. Handles gradients, sections, and rubber-band overscroll.",
   "main": "src/tailwind-plugin.js",
   "style": "src/index.css",
   "exports": {
@@ -10,26 +10,15 @@
       "default": "./src/tailwind-plugin.js"
     },
     "./style": "./src/index.css",
-    "./react": {
-      "types": "./src/react.d.ts",
-      "default": "./src/react.js"
-    },
-    "./vue": {
-      "types": "./src/vue.d.ts",
-      "default": "./src/vue.js"
-    },
-    "./svelte": {
-      "types": "./src/svelte.d.ts",
-      "default": "./src/svelte.js"
-    },
-    "./unocss": {
-      "types": "./src/unocss.d.ts",
-      "default": "./src/unocss.js"
-    },
     "./utils": {
       "types": "./src/utils.d.ts",
       "import": "./src/utils.mjs",
       "default": "./src/utils.js"
+    },
+    "./auto": {
+      "types": "./src/auto.d.ts",
+      "import": "./src/auto.mjs",
+      "default": "./src/auto.js"
     }
   },
   "files": [
@@ -45,11 +34,13 @@
     "safari",
     "webkit",
     "status-bar",
+    "url-bar",
+    "chrome",
     "safe-area",
     "viewport-fit",
     "tailwind",
     "css",
-    "fixed"
+    "zero-config"
   ],
   "author": "",
   "license": "MIT",
@@ -62,22 +53,10 @@
   },
   "homepage": "https://github.com/CVERInc/bleed#readme",
   "peerDependencies": {
-    "tailwindcss": ">=3.0.0",
-    "react": ">=16.8.0",
-    "vue": ">=3.0.0",
-    "svelte": ">=3.0.0"
+    "tailwindcss": ">=3.0.0"
   },
   "peerDependenciesMeta": {
     "tailwindcss": {
-      "optional": true
-    },
-    "react": {
-      "optional": true
-    },
-    "vue": {
-      "optional": true
-    },
-    "svelte": {
       "optional": true
     }
   },
