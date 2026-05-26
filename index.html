@@ -579,9 +579,9 @@
       const BANNER_BOT_COLOR = '#047857';
 
       // Determine chrome colors. Priority:
-      //   1. A `.bleed-top/-bottom` banner染色 chrome via Safari's NATIVE
+      //   1. A `.bleed-top/-bottom` banner tinting chrome via Safari's NATIVE
       //      edge sampling — works regardless of our v2 controller.
-      //   2. Bleed v2 ON: smart per-edge染色 (the gradient / section / page-end
+      //   2. Bleed v2 ON: smart per-edge tinting (the gradient / section / page-end
       //      state machine).
       //   3. Bleed v2 OFF or banner buggy/none: chrome stays on html-bg
       //      fallback — the "broken" iOS look.
@@ -605,7 +605,7 @@
         }
       }
 
-      // Last-section overscroll染色 — only active when v2 is on AND no
+      // Last-section overscroll tinting — only active when v2 is on AND no
       // bottom banner is taking over the bottom edge.
       if (bleedEnabled && lastInView && bottomBannerMode !== 'bleed') {
         phoneScreen.style.backgroundColor = themes[currentTheme].footer;
