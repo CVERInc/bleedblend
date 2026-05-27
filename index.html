@@ -83,6 +83,15 @@
         </div>
       </div>
 
+      <!-- DEVICE MODEL -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Device Model</h3>
+        <div class="option-group" id="device-modes" style="--cols: 2;">
+          <button class="option-btn active" data-mode="standard">iPhone 15</button>
+          <button class="option-btn" data-mode="max">iPhone 15 Pro Max</button>
+        </div>
+      </div>
+
       <!-- PAGE THEME -->
       <div class="panel-section">
         <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg> Page Theme</h3>
@@ -112,14 +121,9 @@
              phone-screen so it overlays the screen edge like a real island). -->
         <div class="phone-notch"></div>
 
-        <!-- Phone Screen — v2 demo page (gradient hero + belt + footer).
-             All overlays (status bar, Safari capsules, banners, safe-area
-             tint band) live INSIDE the screen so they're clipped by its
-             squircle border-radius. Putting them in phone-frame instead
-             leaves their corners sharp — Chrome's overflow clip on a
-             rounded border is unreliable when the parent also has a
-             non-zero border. -->
-        <div class="phone-screen" id="phone-screen">
+        <!-- Phone Viewport — clips everything inside the phone screen
+             and hosts the fixed chrome/overlays so they don't scroll with content. -->
+        <div class="phone-viewport" id="phone-viewport">
 
           <!-- Status Bar (bleedblend tinting target #1) -->
           <div class="status-bar-info" id="sim-status-bar">
@@ -233,56 +237,60 @@
             </div>
           </div>
 
-          <div class="demo-page">
-
-            <!-- Hero (cver.net home: logo + tagline) -->
-            <section class="demo-hero">
-              <img class="demo-logo" src="https://cver.net/logo.gif" alt="cver" draggable="false" />
-              <h2 class="demo-title">Charming Vision,<br>Endless Recreation.</h2>
-            </section>
-
-            <!-- Intro (transparent — gradient continues behind) -->
-            <section class="demo-intro">
-              <p>A small studio building digital tools people actually keep. Since 2011.</p>
-            </section>
-
-            <!-- Belt: "What we make" with three product cards -->
-            <section class="demo-belt">
-              <p class="demo-belt-tag">WHAT WE MAKE</p>
-              <div class="demo-card">
-                <h4>MixFairy</h4>
-                <p class="demo-card-tag">The Discord companion your community actually talks to.</p>
-                <p>Welcomes new members, replies when you're asleep, runs silly slot machines, and quietly keeps track of your VIPs. Free to start.</p>
-                <p class="demo-card-cta">Try MixFairy →</p>
-              </div>
-              <div class="demo-card">
-                <h4>REEF</h4>
-                <p class="demo-card-tag">Give every community a home on the web.</p>
-                <p>Public landing page, private dashboard, quiet engine — keeps scattered community info in one calm, presentable home.</p>
-                <p class="demo-card-cta">Visit REEF →</p>
-              </div>
-              <div class="demo-card">
-                <h4>Open Source</h4>
-                <p class="demo-card-tag">Tools we wrote for ourselves. Now yours too.</p>
-                <p>MIT-licensed tools for problems we actually run into. We share what helps — no enterprise tiers or upsell playbook.</p>
-                <p class="demo-card-cta">Explore OSS →</p>
-              </div>
-            </section>
-
-            <!-- Footer (cver.net page-end) -->
-            <footer class="demo-footer">
-              <div class="demo-footer-links">
-                <span>Terms</span>
-                <span>Privacy</span>
-                <span>Contact</span>
-              </div>
-              <div class="demo-footer-copy">© 2026 bleedblend demo · MIT</div>
-            </footer>
-
-          </div>
-
           <!-- Bottom safe-area tint band (rubber-band overscroll region) -->
           <div class="home-indicator-area"></div>
+
+          <!-- Phone Screen — v2 demo page (gradient hero + belt + footer).
+               This handles the scrollable page content. -->
+          <div class="phone-screen" id="phone-screen">
+            <div class="demo-page">
+
+              <!-- Hero (cver.net home: logo + tagline) -->
+              <section class="demo-hero">
+                <img class="demo-logo" src="https://cver.net/logo.gif" alt="cver" draggable="false" />
+                <h2 class="demo-title">Charming Vision,<br>Endless Recreation.</h2>
+              </section>
+
+              <!-- Intro (transparent — gradient continues behind) -->
+              <section class="demo-intro">
+                <p>A small studio building digital tools people actually keep. Since 2011.</p>
+              </section>
+
+              <!-- Belt: "What we make" with three product cards -->
+              <section class="demo-belt">
+                <p class="demo-belt-tag">WHAT WE MAKE</p>
+                <div class="demo-card">
+                  <h4>MixFairy</h4>
+                  <p class="demo-card-tag">The Discord companion your community actually talks to.</p>
+                  <p>Welcomes new members, replies when you're asleep, runs silly slot machines, and quietly keeps track of your VIPs. Free to start.</p>
+                  <p class="demo-card-cta">Try MixFairy →</p>
+                </div>
+                <div class="demo-card">
+                  <h4>REEF</h4>
+                  <p class="demo-card-tag">Give every community a home on the web.</p>
+                  <p>Public landing page, private dashboard, quiet engine — keeps scattered community info in one calm, presentable home.</p>
+                  <p class="demo-card-cta">Visit REEF →</p>
+                </div>
+                <div class="demo-card">
+                  <h4>Open Source</h4>
+                  <p class="demo-card-tag">Tools we wrote for ourselves. Now yours too.</p>
+                  <p>MIT-licensed tools for problems we actually run into. We share what helps — no enterprise tiers or upsell playbook.</p>
+                  <p class="demo-card-cta">Explore OSS →</p>
+                </div>
+              </section>
+
+              <!-- Footer (cver.net page-end) -->
+              <footer class="demo-footer">
+                <div class="demo-footer-links">
+                  <span>Terms</span>
+                  <span>Privacy</span>
+                  <span>Contact</span>
+                </div>
+                <div class="demo-footer-copy">© 2026 bleedblend demo · MIT</div>
+              </footer>
+
+            </div>
+          </div>
 
         </div>
 
@@ -364,11 +372,13 @@
     // ─────────────────────────────────────────────────────────────
     const STORAGE_ENABLED = 'cver-bleedblend-sim-enabled';
     const STORAGE_STATE = 'cver-bleedblend-sim-state';
+    const root = document.documentElement;
     const phoneScreen = document.getElementById('phone-screen');
     const statusBar = document.getElementById('sim-status-bar');
     const safariBottomBar = document.getElementById('safari-bottom-liquid-bar');
     const homeIndicatorArea = document.querySelector('.home-indicator-area');
     const phoneFrame = document.querySelector('.phone-frame');
+    const phoneViewport = document.getElementById('phone-viewport');
     const safariTopCapsule = document.getElementById('safari-top-capsule');
     const safariBottomAddressRow = document.getElementById('safari-bottom-address-row');
     const safariBottomButtonsRow = document.getElementById('safari-bottom-buttons-row');
@@ -376,6 +386,7 @@
     const topModes = document.getElementById('top-modes');
     const bottomModes = document.getElementById('bottom-modes');
     const shellModes = document.getElementById('shell-modes');
+    const deviceModes = document.getElementById('device-modes');
     const themePresets = document.getElementById('theme-presets');
     const simHeader = document.getElementById('sim-header');
     const simFooter = document.getElementById('sim-footer');
@@ -686,6 +697,26 @@
       bleedblendEnabled = btn.dataset.mode === 'on';
       update();
     });
+
+    // ─────────────────────────────────────────────────────────────
+    // Device Model toggle
+    // ─────────────────────────────────────────────────────────────
+    deviceModes.addEventListener('click', (e) => {
+      const btn = e.target.closest('.option-btn');
+      if (!btn) return;
+      deviceModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyDeviceMode(btn.dataset.mode);
+    });
+
+    function applyDeviceMode(mode) {
+      if (mode === 'max') {
+        phoneFrame.classList.add('preset-max');
+      } else {
+        phoneFrame.classList.remove('preset-max');
+      }
+      update();
+    }
 
     // ─────────────────────────────────────────────────────────────
     // Top / Bottom banner modes (the v1 .bleedblend-top / .bleedblend-bottom story).
