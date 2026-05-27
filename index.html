@@ -692,12 +692,41 @@
     // ─────────────────────────────────────────────────────────────
     // Bleedblend mode toggle
     // ─────────────────────────────────────────────────────────────
+    function syncMasterToggle(enabled) {
+      bleedblendEnabled = enabled;
+      bleedblendModes.querySelectorAll('.option-btn').forEach((b) => {
+        b.classList.toggle('active', b.dataset.mode === (enabled ? 'on' : 'off'));
+      });
+    }
+
+    function syncTopBannerUI(mode) {
+      topModes.querySelectorAll('.option-btn').forEach((b) => {
+        b.classList.toggle('active', b.dataset.mode === mode);
+      });
+    }
+
+    function syncBottomBannerUI(mode) {
+      bottomModes.querySelectorAll('.option-btn').forEach((b) => {
+        b.classList.toggle('active', b.dataset.mode === mode);
+      });
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Bleedblend mode toggle
+    // ─────────────────────────────────────────────────────────────
     bleedblendModes.addEventListener('click', (e) => {
       const btn = e.target.closest('.option-btn');
       if (!btn) return;
-      bleedblendModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      bleedblendEnabled = btn.dataset.mode === 'on';
+      const enabled = btn.dataset.mode === 'on';
+      syncMasterToggle(enabled);
+
+      if (enabled) {
+        if (topBannerMode === 'buggy') applyTopBanner('bleedblend');
+        if (bottomBannerMode === 'buggy') applyBottomBanner('bleedblend');
+      } else {
+        if (topBannerMode === 'bleedblend') applyTopBanner('buggy');
+        if (bottomBannerMode === 'bleedblend') applyBottomBanner('buggy');
+      }
       update();
     });
 
@@ -723,6 +752,7 @@
         simHeader.classList.add('header-bleedblend', 'bleedblend-top');
         innerBlurBox.style.display = 'block';
       }
+      syncTopBannerUI(mode);
       update();
     }
     function applyBottomBanner(mode) {
@@ -731,22 +761,37 @@
       if (mode === 'none') simFooter.classList.add('footer-none');
       else if (mode === 'buggy') simFooter.classList.add('footer-buggy');
       else if (mode === 'bleedblend') simFooter.classList.add('footer-bleedblend', 'bleedblend-bottom');
+      syncBottomBannerUI(mode);
       update();
     }
 
     topModes.addEventListener('click', (e) => {
       const btn = e.target.closest('.option-btn');
       if (!btn) return;
-      topModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      applyTopBanner(btn.dataset.mode);
+      const mode = btn.dataset.mode;
+      applyTopBanner(mode);
+
+      if (mode === 'bleedblend') {
+        syncMasterToggle(true);
+        if (bottomBannerMode === 'buggy') applyBottomBanner('bleedblend');
+      } else if (mode === 'buggy') {
+        syncMasterToggle(false);
+        if (bottomBannerMode === 'bleedblend') applyBottomBanner('buggy');
+      }
     });
     bottomModes.addEventListener('click', (e) => {
       const btn = e.target.closest('.option-btn');
       if (!btn) return;
-      bottomModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      applyBottomBanner(btn.dataset.mode);
+      const mode = btn.dataset.mode;
+      applyBottomBanner(mode);
+
+      if (mode === 'bleedblend') {
+        syncMasterToggle(true);
+        if (topBannerMode === 'buggy') applyTopBanner('bleedblend');
+      } else if (mode === 'buggy') {
+        syncMasterToggle(false);
+        if (topBannerMode === 'bleedblend') applyTopBanner('buggy');
+      }
     });
 
     // ─────────────────────────────────────────────────────────────
