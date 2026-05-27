@@ -99,6 +99,37 @@
         </div>
       </div>
 
+      <!-- LIVE STATE MONITOR -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Live State Monitor</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+          Real-time events processed by the bleedblend state machine.
+        </p>
+        <div class="live-console">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">bleedblend-monitor</span>
+          </div>
+          <div class="terminal-body" id="console-logs">
+            <div class="console-log-line system">[system] Monitor initialized. Initial state: Off + 2 Buggy banners.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK INTEGRATION -->
+      <div class="panel-section">
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> Integration Code</h3>
+        <div class="code-snippet-box">
+          <div class="code-header">
+            <span id="code-lang">JavaScript</span>
+            <button class="copy-btn" id="btn-copy-code">Copy</button>
+          </div>
+          <pre><code id="code-display">import 'bleedblend/auto';</code></pre>
+        </div>
+      </div>
+
     </div>
 
     <!-- Right Simulator Column -->
@@ -282,6 +313,39 @@
             </div>
           </div>
 
+          <!-- Scroll Indicator / Prompt overlay -->
+          <div class="scroll-prompt-overlay" id="scroll-prompt">
+            <div class="prompt-text">Scroll screen to test auto-tint</div>
+            <svg class="prompt-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+          </div>
+
+          <!-- Top Notch Bug Hotspot -->
+          <div class="hotspot-marker top-hotspot buggy" id="hotspot-top">
+            <div class="hotspot-pulse"></div>
+            <div class="hotspot-dot"></div>
+            <div class="hotspot-tooltip">
+              <h4>Top Chrome Layout Bug</h4>
+              <p>Sticky header with backdrop-filter triggers a WebKit bug: safe-area blur vanishes, rendering the status bar 100% transparent. Elements scroll directly under text, causing unreadable collisions.</p>
+              <div class="hotspot-badge status-warning" id="hotspot-top-badge-buggy">Bug active (Auto-tint Off)</div>
+              <div class="hotspot-badge status-fixed" id="hotspot-top-badge-fixed" style="display: none;">Protected by bleedblend</div>
+            </div>
+          </div>
+
+          <!-- Bottom URL Capsule Bug Hotspot -->
+          <div class="hotspot-marker bottom-hotspot buggy" id="hotspot-bottom">
+            <div class="hotspot-pulse"></div>
+            <div class="hotspot-dot"></div>
+            <div class="hotspot-tooltip">
+              <h4>Overscroll & Fallback Seam</h4>
+              <p>Without bleedblend, Safari paints the bottom safe-area solid with the top-page background color. When scrolled over dark footers, this creates a major color clash and visible seam.</p>
+              <div class="hotspot-badge status-warning" id="hotspot-bottom-badge-buggy">Bug active (Auto-tint Off)</div>
+              <div class="hotspot-badge status-fixed" id="hotspot-bottom-badge-fixed" style="display: none;">Protected by bleedblend</div>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -388,6 +452,117 @@
     const innerBlurBox = document.getElementById('inner-blur-box');
 
     // ─────────────────────────────────────────────────────────────
+    // Enhancements DOM refs & helpers
+    // ─────────────────────────────────────────────────────────────
+    const consoleLogs = document.getElementById('console-logs');
+    const codeDisplay = document.getElementById('code-display');
+    const codeLang = document.getElementById('code-lang');
+    const btnCopyCode = document.getElementById('btn-copy-code');
+    
+    let lastTopState = '';
+    let lastBotState = '';
+    let lastActiveSection = '';
+    
+    function logToConsole(message, type = 'info') {
+      if (!consoleLogs) return;
+      const line = document.createElement('div');
+      line.className = `console-log-line ${type}`;
+      
+      const time = new Date();
+      const hh = String(time.getHours()).padStart(2, '0');
+      const mm = String(time.getMinutes()).padStart(2, '0');
+      const ss = String(time.getSeconds()).padStart(2, '0');
+      
+      line.innerText = `[${hh}:${mm}:${ss}] ${message}`;
+      consoleLogs.appendChild(line);
+      
+      while (consoleLogs.childElementCount > 50) {
+        consoleLogs.removeChild(consoleLogs.firstChild);
+      }
+      consoleLogs.scrollTop = consoleLogs.scrollHeight;
+    }
+    
+    function updateCodeSnippet() {
+      if (!codeDisplay || !codeLang) return;
+      let snippet = '';
+      let lang = 'JavaScript';
+      
+      if (topBannerMode === 'bleedblend' && bottomBannerMode === 'bleedblend') {
+        lang = 'HTML';
+        snippet = `<!-- Sticky top header -->\n<header class="bleedblend-top">\n  <div class="nav-content">System Warning</div>\n</header>\n\n<!-- Sticky bottom action -->\n<div class="bleedblend-bottom">\n  <div class="nav-content">Proceed to checkout</div>\n</div>`;
+      } else if (topBannerMode === 'bleedblend') {
+        lang = 'HTML';
+        snippet = `<!-- Sticky top header -->\n<header class="bleedblend-top">\n  <div class="nav-content">System Warning</div>\n</header>`;
+      } else if (bottomBannerMode === 'bleedblend') {
+        lang = 'HTML';
+        snippet = `<!-- Sticky bottom action -->\n<div class="bleedblend-bottom">\n  <div class="nav-content">Proceed to checkout</div>\n</div>`;
+      } else {
+        lang = 'JavaScript';
+        snippet = `// Zero-config auto-tinting for gradients & sections\nimport 'bleedblend/auto';`;
+      }
+      
+      codeLang.innerText = lang;
+      codeDisplay.innerText = snippet;
+    }
+    
+    if (btnCopyCode) {
+      btnCopyCode.addEventListener('click', () => {
+        const codeText = codeDisplay.innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+          btnCopyCode.innerText = 'Copied!';
+          btnCopyCode.classList.add('copied');
+          setTimeout(() => {
+            btnCopyCode.innerText = 'Copy';
+            btnCopyCode.classList.remove('copied');
+          }, 1500);
+        }).catch(err => {
+          console.error('Failed to copy: ', err);
+        });
+      });
+    }
+
+    const hotspotTop = document.getElementById('hotspot-top');
+    const hotspotBottom = document.getElementById('hotspot-bottom');
+    const topBuggyBadge = document.getElementById('hotspot-top-badge-buggy');
+    const topFixedBadge = document.getElementById('hotspot-top-badge-fixed');
+    const bottomBuggyBadge = document.getElementById('hotspot-bottom-badge-buggy');
+    const bottomFixedBadge = document.getElementById('hotspot-bottom-badge-fixed');
+    
+    function updateHotspots() {
+      if (!hotspotTop || !hotspotBottom) return;
+      
+      if (topBannerMode === 'none') {
+        hotspotTop.style.display = 'none';
+      } else {
+        hotspotTop.style.display = 'flex';
+        if (topBannerMode === 'buggy') {
+          hotspotTop.className = 'hotspot-marker top-hotspot buggy';
+          topBuggyBadge.style.display = 'inline-block';
+          topFixedBadge.style.display = 'none';
+        } else {
+          hotspotTop.className = 'hotspot-marker top-hotspot protected';
+          topBuggyBadge.style.display = 'none';
+          topFixedBadge.style.display = 'inline-block';
+        }
+      }
+      
+      if (bottomBannerMode === 'none') {
+        hotspotBottom.style.display = 'none';
+      } else {
+        hotspotBottom.style.display = 'flex';
+        if (bottomBannerMode === 'buggy') {
+          hotspotBottom.className = 'hotspot-marker bottom-hotspot buggy';
+          bottomBuggyBadge.style.display = 'inline-block';
+          bottomFixedBadge.style.display = 'none';
+        } else {
+          hotspotBottom.className = 'hotspot-marker bottom-hotspot protected';
+          bottomBuggyBadge.style.display = 'none';
+          bottomFixedBadge.style.display = 'inline-block';
+        }
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────
     // Themes — gradient + section + footer color triples.
     // Gradient palettes are derived from the CVER teal shape by rotating
     // hue while preserving saturation/lightness, so every preset reads
@@ -453,6 +628,7 @@
       // When bleedblend is OFF, chrome tinting stays on the html-bg fallback
       // (gradient START color = same as html bg in real cver.net usage).
       phoneScreen.style.setProperty('--chrome-fallback', t.top);
+      logToConsole(`Theme changed to: ${name.toUpperCase()} (top: ${t.top}, bottom: ${t.bot})`, 'system');
       update();
     }
 
@@ -617,6 +793,53 @@
         lastInView = r.top < rect.bottom && r.bottom > rect.top;
       }
 
+      // Scroll Prompt Overlay check & fade out
+      const scrollPrompt = document.getElementById('scroll-prompt');
+      if (scrollPrompt) {
+        if (phoneScreen.scrollTop > 10) {
+          if (scrollPrompt.style.opacity !== '0') {
+            scrollPrompt.style.opacity = '0';
+            logToConsole('User scrolled phone screen. Scroll prompt dismissed.', 'system');
+          }
+        } else {
+          scrollPrompt.style.opacity = '1';
+        }
+      }
+
+      // Check current section in view and log transitions
+      let currentSection = 'hero';
+      if (lastInView) {
+        currentSection = 'footer';
+      } else if (phoneScreen.scrollTop > 120) {
+        currentSection = 'belt';
+      }
+
+      if (currentSection !== lastActiveSection) {
+        lastActiveSection = currentSection;
+        if (currentSection === 'hero') {
+          logToConsole('Viewport: Scrolled back to top gradient hero.', 'info');
+        } else if (currentSection === 'belt') {
+          logToConsole('Viewport: Entered mid-page belt section (MixFairy / REEF cards).', 'info');
+        } else if (currentSection === 'footer') {
+          logToConsole('Viewport: Reached page-end footer.', 'info');
+        }
+      }
+
+      // State machine logic logging
+      if (bleedblendEnabled) {
+        if (topResolved.state !== lastTopState) {
+          lastTopState = topResolved.state;
+          logToConsole(`State (Top): ${topResolved.state}`, 'state');
+        }
+        if (botResolved.state !== lastBotState) {
+          lastBotState = botResolved.state;
+          logToConsole(`State (Bottom): ${botResolved.state}`, 'state');
+        }
+      } else {
+        lastTopState = '';
+        lastBotState = '';
+      }
+
       const BANNER_TOP_COLOR = '#b91c1c';
       const BANNER_BOT_COLOR = '#047857';
 
@@ -725,6 +948,7 @@
       if (!btn) return;
       const enabled = btn.dataset.mode === 'on';
       syncMasterToggle(enabled);
+      logToConsole(`bleedblend v2 auto-tint toggled ${enabled ? 'ON' : 'OFF'}.`, 'system');
 
       if (enabled) {
         if (topBannerMode === 'buggy') applyTopBanner('bleedblend');
@@ -759,6 +983,9 @@
         innerBlurBox.style.display = 'block';
       }
       syncTopBannerUI(mode);
+      logToConsole(`Top Banner Mode set to: ${mode.toUpperCase()}`, 'system');
+      updateHotspots();
+      updateCodeSnippet();
       update();
     }
     function applyBottomBanner(mode) {
@@ -768,6 +995,9 @@
       else if (mode === 'buggy') simFooter.classList.add('footer-buggy');
       else if (mode === 'bleedblend') simFooter.classList.add('footer-bleedblend', 'bleedblend-bottom');
       syncBottomBannerUI(mode);
+      logToConsole(`Bottom Action Mode set to: ${mode.toUpperCase()}`, 'system');
+      updateHotspots();
+      updateCodeSnippet();
       update();
     }
 
@@ -844,6 +1074,7 @@
         // Bottom: buttons pill (48) + 14 + 16 = ~78
         setSimInsets(104, 78);
       }
+      logToConsole(`Safari Layout changed to: ${mode.replace('safari-', '').toUpperCase()}`, 'system');
     }
 
     shellModes.addEventListener('click', (e) => {
@@ -881,6 +1112,8 @@
     applyShellMode('safari-compact');
     applyTopBanner('buggy');
     applyBottomBanner('buggy');
+    updateHotspots();
+    updateCodeSnippet();
     requestAnimationFrame(update);
   </script>
 </body>
