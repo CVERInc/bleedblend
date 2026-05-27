@@ -229,19 +229,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 /* CVER OSS Footer */
-.bg-primary-dark {
-  background-color: var(--primary-dark);
-}
-
 footer.site-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.75rem;
   padding: 4rem 1.5rem 3.5rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(245, 251, 250, 0.6);
   font-size: 0.875rem;
-  border-top: 1px solid var(--card-border);
+  background-color: #052829;
   margin-top: 4rem;
 }
 
@@ -250,17 +246,32 @@ footer.site-footer {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  column-gap: 1rem;
+  row-gap: 0.5rem;
 }
 
-footer.site-footer a {
-  color: rgba(255, 255, 255, 0.5);
+.footer-links.row-bottom {
+  font-size: 0.75rem;
+}
+
+.footer-links.row-top a {
+  color: rgba(245, 251, 250, 0.6);
   text-decoration: none;
   transition: color 0.2s;
 }
 
-footer.site-footer a:hover {
-  color: white;
+.footer-links.row-top a:hover {
+  color: #ffffff;
+}
+
+.footer-links.row-bottom a {
+  color: rgba(245, 251, 250, 0.35);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links.row-bottom a:hover {
+  color: rgba(245, 251, 250, 0.6);
 }
 
 .link-underline {
@@ -284,7 +295,7 @@ footer.site-footer a:hover {
 }
 
 .footer-separator {
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(245, 251, 250, 0.35);
 }
 
 .footer-logo {
