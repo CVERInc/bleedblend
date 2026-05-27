@@ -455,7 +455,7 @@
     themePresets.querySelectorAll('.color-btn').forEach((btn) => {
       const t = themes[btn.dataset.theme];
       if (!t) return;
-      btn.style.background = 'linear-gradient(180deg, ' + t.top + ' 10%, ' + t.bot + ' 100%)';
+      btn.style.background = 'linear-gradient(180deg, ' + t.top + ' 10%, ' + t.bot + ' 70%)';
     });
 
     themePresets.addEventListener('click', (e) => {
@@ -622,7 +622,15 @@
         statusBar.style.backgroundColor = BANNER_TOP_COLOR;
       } else if (bleedblendEnabled && topResolved.state === 'BLEED_OVERRIDE' && topC) {
         statusBar.style.backgroundColor = colorToRgb(topC.color);
+      } else if (topBannerMode === 'none') {
+        // Natural Safari: transparent at the very top, solid html bg when scrolled down
+        if (phoneScreen.scrollTop > 0) {
+          statusBar.style.backgroundColor = themes[currentTheme].top;
+        } else {
+          statusBar.style.backgroundColor = 'transparent';
+        }
       } else {
+        // Buggy mode: 100% transparent status bar to show content bleed-through/penetration
         statusBar.style.backgroundColor = 'transparent';
       }
 
