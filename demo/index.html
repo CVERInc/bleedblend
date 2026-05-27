@@ -41,8 +41,8 @@
           The smart per-edge chrome tinting based on scrolling content. Turn off to see iOS's broken fallback.
         </p>
         <div class="option-group" id="bleedblend-modes" style="--cols: 2;">
-          <button class="option-btn" data-mode="off">Off</button>
-          <button class="option-btn active" data-mode="on">On</button>
+          <button class="option-btn active" data-mode="off">Off</button>
+          <button class="option-btn" data-mode="on">On</button>
         </div>
       </div>
 
@@ -53,8 +53,8 @@
           Drop a sticky top banner into the page — and see how it interacts with the chrome tinting.
         </p>
         <div class="option-group" id="top-modes" style="--cols: 3;">
-          <button class="option-btn active" data-mode="none">None</button>
-          <button class="option-btn" data-mode="buggy">Buggy</button>
+          <button class="option-btn" data-mode="none">None</button>
+          <button class="option-btn active" data-mode="buggy">Buggy</button>
           <button class="option-btn" data-mode="bleedblend">Bleedblend</button>
         </div>
       </div>
@@ -66,8 +66,8 @@
           A sticky bottom CTA (think "Add to cart") — same buggy / bleedblend showcase as above.
         </p>
         <div class="option-group" id="bottom-modes" style="--cols: 3;">
-          <button class="option-btn active" data-mode="none">None</button>
-          <button class="option-btn" data-mode="buggy">Buggy</button>
+          <button class="option-btn" data-mode="none">None</button>
+          <button class="option-btn active" data-mode="buggy">Buggy</button>
           <button class="option-btn" data-mode="bleedblend">Bleedblend</button>
         </div>
       </div>
@@ -471,7 +471,7 @@
     // render to chrome elements (status bar + Safari bottom bar).
     // Mirrors createBleedblendAuto's logic, scoped to the phone container.
     // ─────────────────────────────────────────────────────────────
-    let bleedblendEnabled = true;
+    let bleedblendEnabled = false;
     const TINT_PX = 12;
 
     function sampleInContainer(container, x, y) {
@@ -622,7 +622,7 @@
         statusBar.style.backgroundColor = BANNER_TOP_COLOR;
       } else if (bleedblendEnabled && topResolved.state === 'BLEED_OVERRIDE' && topC) {
         statusBar.style.backgroundColor = colorToRgb(topC.color);
-      } else if (topBannerMode === 'none') {
+      } else if (bleedblendEnabled && topBannerMode === 'none') {
         // Natural Safari: transparent at the very top, solid html bg when scrolled down
         if (phoneScreen.scrollTop > 0) {
           statusBar.style.backgroundColor = themes[currentTheme].top;
@@ -630,7 +630,7 @@
           statusBar.style.backgroundColor = 'transparent';
         }
       } else {
-        // Buggy mode: 100% transparent status bar to show content bleed-through/penetration
+        // Off state or Buggy mode: 100% transparent status bar to show content bleed-through/penetration
         statusBar.style.backgroundColor = 'transparent';
       }
 
@@ -662,6 +662,9 @@
           homeIndicatorArea.style.backgroundColor = BANNER_BOT_COLOR;
         } else if (bleedblendEnabled && botResolved.state === 'BLEED_OVERRIDE' && botResolved.color) {
           homeIndicatorArea.style.backgroundColor = colorToRgb(botResolved.color);
+        } else if (!bleedblendEnabled) {
+          // Off state: bottom safe area inherits/samples the solid top background color (fallback mismatch)
+          homeIndicatorArea.style.backgroundColor = themes[currentTheme].top;
         } else {
           homeIndicatorArea.style.backgroundColor = 'transparent';
         }
@@ -825,8 +828,8 @@
     // ─────────────────────────────────────────────────────────────
     applyTheme('teal');
     applyShellMode('safari-compact');
-    applyTopBanner('none');
-    applyBottomBanner('none');
+    applyTopBanner('buggy');
+    applyBottomBanner('buggy');
     requestAnimationFrame(update);
   </script>
 </body>
