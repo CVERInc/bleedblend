@@ -83,15 +83,6 @@
         </div>
       </div>
 
-      <!-- DEVICE MODEL -->
-      <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Device Model</h3>
-        <div class="option-group" id="device-modes" style="--cols: 2;">
-          <button class="option-btn active" data-mode="standard">iPhone 15</button>
-          <button class="option-btn" data-mode="max">iPhone 15 Pro Max</button>
-        </div>
-      </div>
-
       <!-- PAGE THEME -->
       <div class="panel-section">
         <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg> Page Theme</h3>
@@ -104,7 +95,6 @@
           <button class="color-btn"        data-theme="violet" title="Violet"></button>
           <button class="color-btn"        data-theme="rose"   title="Rose"></button>
           <button class="color-btn"        data-theme="forest" title="Forest"></button>
-          <button class="color-btn"        data-theme="white"  title="Solid white"></button>
           <button class="color-btn"        data-theme="black"  title="Solid black"></button>
         </div>
       </div>
@@ -386,7 +376,6 @@
     const topModes = document.getElementById('top-modes');
     const bottomModes = document.getElementById('bottom-modes');
     const shellModes = document.getElementById('shell-modes');
-    const deviceModes = document.getElementById('device-modes');
     const themePresets = document.getElementById('theme-presets');
     const simHeader = document.getElementById('sim-header');
     const simFooter = document.getElementById('sim-footer');
@@ -444,7 +433,6 @@
       rose:   gradientTheme(330),
       forest: gradientTheme(100),
       // Solids — single-color screens for testing chrome edge cases.
-      white:  solidTheme('#ffffff', '#e5e5e5'),
       black:  solidTheme('#0a0a0a', '#1a1a1a'),
     };
     let currentTheme = 'teal';
@@ -593,18 +581,6 @@
       return lum > 0.62 ? '#000' : '#fff';
     }
 
-    // Paint a chrome element with the sampled edge color as a SOLID fill.
-    // Mirrors iOS 26 Safari's chrome-tinting behavior: the chrome strip
-    // gets painted with the color Safari samples from the viewport edge —
-    // visually it reads as an opaque tint that matches the adjacent page
-    // content, not a frosted-glass overlay.
-    function applyChromePaint(el, paint) {
-      if (!paint || !paint.color) {
-        el.style.backgroundColor = '';
-        return;
-      }
-      el.style.backgroundColor = paint.color;
-    }
 
     let rafScheduled = false;
     function update() {
@@ -635,32 +611,51 @@
         lastInView = r.top < rect.bottom && r.bottom > rect.top;
       }
 
-      // Banner colors when Bleedblend Fix mode is on — match the solid
-      // outer-wrapper colors in simulator.css (.header-bleedblend / .footer-bleedblend).
       const BANNER_TOP_COLOR = '#b91c1c';
       const BANNER_BOT_COLOR = '#047857';
-      const fallback = themes[currentTheme].top;
 
-      // Per-edge resolution: { color } — solid sampled fill in all cases.
-      // iOS 26 Safari tints the chrome strip with an opaque sample of the
-      // viewport edge; both SAFE_NATURAL and BLEED_OVERRIDE paths land on
-      // a solid color, only the source differs.
-      let topPaint = { color: fallback };
-      let botPaint = { color: fallback };
-
+      // ── Status Bar ──────────────────────────────────────────────
+      // Real iOS: the status bar region is transparent — page content
+      // shows through (the "buggy" bleed-through seen in user screenshots).
+      // Only paint solid when a bleedblend banner owns the edge.
       if (topBannerMode === 'bleedblend') {
-        topPaint = { color: BANNER_TOP_COLOR };
-      } else if (bleedblendEnabled && topC) {
-        topPaint = { color: colorToRgb(topC.color) };
+        statusBar.style.backgroundColor = BANNER_TOP_COLOR;
+      } else if (bleedblendEnabled && topResolved.state === 'BLEED_OVERRIDE' && topC) {
+        statusBar.style.backgroundColor = colorToRgb(topC.color);
+      } else {
+        statusBar.style.backgroundColor = 'transparent';
       }
 
+      // ── Safari Bottom Bar ──────────────────────────────────────
+      // Real iOS: the URL capsule is a frosted-glass pill with
+      // translucent backdrop-filter. Only override to solid when
+      // a bleedblend banner takes over the edge.
       if (bottomBannerMode === 'bleedblend') {
-        botPaint = { color: BANNER_BOT_COLOR };
-      } else if (bleedblendEnabled) {
-        if (botResolved.state === 'BLEED_OVERRIDE' && botResolved.color) {
-          botPaint = { color: colorToRgb(botResolved.color) };
-        } else if (botResolved.state === 'SAFE_NATURAL' && botC) {
-          botPaint = { color: colorToRgb(botC.color) };
+        safariBottomBar.style.backgroundColor = BANNER_BOT_COLOR;
+        safariBottomBar.style.backdropFilter = 'none';
+        safariBottomBar.style.webkitBackdropFilter = 'none';
+        safariBottomBar.style.borderColor = 'transparent';
+      } else if (bleedblendEnabled && botResolved.state === 'BLEED_OVERRIDE' && botResolved.color) {
+        safariBottomBar.style.backgroundColor = colorToRgb(botResolved.color);
+        safariBottomBar.style.backdropFilter = 'none';
+        safariBottomBar.style.webkitBackdropFilter = 'none';
+        safariBottomBar.style.borderColor = 'transparent';
+      } else {
+        // Restore translucent frosted-glass defaults (matches CSS)
+        safariBottomBar.style.backgroundColor = 'rgba(28, 28, 30, 0.45)';
+        safariBottomBar.style.backdropFilter = 'blur(20px)';
+        safariBottomBar.style.webkitBackdropFilter = 'blur(20px)';
+        safariBottomBar.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+      }
+
+      // ── Home Indicator Area ────────────────────────────────────
+      if (homeIndicatorArea) {
+        if (bottomBannerMode === 'bleedblend') {
+          homeIndicatorArea.style.backgroundColor = BANNER_BOT_COLOR;
+        } else if (bleedblendEnabled && botResolved.state === 'BLEED_OVERRIDE' && botResolved.color) {
+          homeIndicatorArea.style.backgroundColor = colorToRgb(botResolved.color);
+        } else {
+          homeIndicatorArea.style.backgroundColor = 'transparent';
         }
       }
 
@@ -672,18 +667,15 @@
         phoneScreen.style.backgroundColor = '';
       }
 
-      // Apply paint to chrome elements. Translucent mode shows page content
-      // through with blur — that's iOS Safari's native sampling look when
-      // bleed steps back (display:none on the tint element).
-      applyChromePaint(statusBar, topPaint);
-      applyChromePaint(safariBottomBar, botPaint);
-      if (homeIndicatorArea) applyChromePaint(homeIndicatorArea, botPaint);
-
-      // Auto-contrast for status bar text. For translucent paint the page
-      // content shows through, so we estimate the effective bg from the
-      // sampled top color rather than the half-opacity paint.
-      const statusBg = topPaint.color || fallback;
-      statusBar.style.setProperty('--status-fg', pickStatusFg(statusBg));
+      // Auto-contrast for status bar text — when the status bar is
+      // transparent, derive contrast from the underlying page content.
+      const statusBg = statusBar.style.backgroundColor;
+      if (!statusBg || statusBg === 'transparent') {
+        const pageBg = topC ? colorToRgb(topC.color) : themes[currentTheme].top;
+        statusBar.style.setProperty('--status-fg', pickStatusFg(pageBg));
+      } else {
+        statusBar.style.setProperty('--status-fg', pickStatusFg(statusBg));
+      }
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -697,26 +689,6 @@
       bleedblendEnabled = btn.dataset.mode === 'on';
       update();
     });
-
-    // ─────────────────────────────────────────────────────────────
-    // Device Model toggle
-    // ─────────────────────────────────────────────────────────────
-    deviceModes.addEventListener('click', (e) => {
-      const btn = e.target.closest('.option-btn');
-      if (!btn) return;
-      deviceModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      applyDeviceMode(btn.dataset.mode);
-    });
-
-    function applyDeviceMode(mode) {
-      if (mode === 'max') {
-        phoneFrame.classList.add('preset-max');
-      } else {
-        phoneFrame.classList.remove('preset-max');
-      }
-      update();
-    }
 
     // ─────────────────────────────────────────────────────────────
     // Top / Bottom banner modes (the v1 .bleedblend-top / .bleedblend-bottom story).

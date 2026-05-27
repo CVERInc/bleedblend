@@ -18,15 +18,10 @@
    approximates the squircle look in pure CSS. Values are tuned for the
    "standard" (non-Max) class around 6.1–6.3". */
 .phone-frame {
-  --phone-width: 375px;
-  --phone-height: 812px;
-  --phone-outer-radius: 48px 48px 48px 48px / 50px 50px 50px 50px;
-  --phone-inner-radius: 38px 38px 38px 38px / 40px 40px 40px 40px;
-
-  width: var(--phone-width);
-  height: var(--phone-height);
+  width: 375px;
+  height: 812px;
   background: #000;
-  border-radius: var(--phone-outer-radius);
+  border-radius: 48px 48px 48px 48px / 50px 50px 50px 50px;
   border: 12px solid #27272a;
   box-shadow: 0 30px 100px rgba(0, 0, 0, 0.8),
               inset 0 0 10px rgba(255, 255, 255, 0.1);
@@ -34,17 +29,6 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              border-radius 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Pro Max Preset overrides */
-.phone-frame.preset-max {
-  --phone-width: 430px;
-  --phone-height: 932px;
-  --phone-outer-radius: 54px 54px 54px 54px / 56px 56px 56px 56px;
-  --phone-inner-radius: 42px 42px 42px 42px / 44px 44px 44px 44px;
 }
 
 /* Phone Viewport Inner Wrapper — clips everything inside the phone screen
@@ -55,8 +39,7 @@
   height: 100%;
   flex: 1;
   overflow: hidden;
-  border-radius: var(--phone-inner-radius);
-  transition: border-radius 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 38px 38px 38px 38px / 40px 40px 40px 40px;
 }
 
 /* iPhone Screen Inner */
@@ -72,10 +55,9 @@
   background-color: var(--demo-grad-top, #aceace);
   overflow-y: scroll;
   scrollbar-width: none;
-  transition: background-color 400ms ease,
-              border-radius 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 400ms ease;
   /* Inner screen squircle, paired with .phone-frame above. */
-  border-radius: var(--phone-inner-radius);
+  border-radius: 38px 38px 38px 38px / 40px 40px 40px 40px;
   /* Expose the screen height as a container-query unit so .demo-hero
      can size itself to the full viewport on initial load — mirroring
      a real iPhone where the hero fills the screen before scroll. */
@@ -503,7 +485,6 @@
   font-weight: 500;
   letter-spacing: -0.01em;
 }
-
 /* Unified Bottom Liquid Bar (iOS 26 Liquid Glass)
    Sits INSIDE the safe-area-bottom region (right against the chrome edge),
    not above it — that's how iOS actually positions the URL pill / button
@@ -513,17 +494,20 @@
   bottom: 14px;
   left: 16px;
   right: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   z-index: 1001;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
   pointer-events: auto;
+  /* default translucent styling */
+  background-color: rgba(28, 28, 30, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
-/* Compact Mode Bottom Bar */
 .sim-safari-bottom-liquid-bar.mode-compact {
   height: 48px;
   border-radius: 99px;
