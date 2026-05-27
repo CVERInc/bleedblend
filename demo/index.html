@@ -455,7 +455,7 @@
     themePresets.querySelectorAll('.color-btn').forEach((btn) => {
       const t = themes[btn.dataset.theme];
       if (!t) return;
-      btn.style.background = 'linear-gradient(180deg, ' + t.top + ' 10%, ' + t.bot + ' 70%)';
+      btn.style.background = 'linear-gradient(180deg, ' + t.top + ' 0%, ' + t.bot + ' 100%)';
     });
 
     themePresets.addEventListener('click', (e) => {
