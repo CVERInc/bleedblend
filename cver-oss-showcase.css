@@ -313,3 +313,277 @@ footer.site-footer {
   width: 44px;
   height: 44px;
 }
+
+/* Live Console Log Terminal */
+.live-console {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-family: 'Courier New', Courier, monospace;
+  overflow: hidden;
+  margin-top: 0.5rem;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.terminal-header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.terminal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+
+.terminal-title {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.7rem;
+  margin-left: 0.4rem;
+  font-weight: bold;
+}
+
+.terminal-body {
+  padding: 0.6rem;
+  height: 120px;
+  overflow-y: auto;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #a8ffb2; /* Terminal green */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+.terminal-body::-webkit-scrollbar {
+  width: 4px;
+}
+.terminal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.console-log-line {
+  margin-bottom: 0.25rem;
+  word-break: break-all;
+  opacity: 0.95;
+  transition: opacity 0.2s;
+}
+.console-log-line.system {
+  color: #ffda79; /* System yellow */
+}
+.console-log-line.state {
+  color: #8be9fd; /* Cyan state */
+}
+
+/* Code Snippet Box */
+.code-snippet-box {
+  background: rgba(12, 13, 16, 0.95);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.code-header {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.copy-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all 0.2s;
+}
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.copy-btn.copied {
+  background: #27c93f;
+  color: white;
+  border-color: #27c93f;
+}
+
+.code-snippet-box pre {
+  margin: 0;
+  padding: 0.6rem;
+  overflow-x: auto;
+}
+
+.code-snippet-box code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  color: #f1fa8c; /* Yellowish code */
+}
+
+/* Scroll Prompt Overlay */
+.scroll-prompt-overlay {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8rem;
+  pointer-events: none;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.5rem 0.8rem;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.4s ease;
+}
+
+.prompt-arrow {
+  animation: bounceArrow 1.5s infinite;
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* Hotspots markers styling */
+.hotspot-marker {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-hotspot {
+  top: 15px;
+  left: 82px;
+}
+.bottom-hotspot {
+  bottom: 22px;
+  left: 24px;
+}
+
+.hotspot-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: background-color 0.4s ease;
+}
+.hotspot-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: pulse-ring 1.8s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+  transition: border-color 0.4s ease;
+}
+
+/* Colors for buggy / protected states */
+.hotspot-marker.buggy .hotspot-dot {
+  background-color: #ff4757;
+}
+.hotspot-marker.buggy .hotspot-pulse {
+  border: 3px solid rgba(255, 71, 87, 0.6);
+}
+
+.hotspot-marker.protected .hotspot-dot {
+  background-color: #2ed573;
+}
+.hotspot-marker.protected .hotspot-pulse {
+  border: 3px solid rgba(46, 213, 115, 0.6);
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.7); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Tooltip card */
+.hotspot-tooltip {
+  position: absolute;
+  background: rgba(12, 13, 16, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.8rem;
+  width: 240px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.9) translateY(5px);
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  backdrop-filter: blur(10px);
+  z-index: 99;
+}
+
+.top-hotspot .hotspot-tooltip {
+  top: 24px;
+  left: -20px;
+  transform-origin: top left;
+}
+.bottom-hotspot .hotspot-tooltip {
+  bottom: 24px;
+  left: -20px;
+  transform-origin: bottom left;
+}
+
+.hotspot-marker:hover .hotspot-tooltip {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
+}
+
+.hotspot-tooltip h4 {
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-bottom: 0.35rem;
+  color: white;
+}
+
+.hotspot-tooltip p {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.5rem;
+}
+
+.hotspot-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: bold;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+.hotspot-badge.status-warning {
+  background: rgba(255, 71, 87, 0.15);
+  color: #ff4757;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
+.hotspot-badge.status-fixed {
+  background: rgba(46, 213, 115, 0.15);
+  color: #2ed573;
+  border: 1px solid rgba(46, 213, 115, 0.3);
+}
