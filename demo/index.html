@@ -45,13 +45,51 @@
       <div class="panel-section">
         <div class="panel-section-header">
           <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Mockup Settings</h3>
-          <div class="compact-presets" id="theme-presets">
-            <button class="color-btn active" data-theme="teal"   title="Teal (cver.net)"></button>
-            <button class="color-btn"        data-theme="ocean"  title="Ocean"></button>
-            <button class="color-btn"        data-theme="violet" title="Violet"></button>
-            <button class="color-btn"        data-theme="rose"   title="Rose"></button>
-            <button class="color-btn"        data-theme="forest" title="Forest"></button>
-            <button class="color-btn"        data-theme="black"  title="Solid black"></button>
+          <button class="header-edit-btn" id="mockup-edit-btn" title="Customize mockup page theme">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+            </svg>
+            <span>Edit</span>
+          </button>
+          
+          <!-- Popover Card for Mockup Settings -->
+          <div class="popover-card" id="mockup-popover">
+            <div class="popover-row">
+              <label class="popover-label">Theme Presets</label>
+              <div class="compact-presets" id="theme-presets" style="margin-top: 0.2rem; display: flex; gap: 0.4rem;">
+                <button class="color-btn active" data-theme="teal"   title="Teal (cver.net)"></button>
+                <button class="color-btn"        data-theme="ocean"  title="Ocean"></button>
+                <button class="color-btn"        data-theme="violet" title="Violet"></button>
+                <button class="color-btn"        data-theme="rose"   title="Rose"></button>
+                <button class="color-btn"        data-theme="forest" title="Forest"></button>
+                <button class="color-btn"        data-theme="black"  title="Solid black"></button>
+              </div>
+            </div>
+            <div class="popover-row" style="border-top: 1px dashed rgba(255, 255, 255, 0.08); padding-top: 0.6rem; margin-top: 0.2rem;">
+              <label class="popover-label">Custom Theme</label>
+              <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 0.2rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                  <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Top</span>
+                  <div style="display: flex; align-items: center; gap: 6px; flex-grow: 1; justify-content: flex-end;">
+                    <label class="color-picker-label" style="width: 24px; height: 24px;">
+                      <input type="color" id="theme-color-top" value="#a7f3d0" class="native-color-picker" />
+                      <span class="color-preview-circle" id="theme-preview-top" style="background-color: #a7f3d0;"></span>
+                    </label>
+                    <input type="text" class="hex-text-input" id="theme-hex-top" value="#a7f3d0" maxlength="7" style="max-width: 80px; padding: 0.2rem 0.4rem; font-size: 0.75rem;" />
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                  <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Bottom</span>
+                  <div style="display: flex; align-items: center; gap: 6px; flex-grow: 1; justify-content: flex-end;">
+                    <label class="color-picker-label" style="width: 24px; height: 24px;">
+                      <input type="color" id="theme-color-bot" value="#064e3b" class="native-color-picker" />
+                      <span class="color-preview-circle" id="theme-preview-bot" style="background-color: #064e3b;"></span>
+                    </label>
+                    <input type="text" class="hex-text-input" id="theme-hex-bot" value="#064e3b" maxlength="7" style="max-width: 80px; padding: 0.2rem 0.4rem; font-size: 0.75rem;" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="mockup-settings-row">
@@ -475,6 +513,14 @@
     const bottomEditBtn = document.getElementById('bottom-edit-btn');
     const topPopover = document.getElementById('top-popover');
     const bottomPopover = document.getElementById('bottom-popover');
+    const mockupEditBtn = document.getElementById('mockup-edit-btn');
+    const mockupPopover = document.getElementById('mockup-popover');
+    const themeColorTop = document.getElementById('theme-color-top');
+    const themeColorBot = document.getElementById('theme-color-bot');
+    const themeHexTop = document.getElementById('theme-hex-top');
+    const themeHexBot = document.getElementById('theme-hex-bot');
+    const themePreviewTop = document.getElementById('theme-preview-top');
+    const themePreviewBot = document.getElementById('theme-preview-bot');
     
     const simHeaderText = document.getElementById('sim-header-text');
     const simFooterText = document.getElementById('sim-footer-text');
@@ -605,8 +651,24 @@
     };
     let currentTheme = 'teal';
 
+    function darkenColor(hexVal, factor = 0.55) {
+      const c = parseColor(hexVal);
+      if (!c) return hexVal;
+      const r = Math.max(0, Math.min(255, Math.round(c.r * factor)));
+      const g = Math.max(0, Math.min(255, Math.round(c.g * factor)));
+      const b = Math.max(0, Math.min(255, Math.round(c.b * factor)));
+      return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    const CUSTOM_THEME = {
+      top: '#a7f3d0',
+      bot: '#064e3b',
+      belt: '#03261d',
+      footer: '#064e3b'
+    };
+
     function applyTheme(name) {
-      const t = themes[name];
+      const t = name === 'custom' ? CUSTOM_THEME : themes[name];
       currentTheme = name;
       phoneScreen.style.setProperty('--demo-grad-top', t.top);
       phoneScreen.style.setProperty('--demo-grad-bot', t.bot);
@@ -615,6 +677,21 @@
       // When bleedblend is OFF, chrome tinting stays on the html-bg fallback
       // (gradient START color = same as html bg in real cver.net usage).
       phoneScreen.style.setProperty('--chrome-fallback', t.top);
+
+      // Sync custom theme editor picker values
+      if (name !== 'custom') {
+        if (themeColorTop && themeHexTop && themePreviewTop) {
+          themeColorTop.value = t.top;
+          themeHexTop.value = t.top;
+          themePreviewTop.style.backgroundColor = t.top;
+        }
+        if (themeColorBot && themeHexBot && themePreviewBot) {
+          themeColorBot.value = t.bot;
+          themeHexBot.value = t.bot;
+          themePreviewBot.style.backgroundColor = t.bot;
+        }
+      }
+
       logToConsole(`Theme changed to: ${name.toUpperCase()} (top: ${t.top}, bottom: ${t.bot})`, 'system');
       update();
     }
@@ -1072,6 +1149,7 @@
         e.stopPropagation();
         topPopover.classList.toggle('visible');
         if (bottomPopover) bottomPopover.classList.remove('visible');
+        if (mockupPopover) mockupPopover.classList.remove('visible');
       });
       topPopover.addEventListener('click', (e) => e.stopPropagation());
     }
@@ -1081,13 +1159,25 @@
         e.stopPropagation();
         bottomPopover.classList.toggle('visible');
         if (topPopover) topPopover.classList.remove('visible');
+        if (mockupPopover) mockupPopover.classList.remove('visible');
       });
       bottomPopover.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    if (mockupEditBtn && mockupPopover) {
+      mockupEditBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mockupPopover.classList.toggle('visible');
+        if (topPopover) topPopover.classList.remove('visible');
+        if (bottomPopover) bottomPopover.classList.remove('visible');
+      });
+      mockupPopover.addEventListener('click', (e) => e.stopPropagation());
     }
 
     document.addEventListener('click', () => {
       if (topPopover) topPopover.classList.remove('visible');
       if (bottomPopover) bottomPopover.classList.remove('visible');
+      if (mockupPopover) mockupPopover.classList.remove('visible');
     });
 
     const topColorPicker = document.getElementById('top-color-picker');
@@ -1149,6 +1239,57 @@
           val = '#' + val;
         }
         updateBottomColor(val, 'hex');
+      });
+    }
+
+    function updateCustomThemeColor(edge, hexVal, source) {
+      if (/^#[0-9A-F]{6}$/i.test(hexVal)) {
+        if (edge === 'top') {
+          CUSTOM_THEME.top = hexVal;
+          if (themeColorTop && source !== 'picker') themeColorTop.value = hexVal;
+          if (themeHexTop && source !== 'hex') themeHexTop.value = hexVal;
+          if (themePreviewTop) themePreviewTop.style.backgroundColor = hexVal;
+        } else {
+          CUSTOM_THEME.bot = hexVal;
+          CUSTOM_THEME.footer = hexVal;
+          CUSTOM_THEME.belt = darkenColor(hexVal, 0.55);
+          if (themeColorBot && source !== 'picker') themeColorBot.value = hexVal;
+          if (themeHexBot && source !== 'hex') themeHexBot.value = hexVal;
+          if (themePreviewBot) themePreviewBot.style.backgroundColor = hexVal;
+        }
+        if (themePresets) {
+          themePresets.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+        }
+        applyTheme('custom');
+      }
+    }
+
+    if (themeColorTop) {
+      themeColorTop.addEventListener('input', (e) => {
+        updateCustomThemeColor('top', e.target.value, 'picker');
+      });
+    }
+    if (themeHexTop) {
+      themeHexTop.addEventListener('input', (e) => {
+        let val = e.target.value.trim();
+        if (!val.startsWith('#') && val.length > 0) {
+          val = '#' + val;
+        }
+        updateCustomThemeColor('top', val, 'hex');
+      });
+    }
+    if (themeColorBot) {
+      themeColorBot.addEventListener('input', (e) => {
+        updateCustomThemeColor('bottom', e.target.value, 'picker');
+      });
+    }
+    if (themeHexBot) {
+      themeHexBot.addEventListener('input', (e) => {
+        let val = e.target.value.trim();
+        if (!val.startsWith('#') && val.length > 0) {
+          val = '#' + val;
+        }
+        updateCustomThemeColor('bottom', val, 'hex');
       });
     }
 
