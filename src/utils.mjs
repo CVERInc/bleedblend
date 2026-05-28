@@ -14,6 +14,32 @@
 // Color utilities
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Last-resort normalizer for color values regex can't read — oklch(), lab(),
+// lch(), hwb(), color(display-p3 …), named keywords, etc. getComputedStyle
+// serializes these verbatim (not down-converted to rgb), so we paint 1px and
+// read it back as sRGB. Works for ANY CSS color the browser can render.
+// DOM-only: returns null off-DOM (e.g. Node), keeping the pure path pure.
+let _normCtx;
+function normalizeViaCanvas(str) {
+  if (typeof document === 'undefined') return null;
+  try {
+    if (!_normCtx) {
+      const cv = document.createElement('canvas');
+      cv.width = cv.height = 1;
+      _normCtx = cv.getContext('2d', { willReadFrequently: true });
+    }
+    _normCtx.clearRect(0, 0, 1, 1);
+    _normCtx.fillStyle = 'rgba(0,0,0,0)'; // invalid input leaves this → alpha 0
+    _normCtx.fillStyle = str;
+    _normCtx.fillRect(0, 0, 1, 1);
+    const d = _normCtx.getImageData(0, 0, 1, 1).data;
+    if (d[3] === 0) return null; // unparseable or fully transparent
+    return { r: d[0], g: d[1], b: d[2], a: d[3] / 255 };
+  } catch (e) {
+    return null;
+  }
+}
+
 export function parseColor(str) {
   if (!str) return null;
   const s = str.trim();
@@ -39,7 +65,7 @@ export function parseColor(str) {
       a: parts[3] != null ? parseFloat(parts[3]) : 1,
     };
   }
-  return null;
+  return normalizeViaCanvas(s);
 }
 
 export function parseColorWithAlpha(str) {
@@ -77,6 +103,27 @@ export function colorsClose(a, b, threshold = 8) {
 // Gradient parsing
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Extract a leading CSS color token from a gradient stop: #hex, a function
+// color with balanced parens (rgb()/hsl()/oklch()/lab()/color() …), or a bare
+// named keyword. Lets parseGradient survive modern-syntax stops that
+// getComputedStyle leaves un-normalized (e.g. oklch / color(display-p3 …)).
+function leadingColorToken(p) {
+  if (p[0] === '#') {
+    const m = p.match(/^#[0-9a-fA-F]{3,8}/);
+    return m ? m[0] : null;
+  }
+  if (/^[a-zA-Z][\w-]*\(/.test(p)) {
+    let depth = 0;
+    for (let i = 0; i < p.length; i++) {
+      if (p[i] === '(') depth++;
+      else if (p[i] === ')') { depth--; if (depth === 0) return p.slice(0, i + 1); }
+    }
+    return null; // unbalanced parens
+  }
+  const id = p.match(/^[a-zA-Z]{2,}/);
+  return id ? id[0] : null;
+}
+
 // Parse a linear-gradient string into ordered stops { color, pos } where
 // pos is 0..1. Tolerates the form getComputedStyle returns (direction may be
 // dropped when it's the 180deg default).
@@ -102,11 +149,11 @@ export function parseGradient(bgImage) {
   for (const raw of parts) {
     const p = raw.trim();
     if (/^(\d+(\.\d+)?(deg|turn|rad|grad)|to\s+\w+(\s+\w+)?)$/i.test(p)) continue;
-    const colorMatch = p.match(/^(rgba?\([^)]+\)|#[0-9a-fA-F]{3,8})/);
-    if (!colorMatch) continue;
-    const color = parseColor(colorMatch[1]);
+    const colorTok = leadingColorToken(p);
+    if (!colorTok) continue;
+    const color = parseColor(colorTok);
     if (!color) continue;
-    const posMatch = p.slice(colorMatch[0].length).match(/(-?\d+(?:\.\d+)?)\s*%/);
+    const posMatch = p.slice(colorTok.length).match(/(-?\d+(?:\.\d+)?)\s*%/);
     stops.push({ color, posPct: posMatch ? parseFloat(posMatch[1]) : null });
   }
   if (stops.length === 0) return null;

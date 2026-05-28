@@ -122,6 +122,25 @@ const CASES = [
     ],
   },
   {
+    name: 'L gradient stops in oklch() (modern color)', ua: 'ios',
+    html: page(`html{background:#ffffff}body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,oklch(0.95 0.03 160) 0%,oklch(0.55 0.13 195) 100%)}`, '<div style="height:300vh"></div>'),
+    check: (t) => [
+      ['bottom BLEED_OVERRIDE (oklch resolved, was SAFE before fix)', t.botState === 'BLEED_OVERRIDE'],
+      ['bottom tint is a real color, not transparent', rgb(t.botBg) !== null && !/, 0\)$/.test(t.botBg)],
+      ['bottom tint is teal-ish (r<g, r<b)', tealish(t.botBg)],
+    ],
+  },
+  {
+    name: 'M footer bg in color(display-p3)', ua: 'ios',
+    html: page('section{min-height:120vh;background:#ffffff}footer{min-height:70vh;background:color(display-p3 0 0.5 0.55)}',
+      '<main><section>1</section></main><footer>foot</footer>'),
+    check: (t, b) => [
+      ['footer BLEED_OVERRIDE', b.botState === 'BLEED_OVERRIDE'],
+      ['footer color read correctly (teal-ish, not white)', tealish(b.botBg)],
+      ['overscroll html bg teal-ish', tealish(b.htmlBg)],
+    ],
+  },
+  {
     name: 'K desktop UA -> no-op (browser-support claim)', ua: 'desktop',
     html: page(`html{background:#fff}body::before{content:"";position:fixed;inset:0;z-index:-1;background:${GRAD}}`, '<div style="height:300vh"></div>'),
     check: (t, b) => [
@@ -137,6 +156,7 @@ const CASES = [
 const slug = (name) => name.replace(/[^a-z0-9]+/gi, '_');
 function rgb(s) { const m = /rgba?\(([^)]+)\)/.exec(s || ''); if (!m) return null; const p = m[1].split(/[ ,/]+/).map(parseFloat); return { r: p[0], g: p[1], b: p[2] }; }
 function near(s, r, g, b, t = 12) { const c = rgb(s); return !!c && Math.abs(c.r - r) < t && Math.abs(c.g - g) < t && Math.abs(c.b - b) < t; }
+function tealish(s) { const c = rgb(s); return !!c && c.r < c.g && c.r < c.b && c.b > 90; }
 
 const PROBE = `(async () => {
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
@@ -253,6 +273,12 @@ async function lifecycleProbe(cdp) {
     for (const row of ser) console.log(`    ${row.parses ? 'parses OK ' : 'parses ✗  '} authored=${JSON.stringify(row.authored).padEnd(26)} -> "${row.serialized}"`);
     console.log(`\n    alpha compositing (50% black over white) = ${JSON.stringify(sample)}  (expect ~127.5)`);
     if (sample && Math.abs(sample.r - 127.5) < 2) pass++; else { fail++; failLines.push('compositing wrong'); }
+    const oklchRow = ser.find((r) => r.authored.startsWith('oklch('));
+    const p3Row = ser.find((r) => r.authored.startsWith('color(display-p3'));
+    for (const [label, ok] of [
+      ['oklch() now resolves via canvas readback', !!oklchRow && oklchRow.parses],
+      ['color(display-p3) now resolves via canvas readback', !!p3Row && p3Row.parses],
+    ]) { console.log(`    ${ok ? 'PASS' : 'FAIL'}  ${label}`); if (ok) pass++; else { fail++; failLines.push('serialization :: ' + label); } }
   } catch (e) { fail++; console.log('    serialization probe THREW: ' + e.message); }
 
   console.log('\n================ LIFECYCLE: double-init idempotency + destroy ================\n');

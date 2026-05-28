@@ -25,17 +25,17 @@ check('rgb(10, 20, 30)', approx(parseColor('rgb(10, 20, 30)'), 10, 20, 30, 1));
 check('rgba(10, 20, 30, 0.5)', approx(parseColor('rgba(10, 20, 30, 0.5)'), 10, 20, 30, 0.5));
 check('rgb(10,20,30) no-space', approx(parseColor('rgb(10,20,30)'), 10, 20, 30, 1));
 
-console.log('\n=== parseColor: known format gaps (see integration color-serialization probe) ===');
-// NOTE: in the live path parseColor only ever receives getComputedStyle output.
-// Chrome/Safari normalize most authored syntaxes to legacy comma rgb()/rgba(),
-// so these gaps are mostly latent — EXCEPT oklch()/color() which browsers
-// preserve verbatim (confirmed in integration.mjs).
-check('rgb() space-syntax is NOT parsed (latent)', parseColor('rgb(255 0 0)') == null || Number.isNaN(parseColor('rgb(255 0 0)').g));
-check('named "red" -> null', parseColor('red') === null);
-check('hsl() -> null', parseColor('hsl(0, 100%, 50%)') === null);
-check('oklch() -> null  (REAL gap: browsers serialize oklch verbatim)', parseColor('oklch(0.7 0.15 180)') === null);
-check('color(display-p3) -> null  (REAL gap)', parseColor('color(display-p3 1 0 0)') === null);
-check('transparent keyword -> null (live path gets rgba(0,0,0,0))', parseColor('transparent') === null);
+console.log('\n=== parseColor: off-DOM (Node) returns null for non-rgb/hex; in-browser these resolve via canvas ===');
+// In Node there is no document, so the canvas fallback is unavailable and these
+// return null BY DESIGN (the pure path stays pure). In a browser the same calls
+// resolve through normalizeViaCanvas — proven in integration.mjs. So these are
+// NOT gaps in the live path; they are the documented Node boundary.
+check('rgb() space-syntax -> null off-DOM', parseColor('rgb(255 0 0)') == null || Number.isNaN(parseColor('rgb(255 0 0)').g));
+check('named "red" -> null off-DOM', parseColor('red') === null);
+check('hsl() -> null off-DOM', parseColor('hsl(0, 100%, 50%)') === null);
+check('oklch() -> null off-DOM (resolves in browser)', parseColor('oklch(0.7 0.15 180)') === null);
+check('color(display-p3) -> null off-DOM (resolves in browser)', parseColor('color(display-p3 1 0 0)') === null);
+check('transparent keyword -> null off-DOM (live path gets rgba(0,0,0,0))', parseColor('transparent') === null);
 
 console.log('\n=== parseColorWithAlpha / isOpaque / colorsClose ===');
 check('alpha preserved', approx(parseColorWithAlpha('rgba(0,0,0,0)'), 0, 0, 0, 0));
