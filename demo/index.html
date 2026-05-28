@@ -47,7 +47,7 @@
       <!-- MOCKUP SETTINGS (Theme & Layout Select) -->
       <div class="panel-section">
         <div class="panel-section-header">
-          <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Mockup Settings</h3>
+          <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> <span id="mockup-title-text">Mockup: Compact (Safari Tabs in Bottom)</span></h3>
           <button class="header-edit-btn" id="mockup-edit-btn" title="Customize mockup page theme">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
@@ -85,14 +85,11 @@
           </div>
         </div>
         <div class="mockup-settings-row">
-          <div class="option-group" id="shell-modes" style="--cols: 4; margin-bottom: 0.4rem;">
+          <div class="option-group" id="shell-modes" style="--cols: 4; margin-bottom: 0px;">
             <button class="option-btn active" data-mode="safari-compact">Compact</button>
-            <button class="option-btn" data-mode="safari-bottom">Double</button>
+            <button class="option-btn" data-mode="safari-bottom">Bottom</button>
             <button class="option-btn" data-mode="safari-top">Top</button>
             <button class="option-btn" data-mode="pwa">PWA</button>
-          </div>
-          <div class="shell-mode-desc" id="shell-mode-desc" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500; min-height: 1.1rem;">
-            Safari: Compact Tab Bar (Bottom)
           </div>
         </div>
       </div>
@@ -1267,15 +1264,15 @@
           btn.classList.toggle('active', btn.dataset.mode === mode);
         });
       }
-      const descEl = document.getElementById('shell-mode-desc');
+      const titleTextEl = document.getElementById('mockup-title-text');
       const shellDescriptions = {
-        'safari-compact': 'Safari: Compact Tab Bar (Bottom)',
-        'safari-bottom': 'Safari: Bottom Tab Bar (Double Row)',
-        'safari-top': 'Safari: Top URL Bar (Traditional)',
-        'pwa': 'Standalone App (PWA / Full Screen)'
+        'safari-compact': 'Mockup: Compact (Safari Tabs in Bottom)',
+        'safari-bottom': 'Mockup: Bottom (Safari Tabs in Bottom)',
+        'safari-top': 'Mockup: Top (Traditional Safari Tabs)',
+        'pwa': 'Mockup: PWA (Standalone App / Full Screen)'
       };
-      if (descEl) {
-        descEl.innerText = shellDescriptions[mode] || '';
+      if (titleTextEl) {
+        titleTextEl.innerText = shellDescriptions[mode] || 'Mockup Settings';
       }
       logToConsole(`Safari Layout changed to: ${mode.replace('safari-', '').toUpperCase()}`, 'system');
     }
