@@ -70,15 +70,30 @@
       <!-- TOP BANNER MODE -->
       <div class="panel-section">
         <div class="panel-section-header">
-          <div class="panel-section-title-group" style="display: flex; align-items: center;">
-            <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner</h3>
-            <input type="text" class="banner-custom-input inline-input" id="top-banner-text" value="System Warning" placeholder="Text..." title="Edit banner text" />
-          </div>
-          <div class="banner-color-swatches" id="top-banner-colors">
-            <span class="banner-color-dot active" data-color="#b91c1c" style="background-color: #b91c1c; color: #b91c1c;" title="Red"></span>
-            <span class="banner-color-dot"        data-color="#d97706" style="background-color: #d97706; color: #d97706;" title="Orange"></span>
-            <span class="banner-color-dot"        data-color="#2563eb" style="background-color: #2563eb; color: #2563eb;" title="Blue"></span>
-            <span class="banner-color-dot"        data-color="#374151" style="background-color: #374151; color: #374151;" title="Dark Grey"></span>
+          <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner</h3>
+          <button class="header-edit-btn" id="top-edit-btn" title="Customize banner text and color">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+            </svg>
+            <span>Edit</span>
+          </button>
+          
+          <!-- Popover Card for Customizer Settings -->
+          <div class="popover-card" id="top-popover">
+            <div class="popover-row">
+              <label class="popover-label">Banner Text</label>
+              <input type="text" class="banner-custom-input" id="top-banner-text" value="System Warning" placeholder="Text..." />
+            </div>
+            <div class="popover-row">
+              <label class="popover-label">Banner Color</label>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label class="color-picker-label">
+                  <input type="color" id="top-color-picker" value="#b91c1c" class="native-color-picker" />
+                  <span class="color-preview-circle" id="top-color-preview" style="background-color: #b91c1c;"></span>
+                </label>
+                <input type="text" class="hex-text-input" id="top-color-hex" value="#b91c1c" maxlength="7" />
+              </div>
+            </div>
           </div>
         </div>
         <div class="option-group" id="top-modes" style="--cols: 3; margin-bottom: 0.5rem;">
@@ -91,15 +106,30 @@
       <!-- BOTTOM BANNER MODE -->
       <div class="panel-section">
         <div class="panel-section-header">
-          <div class="panel-section-title-group" style="display: flex; align-items: center;">
-            <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action</h3>
-            <input type="text" class="banner-custom-input inline-input" id="bottom-banner-text" value="Proceed to checkout" placeholder="Text..." title="Edit action text" />
-          </div>
-          <div class="banner-color-swatches" id="bottom-banner-colors">
-            <span class="banner-color-dot active" data-color="#047857" style="background-color: #047857; color: #047857;" title="Green"></span>
-            <span class="banner-color-dot"        data-color="#7c3aed" style="background-color: #7c3aed; color: #7c3aed;" title="Purple"></span>
-            <span class="banner-color-dot"        data-color="#0d9488" style="background-color: #0d9488; color: #0d9488;" title="Teal"></span>
-            <span class="banner-color-dot"        data-color="#374151" style="background-color: #374151; color: #374151;" title="Dark Grey"></span>
+          <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action</h3>
+          <button class="header-edit-btn" id="bottom-edit-btn" title="Customize action text and color">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+            </svg>
+            <span>Edit</span>
+          </button>
+          
+          <!-- Popover Card for Customizer Settings -->
+          <div class="popover-card" id="bottom-popover">
+            <div class="popover-row">
+              <label class="popover-label">Action Text</label>
+              <input type="text" class="banner-custom-input" id="bottom-banner-text" value="Proceed to checkout" placeholder="Text..." />
+            </div>
+            <div class="popover-row">
+              <label class="popover-label">Action Color</label>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label class="color-picker-label">
+                  <input type="color" id="bottom-color-picker" value="#047857" class="native-color-picker" />
+                  <span class="color-preview-circle" id="bottom-color-preview" style="background-color: #047857;"></span>
+                </label>
+                <input type="text" class="hex-text-input" id="bottom-color-hex" value="#047857" maxlength="7" />
+              </div>
+            </div>
           </div>
         </div>
         <div class="option-group" id="bottom-modes" style="--cols: 3; margin-bottom: 0.5rem;">
@@ -444,6 +474,10 @@
     const topBannerColors = document.getElementById('top-banner-colors');
     const bottomBannerText = document.getElementById('bottom-banner-text');
     const bottomBannerColors = document.getElementById('bottom-banner-colors');
+    const topEditBtn = document.getElementById('top-edit-btn');
+    const bottomEditBtn = document.getElementById('bottom-edit-btn');
+    const topPopover = document.getElementById('top-popover');
+    const bottomPopover = document.getElementById('bottom-popover');
     
     const simHeaderText = document.getElementById('sim-header-text');
     const simFooterText = document.getElementById('sim-footer-text');
@@ -950,9 +984,12 @@
         simHeader.classList.add('header-none');
         if (topBannerText) topBannerText.disabled = true;
         if (colorsContainer) colorsContainer.classList.add('inactive');
+        if (topEditBtn) topEditBtn.disabled = true;
+        if (topPopover) topPopover.classList.remove('visible');
       } else {
         if (topBannerText) topBannerText.disabled = false;
         if (colorsContainer) colorsContainer.classList.remove('inactive');
+        if (topEditBtn) topEditBtn.disabled = false;
         if (mode === 'buggy') simHeader.classList.add('header-buggy');
         else if (mode === 'bleedblend') {
           simHeader.classList.add('header-bleedblend', 'bleedblend-top');
@@ -972,9 +1009,12 @@
         simFooter.classList.add('footer-none');
         if (bottomBannerText) bottomBannerText.disabled = true;
         if (colorsContainer) colorsContainer.classList.add('inactive');
+        if (bottomEditBtn) bottomEditBtn.disabled = true;
+        if (bottomPopover) bottomPopover.classList.remove('visible');
       } else {
         if (bottomBannerText) bottomBannerText.disabled = false;
         if (colorsContainer) colorsContainer.classList.remove('inactive');
+        if (bottomEditBtn) bottomEditBtn.disabled = false;
         if (mode === 'buggy') simFooter.classList.add('footer-buggy');
         else if (mode === 'bleedblend') simFooter.classList.add('footer-bleedblend', 'bleedblend-bottom');
       }
@@ -1029,27 +1069,89 @@
       });
     }
 
-    // Customizer: Color Swatch Pickers
-    if (topBannerColors) {
-      topBannerColors.addEventListener('click', (e) => {
-        const dot = e.target.closest('.banner-color-dot');
-        if (!dot) return;
-        topBannerColors.querySelectorAll('.banner-color-dot').forEach(d => d.classList.remove('active'));
-        dot.classList.add('active');
-        BANNER_TOP_COLOR = dot.dataset.color;
-        logToConsole(`Top Banner Color changed to: ${BANNER_TOP_COLOR}`, 'system');
+    // Customizer: Edit Popovers & Color Pickers
+    if (topEditBtn && topPopover) {
+      topEditBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        topPopover.classList.toggle('visible');
+        if (bottomPopover) bottomPopover.classList.remove('visible');
+      });
+      topPopover.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    if (bottomEditBtn && bottomPopover) {
+      bottomEditBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bottomPopover.classList.toggle('visible');
+        if (topPopover) topPopover.classList.remove('visible');
+      });
+      bottomPopover.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    document.addEventListener('click', () => {
+      if (topPopover) topPopover.classList.remove('visible');
+      if (bottomPopover) bottomPopover.classList.remove('visible');
+    });
+
+    const topColorPicker = document.getElementById('top-color-picker');
+    const topColorHex = document.getElementById('top-color-hex');
+    const topColorPreview = document.getElementById('top-color-preview');
+
+    function updateTopColor(hexVal, source) {
+      if (/^#[0-9A-F]{6}$/i.test(hexVal)) {
+        BANNER_TOP_COLOR = hexVal;
+        if (topColorPicker && source !== 'picker') topColorPicker.value = hexVal;
+        if (topColorHex && source !== 'hex') topColorHex.value = hexVal;
+        if (topColorPreview) topColorPreview.style.backgroundColor = hexVal;
+        logToConsole(`Top Banner Color changed to: ${hexVal}`, 'system');
         update();
+      }
+    }
+
+    if (topColorPicker) {
+      topColorPicker.addEventListener('input', (e) => {
+        updateTopColor(e.target.value, 'picker');
       });
     }
-    if (bottomBannerColors) {
-      bottomBannerColors.addEventListener('click', (e) => {
-        const dot = e.target.closest('.banner-color-dot');
-        if (!dot) return;
-        bottomBannerColors.querySelectorAll('.banner-color-dot').forEach(d => d.classList.remove('active'));
-        dot.classList.add('active');
-        BANNER_BOT_COLOR = dot.dataset.color;
-        logToConsole(`Bottom Banner Color changed to: ${BANNER_BOT_COLOR}`, 'system');
+
+    if (topColorHex) {
+      topColorHex.addEventListener('input', (e) => {
+        let val = e.target.value.trim();
+        if (!val.startsWith('#') && val.length > 0) {
+          val = '#' + val;
+        }
+        updateTopColor(val, 'hex');
+      });
+    }
+
+    const bottomColorPicker = document.getElementById('bottom-color-picker');
+    const bottomColorHex = document.getElementById('bottom-color-hex');
+    const bottomColorPreview = document.getElementById('bottom-color-preview');
+
+    function updateBottomColor(hexVal, source) {
+      if (/^#[0-9A-F]{6}$/i.test(hexVal)) {
+        BANNER_BOT_COLOR = hexVal;
+        if (bottomColorPicker && source !== 'picker') bottomColorPicker.value = hexVal;
+        if (bottomColorHex && source !== 'hex') bottomColorHex.value = hexVal;
+        if (bottomColorPreview) bottomColorPreview.style.backgroundColor = hexVal;
+        logToConsole(`Bottom Banner Color changed to: ${hexVal}`, 'system');
         update();
+      }
+    }
+
+    if (bottomColorPicker) {
+      bottomColorPicker.addEventListener('input', (e) => {
+        updateBottomColor(e.target.value, 'picker');
+      });
+    }
+
+    if (bottomColorHex) {
+      bottomColorHex.addEventListener('input', (e) => {
+        let val = e.target.value.trim();
+        if (!val.startsWith('#') && val.length > 0) {
+          val = '#' + val;
+        }
+        updateBottomColor(val, 'hex');
       });
     }
 
