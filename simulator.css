@@ -54,6 +54,7 @@
   /* Set per-theme via JS: --demo-grad-top / --demo-grad-bot / --demo-belt / --demo-footer */
   background-color: var(--demo-grad-top, #aceace);
   overflow-y: scroll;
+  overscroll-behavior: contain;
   scrollbar-width: none;
   transition: background-color 400ms ease;
   /* Inner screen squircle, paired with .phone-frame above. */
