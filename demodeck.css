@@ -1,6 +1,7 @@
-/* VENDORED — do not edit here. Synced verbatim from CVERInc/demodeck @ d926da2.
+/* VENDORED — do not edit here. Synced verbatim from CVERInc/demodeck @ fbe18a2.
    This demo dogfoods its own spinoff: the control panel is demodeck's contract
-   (.dd-* layout + control kit, retheme via :root --dd-* overrides).
+   (.dd-* layout + control kit, retheme via :root --dd-* overrides — accent glows
+   auto-follow --dd-accent via color-mix).
    To update, re-copy demodeck.css from upstream and bump the SHA above.
    bleedblend's teal retheme + brand bits live in bleedblend-panel.css. */
 
@@ -74,7 +75,7 @@ body.dd,
   padding: 0.25rem 0.7rem;
   border-radius: 9999px;
   font-size: 0.85rem;
-  box-shadow: 0 4px 15px rgba(139, 139, 255, 0.35);
+  box-shadow: 0 4px 15px color-mix(in srgb, var(--dd-accent) 35%, transparent);
 }
 
 .dd-ghlink {
@@ -173,7 +174,7 @@ body.dd,
 .option-btn.active {
   background: var(--dd-accent);
   color: var(--dd-accent-ink);
-  box-shadow: 0 4px 12px rgba(139, 139, 255, 0.3);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--dd-accent) 30%, transparent);
 }
 .option-btn:hover:not(.active) { color: var(--dd-text); background: rgba(255, 255, 255, 0.05); }
 
@@ -243,7 +244,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .switch input:checked + .slider-toggle {
   background-color: var(--dd-accent);
-  box-shadow: 0 0 10px rgba(139, 139, 255, 0.4);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--dd-accent) 40%, transparent);
 }
 .switch input:checked + .slider-toggle:before { transform: translateX(20px); }
 
