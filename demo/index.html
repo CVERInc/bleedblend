@@ -70,7 +70,10 @@
       <!-- TOP BANNER MODE -->
       <div class="panel-section">
         <div class="panel-section-header">
-          <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner</h3>
+          <div class="panel-section-title-group" style="display: flex; align-items: center;">
+            <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner</h3>
+            <input type="text" class="banner-custom-input inline-input" id="top-banner-text" value="System Warning" placeholder="Text..." title="Edit banner text" />
+          </div>
           <div class="banner-color-swatches" id="top-banner-colors">
             <span class="banner-color-dot active" data-color="#b91c1c" style="background-color: #b91c1c; color: #b91c1c;" title="Red"></span>
             <span class="banner-color-dot"        data-color="#d97706" style="background-color: #d97706; color: #d97706;" title="Orange"></span>
@@ -83,16 +86,15 @@
           <button class="option-btn active" data-mode="buggy">Buggy</button>
           <button class="option-btn" data-mode="bleedblend">Bleedblend</button>
         </div>
-        <!-- Collapsible Customizer Options -->
-        <div class="banner-customizer" id="top-banner-customizer">
-          <input type="text" class="banner-custom-input" id="top-banner-text" value="System Warning" placeholder="Banner text..." />
-        </div>
       </div>
 
       <!-- BOTTOM BANNER MODE -->
       <div class="panel-section">
         <div class="panel-section-header">
-          <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action</h3>
+          <div class="panel-section-title-group" style="display: flex; align-items: center;">
+            <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action</h3>
+            <input type="text" class="banner-custom-input inline-input" id="bottom-banner-text" value="Proceed to checkout" placeholder="Text..." title="Edit action text" />
+          </div>
           <div class="banner-color-swatches" id="bottom-banner-colors">
             <span class="banner-color-dot active" data-color="#047857" style="background-color: #047857; color: #047857;" title="Green"></span>
             <span class="banner-color-dot"        data-color="#7c3aed" style="background-color: #7c3aed; color: #7c3aed;" title="Purple"></span>
@@ -104,10 +106,6 @@
           <button class="option-btn" data-mode="none">None</button>
           <button class="option-btn active" data-mode="buggy">Buggy</button>
           <button class="option-btn" data-mode="bleedblend">Bleedblend</button>
-        </div>
-        <!-- Collapsible Customizer Options -->
-        <div class="banner-customizer" id="bottom-banner-customizer">
-          <input type="text" class="banner-custom-input" id="bottom-banner-text" value="Proceed to checkout" placeholder="Action text..." />
         </div>
       </div>
 
@@ -444,11 +442,8 @@
     // Simulated banner customizer elements
     const topBannerText = document.getElementById('top-banner-text');
     const topBannerColors = document.getElementById('top-banner-colors');
-    const topBannerCustomizer = document.getElementById('top-banner-customizer');
-    
     const bottomBannerText = document.getElementById('bottom-banner-text');
     const bottomBannerColors = document.getElementById('bottom-banner-colors');
-    const bottomBannerCustomizer = document.getElementById('bottom-banner-customizer');
     
     const simHeaderText = document.getElementById('sim-header-text');
     const simFooterText = document.getElementById('sim-footer-text');
@@ -953,10 +948,10 @@
       const colorsContainer = document.getElementById('top-banner-colors');
       if (mode === 'none') {
         simHeader.classList.add('header-none');
-        if (topBannerCustomizer) topBannerCustomizer.style.display = 'none';
+        if (topBannerText) topBannerText.disabled = true;
         if (colorsContainer) colorsContainer.classList.add('inactive');
       } else {
-        if (topBannerCustomizer) topBannerCustomizer.style.display = 'flex';
+        if (topBannerText) topBannerText.disabled = false;
         if (colorsContainer) colorsContainer.classList.remove('inactive');
         if (mode === 'buggy') simHeader.classList.add('header-buggy');
         else if (mode === 'bleedblend') {
@@ -975,10 +970,10 @@
       const colorsContainer = document.getElementById('bottom-banner-colors');
       if (mode === 'none') {
         simFooter.classList.add('footer-none');
-        if (bottomBannerCustomizer) bottomBannerCustomizer.style.display = 'none';
+        if (bottomBannerText) bottomBannerText.disabled = true;
         if (colorsContainer) colorsContainer.classList.add('inactive');
       } else {
-        if (bottomBannerCustomizer) bottomBannerCustomizer.style.display = 'flex';
+        if (bottomBannerText) bottomBannerText.disabled = false;
         if (colorsContainer) colorsContainer.classList.remove('inactive');
         if (mode === 'buggy') simFooter.classList.add('footer-buggy');
         else if (mode === 'bleedblend') simFooter.classList.add('footer-bleedblend', 'bleedblend-bottom');
