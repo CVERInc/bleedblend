@@ -88,7 +88,7 @@
 .phone-btn-action,
 .phone-btn-volup,
 .phone-btn-voldown {
-  left: -10.5px; /* -(5.5px border + 2px shadow + 3px btn width) */
+  left: -12.5px; /* -(5.5 border + 2 shadow + 2 gap + 3 width) */
   width: 3px;
   border-radius: 3px 0 0 3px;
 }
@@ -110,7 +110,7 @@
 
 /* Right side buttons — protrude from the right titanium edge */
 .phone-btn-power {
-  right: -10.5px; /* -(5.5px border + 2px shadow + 3px btn width) */
+  right: -12.5px; /* -(5.5 border + 2 shadow + 2 gap + 3 width) */
   width: 3px;
   border-radius: 0 3px 3px 0;
   box-shadow: 
@@ -127,7 +127,7 @@
 .phone-btn-camera {
   top: 500px;
   height: 44px;
-  right: -9px; /* -(5.5 + 2 + 1.5) slightly recessed */
+  right: -11px; /* -(5.5 + 2 + 2 + 1.5) recessed */
   width: 1.5px;
   background: #111112;
   border: 0.5px solid var(--titanium-outer);
