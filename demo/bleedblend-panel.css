@@ -24,12 +24,6 @@
   --dd-text-muted: rgba(245, 251, 250, 0.6);
 }
 
-/* ── Accent glow touchpoints ──────────────────────────────────────────────
-   demodeck hardcodes indigo rgba(139,139,255,…) glows that the :root retheme
-   can't reach — repaint them teal so nothing stays purple. */
-.dd-badge { box-shadow: 0 4px 15px rgba(79, 209, 202, 0.4); }
-.option-btn.active { box-shadow: 0 4px 12px rgba(172, 234, 206, 0.35); }
-
 /* ── Auto-tinting master toggle — keep bleedblend's green "on" ─────────────
    The demo's signature toggle uses a semantic green for ON (not the accent),
    matching demo-v1.0. */
