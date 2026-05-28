@@ -689,3 +689,38 @@ input:checked + .slider-toggle:before {
   transform: scale(1.15);
 }
 
+/* Inline text input next to h3 inside header */
+.banner-custom-input.inline-input {
+  width: 130px;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: var(--text);
+  outline: none;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  margin-left: 0.6rem;
+}
+
+.banner-custom-input.inline-input:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.banner-custom-input.inline-input:focus {
+  background: rgba(0, 0, 0, 0.35);
+  border-color: var(--accent);
+  box-shadow: 0 0 6px rgba(10, 140, 142, 0.4);
+}
+
+.banner-custom-input.inline-input:disabled {
+  opacity: 0.15;
+  pointer-events: none;
+  border-color: transparent;
+  background: transparent;
+  filter: grayscale(80%);
+}
+
