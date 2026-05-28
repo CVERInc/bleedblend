@@ -1,6 +1,6 @@
 :root {
-  /* Simulated safe areas inside the phone mock (iOS 26 Liquid Glass Dynamic Island is typically 59px) */
-  --sim-safe-top: 59px;
+  /* Simulated safe areas — calibrated to iPhone 16 Pro Dynamic Island (50px top safe area) */
+  --sim-safe-top: 50px;
   --sim-safe-bottom: 34px;
 }
 
@@ -25,21 +25,21 @@
   width: 375px;
   height: 812px;
   background: #000;
-  /* iPhone 16 Pro super thin bezel (7px bezel) */
-  border: 7px solid #000000; /* Obsidian black bezel */
+  /* iPhone 16 Pro ultra-thin bezel — real device single-side bezel ≈ 2.0% of width */
+  border: 5.5px solid #000000;
   border-radius: 52px; /* G2 continuous curvature outer frame */
   position: relative;
   display: flex;
   flex-direction: column;
   
-  /* Dual-layer metallic titanium bezel reflections & shadows */
+  /* Titanium chassis — slim 1.5px metal band matching real device proportions */
   box-shadow: 
     0 25px 50px -12px rgba(0, 0, 0, 0.75),            /* Ambient drop shadow */
-    0 0 0 3px var(--titanium-outer),                  /* Titanium outer chamfer */
-    0 0 0 4.5px var(--titanium-inner),                /* Titanium mid-band (chassis thickness) */
-    0 0 0 5.5px #111112,                              /* Antenna/glass gasket seam */
-    inset 0 0 0 1.5px var(--titanium-highlight),      /* Inner metal chamfer highlight */
-    inset 0 0 8px rgba(0, 0, 0, 0.85);                /* Bezel-to-screen deep shading */
+    0 0 0 1px var(--titanium-outer),                   /* Titanium outer chamfer */
+    0 0 0 1.5px var(--titanium-inner),                 /* Titanium chassis edge */
+    0 0 0 2px rgba(0, 0, 0, 0.3),                      /* Antenna line / gasket seam */
+    inset 0 0 0 1px var(--titanium-highlight),          /* Inner metal chamfer highlight */
+    inset 0 0 6px rgba(0, 0, 0, 0.85);                 /* Bezel-to-screen deep shading */
     
   transition: box-shadow 0.3s ease;
 }
@@ -80,12 +80,12 @@
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Left side buttons protrude left */
+/* Left side buttons protrude left — flush with titanium chassis edge */
 .phone-btn-action,
 .phone-btn-volup,
 .phone-btn-voldown {
-  left: -10px; /* Extends past outer gasket */
-  width: 3px;
+  left: -3.5px; /* Extends just past the slim titanium band */
+  width: 3.5px;
   border-radius: 3px 0 0 3px;
 }
 
@@ -95,19 +95,19 @@
 }
 
 .phone-btn-volup {
-  top: 180px;
+  top: 185px;
   height: 48px;
 }
 
 .phone-btn-voldown {
-  top: 240px;
+  top: 245px;
   height: 48px;
 }
 
 /* Right side buttons protrude right */
 .phone-btn-power {
-  right: -10px;
-  width: 3px;
+  right: -3.5px;
+  width: 3.5px;
   border-radius: 0 3px 3px 0;
   box-shadow: 
     1px 0 2px rgba(0, 0, 0, 0.4),
@@ -115,23 +115,23 @@
 }
 
 .phone-btn-power {
-  top: 180px;
+  top: 185px;
   height: 60px;
 }
 
-/* Camera Control is a recessed capacitive glass pad with a color-matched metal ring */
+/* Camera Control — recessed capacitive glass pad with color-matched metal ring */
 .phone-btn-camera {
   top: 500px;
   height: 44px;
-  right: -8.5px;
-  width: 1.5px;
+  right: -2px;
+  width: 2px;
   background: #111112;
-  border: 1px solid var(--titanium-outer);
-  border-radius: 4px;
+  border: 0.5px solid var(--titanium-outer);
+  border-radius: 3px;
   z-index: 10;
   box-shadow: 
-    inset 0 0 2px rgba(0, 0, 0, 0.9),
-    0.5px 0 1px rgba(255, 255, 255, 0.15);
+    inset 0 0 1.5px rgba(0, 0, 0, 0.9),
+    0.5px 0 0.5px rgba(255, 255, 255, 0.1);
   transition: border-color 0.3s ease;
 }
 
@@ -151,14 +151,14 @@
 }
 
 /* Phone Viewport Inner Wrapper — clips everything inside the phone screen
-   and hosts the fixed chrome/overlays. Matches G2 corner curvature. */
+   and hosts the fixed chrome/overlays. Inner radius = outer 52px − border 5.5px = 46.5px */
 .phone-viewport {
   position: relative;
   width: 100%;
   height: 100%;
   flex: 1;
   overflow: hidden;
-  border-radius: 45px; /* Perfect iPhone 16 Pro inner radius offset */
+  border-radius: 46.5px;
 }
 
 /* iPhone Screen Inner */
@@ -176,7 +176,7 @@
   overscroll-behavior: contain;
   scrollbar-width: none;
   transition: background-color 400ms ease;
-  border-radius: 45px;
+  border-radius: 46.5px;
   /* Expose the screen height as a container-query unit so .demo-hero
      can size itself to the full viewport on initial load — mirroring
      a real iPhone where the hero fills the screen before scroll. */
@@ -317,58 +317,55 @@
   color: rgba(255, 255, 255, 0.55);
 }
 
-/* Phone Notch Simulator (Dynamic Island Style) */
+/* Phone Notch Simulator (Dynamic Island) — 110pt × 30pt mapped to 375px width ≈ 102px × 28px */
 .phone-notch {
   position: absolute;
-  top: 12px;
+  top: 11px;
   left: 50%;
   transform: translateX(-50%);
-  width: 90px;
-  height: 24px;
+  width: 102px;
+  height: 28px;
   background: #000;
   border-radius: 9999px;
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.2);
 }
 
 .phone-notch::before {
   content: '';
   position: absolute;
-  left: 12px;
-  width: 8px;
-  height: 8px;
+  left: 16px;
+  width: 9px;
+  height: 9px;
   background: #0f1015;
   border-radius: 50%;
-  opacity: 0.8;
-  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.4);
+  opacity: 0.75;
+  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.35);
 }
 
 .phone-notch::after {
   content: '';
   position: absolute;
-  right: 12px;
-  width: 9px;
-  height: 9px;
+  right: 14px;
+  width: 10px;
+  height: 10px;
   background: radial-gradient(circle, #0a2540 10%, #000 80%);
   border-radius: 50%;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
-/* Status Bar Info — the band itself spans the full safe-area-top (so
-   chrome tinting paints all the way to the top edge), but its contents
-   sit at the dynamic island's vertical center. The island is at top: 12px,
-   height: 24px, meaning the center is 24px. Height: 48px with flex centering
-   places the contents exactly at 24px. */
+/* Status Bar Info — height 50px with flex centering places contents at
+   the Dynamic Island vertical center: top 11px + height 28px / 2 = 25px. */
 .status-bar-info {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 48px;
-  padding: 0 1.5rem;
+  height: 50px;
+  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
