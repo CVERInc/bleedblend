@@ -1,5 +1,8 @@
 node_modules/
 .DS_Store
+
+# Generated test pages (written at test runtime)
+test/__generated__/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
