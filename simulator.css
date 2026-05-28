@@ -275,22 +275,45 @@
   position: relative;
   z-index: 1;
   background-color: var(--demo-footer, #0a8c8e);
-  padding: 30px 22px 50px;
-  text-align: center;
+  padding: 56px 22px calc(56px + var(--sim-safe-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
   color: rgba(255, 255, 255, 0.9);
+  text-align: center;
 }
 .demo-footer-links {
   display: flex;
   justify-content: center;
-  gap: 0.9rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
   font-size: 0.78rem;
   font-weight: 600;
-  margin-bottom: 0.8rem;
   color: rgba(255, 255, 255, 0.78);
 }
-.demo-footer-copy {
+.demo-footer-links.secondary {
   font-size: 0.68rem;
   color: rgba(255, 255, 255, 0.55);
+  font-weight: 400;
+}
+.demo-footer-sep {
+  opacity: 0.3;
+  font-weight: normal;
+}
+.demo-footer-logo {
+  display: inline-block;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+.demo-footer-logo:hover {
+  opacity: 1;
+}
+.demo-footer-logo img {
+  display: block;
+  width: 44px;
+  height: 44px;
 }
 
 /* Phone Notch Simulator (Dynamic Island) — 110pt × 30pt mapped to 375px width ≈ 102px × 28px */
