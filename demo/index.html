@@ -43,34 +43,41 @@
 
       <!-- MOCKUP SETTINGS (Theme & Layout Select) -->
       <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Mockup Settings</h3>
+        <div class="panel-section-header">
+          <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Mockup Settings</h3>
+          <div class="compact-presets" id="theme-presets">
+            <button class="color-btn active" data-theme="teal"   title="Teal (cver.net)"></button>
+            <button class="color-btn"        data-theme="ocean"  title="Ocean"></button>
+            <button class="color-btn"        data-theme="violet" title="Violet"></button>
+            <button class="color-btn"        data-theme="rose"   title="Rose"></button>
+            <button class="color-btn"        data-theme="forest" title="Forest"></button>
+            <button class="color-btn"        data-theme="black"  title="Solid black"></button>
+          </div>
+        </div>
         <div class="mockup-settings-row">
-          <!-- Styled Select Dropdown for layout -->
-          <select class="sim-select" id="shell-mode-select">
-            <option value="safari-compact" selected>Safari: Compact Tab Bar (Bottom)</option>
-            <option value="safari-bottom">Safari: Bottom Tab Bar (Double Row)</option>
-            <option value="safari-top">Safari: Top URL Bar (Traditional)</option>
-            <option value="pwa">Standalone App (PWA / Full Screen)</option>
-          </select>
-          
-          <!-- Compact theme picker row -->
-          <div class="compact-theme-row">
-            <span class="compact-theme-label">Page Theme</span>
-            <div class="compact-presets" id="theme-presets">
-              <button class="color-btn active" data-theme="teal"   title="Teal (cver.net)"></button>
-              <button class="color-btn"        data-theme="ocean"  title="Ocean"></button>
-              <button class="color-btn"        data-theme="violet" title="Violet"></button>
-              <button class="color-btn"        data-theme="rose"   title="Rose"></button>
-              <button class="color-btn"        data-theme="forest" title="Forest"></button>
-              <button class="color-btn"        data-theme="black"  title="Solid black"></button>
-            </div>
+          <div class="option-group" id="shell-modes" style="--cols: 4; margin-bottom: 0.4rem;">
+            <button class="option-btn active" data-mode="safari-compact">Compact</button>
+            <button class="option-btn" data-mode="safari-bottom">Double</button>
+            <button class="option-btn" data-mode="safari-top">Top</button>
+            <button class="option-btn" data-mode="pwa">PWA</button>
+          </div>
+          <div class="shell-mode-desc" id="shell-mode-desc" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500; min-height: 1.1rem;">
+            Safari: Compact Tab Bar (Bottom)
           </div>
         </div>
       </div>
 
       <!-- TOP BANNER MODE -->
       <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner Mode</h3>
+        <div class="panel-section-header">
+          <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner</h3>
+          <div class="banner-color-swatches" id="top-banner-colors">
+            <span class="banner-color-dot active" data-color="#b91c1c" style="background-color: #b91c1c; color: #b91c1c;" title="Red"></span>
+            <span class="banner-color-dot"        data-color="#d97706" style="background-color: #d97706; color: #d97706;" title="Orange"></span>
+            <span class="banner-color-dot"        data-color="#2563eb" style="background-color: #2563eb; color: #2563eb;" title="Blue"></span>
+            <span class="banner-color-dot"        data-color="#374151" style="background-color: #374151; color: #374151;" title="Dark Grey"></span>
+          </div>
+        </div>
         <div class="option-group" id="top-modes" style="--cols: 3; margin-bottom: 0.5rem;">
           <button class="option-btn" data-mode="none">None</button>
           <button class="option-btn active" data-mode="buggy">Buggy</button>
@@ -79,21 +86,20 @@
         <!-- Collapsible Customizer Options -->
         <div class="banner-customizer" id="top-banner-customizer">
           <input type="text" class="banner-custom-input" id="top-banner-text" value="System Warning" placeholder="Banner text..." />
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.2rem;">
-            <span class="banner-color-label">Color</span>
-            <div class="banner-color-swatches" id="top-banner-colors">
-              <span class="banner-color-dot active" data-color="#b91c1c" style="background-color: #b91c1c; color: #b91c1c;"></span> <!-- Red -->
-              <span class="banner-color-dot"        data-color="#d97706" style="background-color: #d97706; color: #d97706;"></span> <!-- Orange -->
-              <span class="banner-color-dot"        data-color="#2563eb" style="background-color: #2563eb; color: #2563eb;"></span> <!-- Blue -->
-              <span class="banner-color-dot"        data-color="#374151" style="background-color: #374151; color: #374151;"></span> <!-- Dark Grey -->
-            </div>
-          </div>
         </div>
       </div>
 
       <!-- BOTTOM BANNER MODE -->
       <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action Mode</h3>
+        <div class="panel-section-header">
+          <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action</h3>
+          <div class="banner-color-swatches" id="bottom-banner-colors">
+            <span class="banner-color-dot active" data-color="#047857" style="background-color: #047857; color: #047857;" title="Green"></span>
+            <span class="banner-color-dot"        data-color="#7c3aed" style="background-color: #7c3aed; color: #7c3aed;" title="Purple"></span>
+            <span class="banner-color-dot"        data-color="#0d9488" style="background-color: #0d9488; color: #0d9488;" title="Teal"></span>
+            <span class="banner-color-dot"        data-color="#374151" style="background-color: #374151; color: #374151;" title="Dark Grey"></span>
+          </div>
+        </div>
         <div class="option-group" id="bottom-modes" style="--cols: 3; margin-bottom: 0.5rem;">
           <button class="option-btn" data-mode="none">None</button>
           <button class="option-btn active" data-mode="buggy">Buggy</button>
@@ -102,15 +108,6 @@
         <!-- Collapsible Customizer Options -->
         <div class="banner-customizer" id="bottom-banner-customizer">
           <input type="text" class="banner-custom-input" id="bottom-banner-text" value="Proceed to checkout" placeholder="Action text..." />
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.2rem;">
-            <span class="banner-color-label">Color</span>
-            <div class="banner-color-swatches" id="bottom-banner-colors">
-              <span class="banner-color-dot active" data-color="#047857" style="background-color: #047857; color: #047857;"></span> <!-- Green -->
-              <span class="banner-color-dot"        data-color="#7c3aed" style="background-color: #7c3aed; color: #7c3aed;"></span> <!-- Purple -->
-              <span class="banner-color-dot"        data-color="#0d9488" style="background-color: #0d9488; color: #0d9488;"></span> <!-- Teal -->
-              <span class="banner-color-dot"        data-color="#374151" style="background-color: #374151; color: #374151;"></span> <!-- Dark Grey -->
-            </div>
-          </div>
         </div>
       </div>
 
@@ -194,7 +191,7 @@
                   <line x1="12" y1="17" x2="12" y2="21"></line>
                 </svg>
               </span>
-              <span class="safari-url">bleedblend.dev</span>
+              <span class="safari-url">oss.cver.net</span>
               <span class="safari-icon-reload">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="23 4 23 10 17 10"></polyline>
@@ -215,7 +212,7 @@
                     <line x1="12" y1="17" x2="12" y2="21"></line>
                   </svg>
                 </span>
-                <span class="safari-url">bleedblend.dev</span>
+                <span class="safari-url">oss.cver.net</span>
                 <span class="safari-icon-reload">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="23 4 23 10 17 10"></polyline>
@@ -438,7 +435,7 @@
     const masterToggle = document.getElementById('master-toggle');
     const topModes = document.getElementById('top-modes');
     const bottomModes = document.getElementById('bottom-modes');
-    const shellModeSelect = document.getElementById('shell-mode-select');
+    const shellModes = document.getElementById('shell-modes');
     const themePresets = document.getElementById('theme-presets');
     const simHeader = document.getElementById('sim-header');
     const simFooter = document.getElementById('sim-footer');
@@ -953,11 +950,14 @@
       topBannerMode = mode;
       simHeader.className = 'sim-header';
       innerBlurBox.style.display = 'none';
+      const colorsContainer = document.getElementById('top-banner-colors');
       if (mode === 'none') {
         simHeader.classList.add('header-none');
         if (topBannerCustomizer) topBannerCustomizer.style.display = 'none';
+        if (colorsContainer) colorsContainer.classList.add('inactive');
       } else {
         if (topBannerCustomizer) topBannerCustomizer.style.display = 'flex';
+        if (colorsContainer) colorsContainer.classList.remove('inactive');
         if (mode === 'buggy') simHeader.classList.add('header-buggy');
         else if (mode === 'bleedblend') {
           simHeader.classList.add('header-bleedblend', 'bleedblend-top');
@@ -972,11 +972,14 @@
     function applyBottomBanner(mode) {
       bottomBannerMode = mode;
       simFooter.className = 'sim-footer';
+      const colorsContainer = document.getElementById('bottom-banner-colors');
       if (mode === 'none') {
         simFooter.classList.add('footer-none');
         if (bottomBannerCustomizer) bottomBannerCustomizer.style.display = 'none';
+        if (colorsContainer) colorsContainer.classList.add('inactive');
       } else {
         if (bottomBannerCustomizer) bottomBannerCustomizer.style.display = 'flex';
+        if (colorsContainer) colorsContainer.classList.remove('inactive');
         if (mode === 'buggy') simFooter.classList.add('footer-buggy');
         else if (mode === 'bleedblend') simFooter.classList.add('footer-bleedblend', 'bleedblend-bottom');
       }
@@ -1109,15 +1112,29 @@
         // Bottom: buttons pill (48) + 14 + 16 = ~78
         setSimInsets(104, 78);
       }
-      if (shellModeSelect && shellModeSelect.value !== mode) {
-        shellModeSelect.value = mode;
+      if (shellModes) {
+        shellModes.querySelectorAll('.option-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.mode === mode);
+        });
+      }
+      const descEl = document.getElementById('shell-mode-desc');
+      const shellDescriptions = {
+        'safari-compact': 'Safari: Compact Tab Bar (Bottom)',
+        'safari-bottom': 'Safari: Bottom Tab Bar (Double Row)',
+        'safari-top': 'Safari: Top URL Bar (Traditional)',
+        'pwa': 'Standalone App (PWA / Full Screen)'
+      };
+      if (descEl) {
+        descEl.innerText = shellDescriptions[mode] || '';
       }
       logToConsole(`Safari Layout changed to: ${mode.replace('safari-', '').toUpperCase()}`, 'system');
     }
 
-    if (shellModeSelect) {
-      shellModeSelect.addEventListener('change', (e) => {
-        applyShellMode(e.target.value);
+    if (shellModes) {
+      shellModes.addEventListener('click', (e) => {
+        const btn = e.target.closest('.option-btn');
+        if (!btn) return;
+        applyShellMode(btn.dataset.mode);
       });
     }
 
