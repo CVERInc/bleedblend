@@ -20,6 +20,13 @@
       <h1>bleedblend</h1>
       <span class="logo-badge">by cver.net</span>
     </a>
+    <div class="header-toggle-container">
+      <span class="toggle-label">auto-tinting</span>
+      <label class="switch">
+        <input type="checkbox" id="master-toggle">
+        <span class="slider-toggle"></span>
+      </label>
+    </div>
     <a href="https://github.com/CVERInc/bleedblend" class="github-link" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
@@ -34,68 +41,76 @@
     <!-- Left panel for control adjustments -->
     <div class="control-panel">
 
-      <!-- BLEEDBLEND MASTER TOGGLE -->
+      <!-- MOCKUP SETTINGS (Theme & Layout Select) -->
       <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18"></path><path d="M3 12h18"></path></svg> bleedblend v2 auto-tint</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          The smart per-edge chrome tinting based on scrolling content. Turn off to see iOS's broken fallback.
-        </p>
-        <div class="option-group" id="bleedblend-modes" style="--cols: 2;">
-          <button class="option-btn active" data-mode="off">Off</button>
-          <button class="option-btn" data-mode="on">On</button>
+        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Mockup Settings</h3>
+        <div class="mockup-settings-row">
+          <!-- Styled Select Dropdown for layout -->
+          <select class="sim-select" id="shell-mode-select">
+            <option value="safari-compact" selected>Safari: Compact Tab Bar (Bottom)</option>
+            <option value="safari-bottom">Safari: Bottom Tab Bar (Double Row)</option>
+            <option value="safari-top">Safari: Top URL Bar (Traditional)</option>
+            <option value="pwa">Standalone App (PWA / Full Screen)</option>
+          </select>
+          
+          <!-- Compact theme picker row -->
+          <div class="compact-theme-row">
+            <span class="compact-theme-label">Page Theme</span>
+            <div class="compact-presets" id="theme-presets">
+              <button class="color-btn active" data-theme="teal"   title="Teal (cver.net)"></button>
+              <button class="color-btn"        data-theme="ocean"  title="Ocean"></button>
+              <button class="color-btn"        data-theme="violet" title="Violet"></button>
+              <button class="color-btn"        data-theme="rose"   title="Rose"></button>
+              <button class="color-btn"        data-theme="forest" title="Forest"></button>
+              <button class="color-btn"        data-theme="black"  title="Solid black"></button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- TOP BANNER MODE (the v1 .bleedblend-top story) -->
+      <!-- TOP BANNER MODE -->
       <div class="panel-section">
         <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Top Banner Mode</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          Drop a sticky top banner into the page — and see how it interacts with the chrome tinting.
-        </p>
-        <div class="option-group" id="top-modes" style="--cols: 3;">
+        <div class="option-group" id="top-modes" style="--cols: 3; margin-bottom: 0.5rem;">
           <button class="option-btn" data-mode="none">None</button>
           <button class="option-btn active" data-mode="buggy">Buggy</button>
           <button class="option-btn" data-mode="bleedblend">Bleedblend</button>
+        </div>
+        <!-- Collapsible Customizer Options -->
+        <div class="banner-customizer" id="top-banner-customizer">
+          <input type="text" class="banner-custom-input" id="top-banner-text" value="System Warning" placeholder="Banner text..." />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.2rem;">
+            <span class="banner-color-label">Color</span>
+            <div class="banner-color-swatches" id="top-banner-colors">
+              <span class="banner-color-dot active" data-color="#b91c1c" style="background-color: #b91c1c; color: #b91c1c;"></span> <!-- Red -->
+              <span class="banner-color-dot"        data-color="#d97706" style="background-color: #d97706; color: #d97706;"></span> <!-- Orange -->
+              <span class="banner-color-dot"        data-color="#2563eb" style="background-color: #2563eb; color: #2563eb;"></span> <!-- Blue -->
+              <span class="banner-color-dot"        data-color="#374151" style="background-color: #374151; color: #374151;"></span> <!-- Dark Grey -->
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- BOTTOM BANNER MODE -->
       <div class="panel-section">
         <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Bottom Action Mode</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          A sticky bottom CTA (think "Add to cart") — same buggy / bleedblend showcase as above.
-        </p>
-        <div class="option-group" id="bottom-modes" style="--cols: 3;">
+        <div class="option-group" id="bottom-modes" style="--cols: 3; margin-bottom: 0.5rem;">
           <button class="option-btn" data-mode="none">None</button>
           <button class="option-btn active" data-mode="buggy">Buggy</button>
           <button class="option-btn" data-mode="bleedblend">Bleedblend</button>
         </div>
-      </div>
-
-      <!-- BROWSER SHELL SETTING -->
-      <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Tabs Layout</h3>
-        <div class="option-group" id="shell-modes" style="--cols: 2;">
-          <button class="option-btn active" data-mode="safari-compact">Compact</button>
-          <button class="option-btn" data-mode="safari-bottom">Bottom</button>
-          <button class="option-btn" data-mode="safari-top">Top</button>
-          <button class="option-btn" data-mode="pwa">PWA</button>
-        </div>
-      </div>
-
-      <!-- PAGE THEME -->
-      <div class="panel-section">
-        <h3><svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg> Page Theme</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-          Pick a brand palette — bleedblend will tint chrome to match every viewport edge.
-        </p>
-        <div class="color-presets" id="theme-presets">
-          <button class="color-btn active" data-theme="teal"   title="Teal (cver.net)"></button>
-          <button class="color-btn"        data-theme="ocean"  title="Ocean"></button>
-          <button class="color-btn"        data-theme="violet" title="Violet"></button>
-          <button class="color-btn"        data-theme="rose"   title="Rose"></button>
-          <button class="color-btn"        data-theme="forest" title="Forest"></button>
-          <button class="color-btn"        data-theme="black"  title="Solid black"></button>
+        <!-- Collapsible Customizer Options -->
+        <div class="banner-customizer" id="bottom-banner-customizer">
+          <input type="text" class="banner-custom-input" id="bottom-banner-text" value="Proceed to checkout" placeholder="Action text..." />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.2rem;">
+            <span class="banner-color-label">Color</span>
+            <div class="banner-color-swatches" id="bottom-banner-colors">
+              <span class="banner-color-dot active" data-color="#047857" style="background-color: #047857; color: #047857;"></span> <!-- Green -->
+              <span class="banner-color-dot"        data-color="#7c3aed" style="background-color: #7c3aed; color: #7c3aed;"></span> <!-- Purple -->
+              <span class="banner-color-dot"        data-color="#0d9488" style="background-color: #0d9488; color: #0d9488;"></span> <!-- Teal -->
+              <span class="banner-color-dot"        data-color="#374151" style="background-color: #374151; color: #374151;"></span> <!-- Dark Grey -->
+            </div>
+          </div>
         </div>
       </div>
 
@@ -237,7 +252,7 @@
             <div class="nav-content">
               <span style="display: flex; align-items: center; gap: 0.25rem;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-                System Warning
+                <span id="sim-header-text">System Warning</span>
               </span>
               <span style="font-weight: 400; text-decoration: underline; font-size: 0.75rem;">Fix now</span>
             </div>
@@ -252,7 +267,7 @@
             <div class="nav-content">
               <span style="display: flex; align-items: center; gap: 0.25rem;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                Proceed to checkout
+                <span id="sim-footer-text">Proceed to checkout</span>
               </span>
               <span>→</span>
             </div>
@@ -315,35 +330,11 @@
 
           <!-- Scroll Indicator / Prompt overlay -->
           <div class="scroll-prompt-overlay" id="scroll-prompt">
-            <div class="prompt-text">Scroll screen to test auto-tint</div>
+            <div class="prompt-text" id="scroll-prompt-text">Scroll screen to explore</div>
             <svg class="prompt-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <polyline points="19 12 12 19 5 12"></polyline>
             </svg>
-          </div>
-
-          <!-- Top Notch Bug Hotspot -->
-          <div class="hotspot-marker top-hotspot buggy" id="hotspot-top">
-            <div class="hotspot-pulse"></div>
-            <div class="hotspot-dot"></div>
-            <div class="hotspot-tooltip">
-              <h4>Top Chrome Layout Bug</h4>
-              <p>Sticky header with backdrop-filter triggers a WebKit bug: safe-area blur vanishes, rendering the status bar 100% transparent. Elements scroll directly under text, causing unreadable collisions.</p>
-              <div class="hotspot-badge status-warning" id="hotspot-top-badge-buggy">Bug active (Auto-tint Off)</div>
-              <div class="hotspot-badge status-fixed" id="hotspot-top-badge-fixed" style="display: none;">Protected by bleedblend</div>
-            </div>
-          </div>
-
-          <!-- Bottom URL Capsule Bug Hotspot -->
-          <div class="hotspot-marker bottom-hotspot buggy" id="hotspot-bottom">
-            <div class="hotspot-pulse"></div>
-            <div class="hotspot-dot"></div>
-            <div class="hotspot-tooltip">
-              <h4>Overscroll & Fallback Seam</h4>
-              <p>Without bleedblend, Safari paints the bottom safe-area solid with the top-page background color. When scrolled over dark footers, this creates a major color clash and visible seam.</p>
-              <div class="hotspot-badge status-warning" id="hotspot-bottom-badge-buggy">Bug active (Auto-tint Off)</div>
-              <div class="hotspot-badge status-fixed" id="hotspot-bottom-badge-fixed" style="display: none;">Protected by bleedblend</div>
-            </div>
           </div>
 
         </div>
@@ -442,14 +433,26 @@
     const safariTopCapsule = document.getElementById('safari-top-capsule');
     const safariBottomAddressRow = document.getElementById('safari-bottom-address-row');
     const safariBottomButtonsRow = document.getElementById('safari-bottom-buttons-row');
-    const bleedblendModes = document.getElementById('bleedblend-modes');
+    const masterToggle = document.getElementById('master-toggle');
     const topModes = document.getElementById('top-modes');
     const bottomModes = document.getElementById('bottom-modes');
-    const shellModes = document.getElementById('shell-modes');
+    const shellModeSelect = document.getElementById('shell-mode-select');
     const themePresets = document.getElementById('theme-presets');
     const simHeader = document.getElementById('sim-header');
     const simFooter = document.getElementById('sim-footer');
     const innerBlurBox = document.getElementById('inner-blur-box');
+    
+    // Simulated banner customizer elements
+    const topBannerText = document.getElementById('top-banner-text');
+    const topBannerColors = document.getElementById('top-banner-colors');
+    const topBannerCustomizer = document.getElementById('top-banner-customizer');
+    
+    const bottomBannerText = document.getElementById('bottom-banner-text');
+    const bottomBannerColors = document.getElementById('bottom-banner-colors');
+    const bottomBannerCustomizer = document.getElementById('bottom-banner-customizer');
+    
+    const simHeaderText = document.getElementById('sim-header-text');
+    const simFooterText = document.getElementById('sim-footer-text');
 
     // ─────────────────────────────────────────────────────────────
     // Enhancements DOM refs & helpers
@@ -485,17 +488,17 @@
     function updateCodeSnippet() {
       if (!codeDisplay || !codeLang) return;
       let snippet = '';
-      let lang = 'JavaScript';
+      let lang = 'HTML';
+      
+      const topTextVal = document.getElementById('top-banner-text') ? document.getElementById('top-banner-text').value : 'System Warning';
+      const bottomTextVal = document.getElementById('bottom-banner-text') ? document.getElementById('bottom-banner-text').value : 'Proceed to checkout';
       
       if (topBannerMode === 'bleedblend' && bottomBannerMode === 'bleedblend') {
-        lang = 'HTML';
-        snippet = `<!-- Sticky top header -->\n<header class="bleedblend-top">\n  <div class="nav-content">System Warning</div>\n</header>\n\n<!-- Sticky bottom action -->\n<div class="bleedblend-bottom">\n  <div class="nav-content">Proceed to checkout</div>\n</div>`;
+        snippet = `<!-- Sticky top header -->\n<header class="bleedblend-top">\n  <div class="nav-content">${topTextVal}</div>\n</header>\n\n<!-- Sticky bottom action -->\n<div class="bleedblend-bottom">\n  <div class="nav-content">${bottomTextVal}</div>\n</div>`;
       } else if (topBannerMode === 'bleedblend') {
-        lang = 'HTML';
-        snippet = `<!-- Sticky top header -->\n<header class="bleedblend-top">\n  <div class="nav-content">System Warning</div>\n</header>`;
+        snippet = `<!-- Sticky top header -->\n<header class="bleedblend-top">\n  <div class="nav-content">${topTextVal}</div>\n</header>`;
       } else if (bottomBannerMode === 'bleedblend') {
-        lang = 'HTML';
-        snippet = `<!-- Sticky bottom action -->\n<div class="bleedblend-bottom">\n  <div class="nav-content">Proceed to checkout</div>\n</div>`;
+        snippet = `<!-- Sticky bottom action -->\n<div class="bleedblend-bottom">\n  <div class="nav-content">${bottomTextVal}</div>\n</div>`;
       } else {
         lang = 'JavaScript';
         snippet = `// Zero-config auto-tinting for gradients & sections\nimport 'bleedblend/auto';`;
@@ -504,7 +507,7 @@
       codeLang.innerText = lang;
       codeDisplay.innerText = snippet;
     }
-    
+
     if (btnCopyCode) {
       btnCopyCode.addEventListener('click', () => {
         const codeText = codeDisplay.innerText;
@@ -519,47 +522,6 @@
           console.error('Failed to copy: ', err);
         });
       });
-    }
-
-    const hotspotTop = document.getElementById('hotspot-top');
-    const hotspotBottom = document.getElementById('hotspot-bottom');
-    const topBuggyBadge = document.getElementById('hotspot-top-badge-buggy');
-    const topFixedBadge = document.getElementById('hotspot-top-badge-fixed');
-    const bottomBuggyBadge = document.getElementById('hotspot-bottom-badge-buggy');
-    const bottomFixedBadge = document.getElementById('hotspot-bottom-badge-fixed');
-    
-    function updateHotspots() {
-      if (!hotspotTop || !hotspotBottom) return;
-      
-      if (topBannerMode === 'none') {
-        hotspotTop.style.display = 'none';
-      } else {
-        hotspotTop.style.display = 'flex';
-        if (topBannerMode === 'buggy') {
-          hotspotTop.className = 'hotspot-marker top-hotspot buggy';
-          topBuggyBadge.style.display = 'inline-block';
-          topFixedBadge.style.display = 'none';
-        } else {
-          hotspotTop.className = 'hotspot-marker top-hotspot protected';
-          topBuggyBadge.style.display = 'none';
-          topFixedBadge.style.display = 'inline-block';
-        }
-      }
-      
-      if (bottomBannerMode === 'none') {
-        hotspotBottom.style.display = 'none';
-      } else {
-        hotspotBottom.style.display = 'flex';
-        if (bottomBannerMode === 'buggy') {
-          hotspotBottom.className = 'hotspot-marker bottom-hotspot buggy';
-          bottomBuggyBadge.style.display = 'inline-block';
-          bottomFixedBadge.style.display = 'none';
-        } else {
-          hotspotBottom.className = 'hotspot-marker bottom-hotspot protected';
-          bottomBuggyBadge.style.display = 'none';
-          bottomFixedBadge.style.display = 'inline-block';
-        }
-      }
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -840,8 +802,28 @@
         lastBotState = '';
       }
 
-      const BANNER_TOP_COLOR = '#b91c1c';
-      const BANNER_BOT_COLOR = '#047857';
+      const topColorObj = parseColor(BANNER_TOP_COLOR);
+      const botColorObj = parseColor(BANNER_BOT_COLOR);
+
+      if (simHeader) {
+        if (topBannerMode === 'buggy' && topColorObj) {
+          simHeader.style.background = `rgba(${topColorObj.r}, ${topColorObj.g}, ${topColorObj.b}, 0.55)`;
+        } else if (topBannerMode === 'bleedblend') {
+          simHeader.style.background = BANNER_TOP_COLOR;
+        } else {
+          simHeader.style.background = '';
+        }
+      }
+
+      if (simFooter) {
+        if (bottomBannerMode === 'buggy' && botColorObj) {
+          simFooter.style.background = `rgba(${botColorObj.r}, ${botColorObj.g}, ${botColorObj.b}, 0.55)`;
+        } else if (bottomBannerMode === 'bleedblend') {
+          simFooter.style.background = BANNER_BOT_COLOR;
+        } else {
+          simFooter.style.background = '';
+        }
+      }
 
       // ── Status Bar ──────────────────────────────────────────────
       // Real iOS: the status bar region is transparent — page content
@@ -923,9 +905,13 @@
     // ─────────────────────────────────────────────────────────────
     function syncMasterToggle(enabled) {
       bleedblendEnabled = enabled;
-      bleedblendModes.querySelectorAll('.option-btn').forEach((b) => {
-        b.classList.toggle('active', b.dataset.mode === (enabled ? 'on' : 'off'));
-      });
+      if (masterToggle) {
+        masterToggle.checked = enabled;
+      }
+      const promptText = document.getElementById('scroll-prompt-text');
+      if (promptText) {
+        promptText.innerText = enabled ? 'Scroll screen to see auto-tinting' : 'Scroll screen to see WebKit bugs';
+      }
     }
 
     function syncTopBannerUI(mode) {
@@ -940,63 +926,64 @@
       });
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // Bleedblend mode toggle
-    // ─────────────────────────────────────────────────────────────
-    bleedblendModes.addEventListener('click', (e) => {
-      const btn = e.target.closest('.option-btn');
-      if (!btn) return;
-      const enabled = btn.dataset.mode === 'on';
-      syncMasterToggle(enabled);
-      logToConsole(`bleedblend v2 auto-tint toggled ${enabled ? 'ON' : 'OFF'}.`, 'system');
+    if (masterToggle) {
+      masterToggle.addEventListener('change', (e) => {
+        const enabled = e.target.checked;
+        syncMasterToggle(enabled);
+        logToConsole(`bleedblend v2 auto-tint toggled ${enabled ? 'ON' : 'OFF'}.`, 'system');
 
-      if (enabled) {
-        if (topBannerMode === 'buggy') applyTopBanner('bleedblend');
-        if (bottomBannerMode === 'buggy') applyBottomBanner('bleedblend');
-      } else {
-        if (topBannerMode === 'bleedblend') applyTopBanner('buggy');
-        if (bottomBannerMode === 'bleedblend') applyBottomBanner('buggy');
-      }
-      update();
-    });
+        if (enabled) {
+          if (topBannerMode === 'buggy') applyTopBanner('bleedblend');
+          if (bottomBannerMode === 'buggy') applyBottomBanner('bleedblend');
+        } else {
+          if (topBannerMode === 'bleedblend') applyTopBanner('buggy');
+          if (bottomBannerMode === 'bleedblend') applyBottomBanner('buggy');
+        }
+        update();
+      });
+    }
 
     // ─────────────────────────────────────────────────────────────
     // Top / Bottom banner modes (the v1 .bleedblend-top / .bleedblend-bottom story).
-    //   None  — banner hidden, just the page underneath.
-    //   Buggy — banner with `backdrop-filter`, hits WebKit's safe-area
-    //           clip bug (visible sharp line below the status bar).
-    //   Bleed — banner uses the `.bleedblend-top` / `.bleedblend-bottom` CSS class:
-    //           opaque outer wrapper, inner-blur element. v2's controller
-    //           also detects this and enters STICKY_OWNED on that edge.
     // ─────────────────────────────────────────────────────────────
     let topBannerMode = 'none';
     let bottomBannerMode = 'none';
+    let BANNER_TOP_COLOR = '#b91c1c';
+    let BANNER_BOT_COLOR = '#047857';
 
     function applyTopBanner(mode) {
       topBannerMode = mode;
       simHeader.className = 'sim-header';
       innerBlurBox.style.display = 'none';
-      if (mode === 'none') simHeader.classList.add('header-none');
-      else if (mode === 'buggy') simHeader.classList.add('header-buggy');
-      else if (mode === 'bleedblend') {
-        simHeader.classList.add('header-bleedblend', 'bleedblend-top');
-        innerBlurBox.style.display = 'block';
+      if (mode === 'none') {
+        simHeader.classList.add('header-none');
+        if (topBannerCustomizer) topBannerCustomizer.style.display = 'none';
+      } else {
+        if (topBannerCustomizer) topBannerCustomizer.style.display = 'flex';
+        if (mode === 'buggy') simHeader.classList.add('header-buggy');
+        else if (mode === 'bleedblend') {
+          simHeader.classList.add('header-bleedblend', 'bleedblend-top');
+          innerBlurBox.style.display = 'block';
+        }
       }
       syncTopBannerUI(mode);
       logToConsole(`Top Banner Mode set to: ${mode.toUpperCase()}`, 'system');
-      updateHotspots();
       updateCodeSnippet();
       update();
     }
     function applyBottomBanner(mode) {
       bottomBannerMode = mode;
       simFooter.className = 'sim-footer';
-      if (mode === 'none') simFooter.classList.add('footer-none');
-      else if (mode === 'buggy') simFooter.classList.add('footer-buggy');
-      else if (mode === 'bleedblend') simFooter.classList.add('footer-bleedblend', 'bleedblend-bottom');
+      if (mode === 'none') {
+        simFooter.classList.add('footer-none');
+        if (bottomBannerCustomizer) bottomBannerCustomizer.style.display = 'none';
+      } else {
+        if (bottomBannerCustomizer) bottomBannerCustomizer.style.display = 'flex';
+        if (mode === 'buggy') simFooter.classList.add('footer-buggy');
+        else if (mode === 'bleedblend') simFooter.classList.add('footer-bleedblend', 'bleedblend-bottom');
+      }
       syncBottomBannerUI(mode);
       logToConsole(`Bottom Action Mode set to: ${mode.toUpperCase()}`, 'system');
-      updateHotspots();
       updateCodeSnippet();
       update();
     }
@@ -1029,6 +1016,54 @@
         if (topBannerMode === 'bleedblend') applyTopBanner('buggy');
       }
     });
+
+    // Customizer: Text inputs
+    if (topBannerText) {
+      topBannerText.addEventListener('input', () => {
+        if (simHeaderText) simHeaderText.innerText = topBannerText.value;
+        updateCodeSnippet();
+        update();
+      });
+    }
+    if (bottomBannerText) {
+      bottomBannerText.addEventListener('input', () => {
+        if (simFooterText) simFooterText.innerText = bottomBannerText.value;
+        updateCodeSnippet();
+        update();
+      });
+    }
+
+    // Customizer: Color Swatch Pickers
+    if (topBannerColors) {
+      topBannerColors.addEventListener('click', (e) => {
+        const dot = e.target.closest('.banner-color-dot');
+        if (!dot) return;
+        topBannerColors.querySelectorAll('.banner-color-dot').forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        BANNER_TOP_COLOR = dot.dataset.color;
+        logToConsole(`Top Banner Color changed to: ${BANNER_TOP_COLOR}`, 'system');
+        update();
+      });
+    }
+    if (bottomBannerColors) {
+      bottomBannerColors.addEventListener('click', (e) => {
+        const dot = e.target.closest('.banner-color-dot');
+        if (!dot) return;
+        bottomBannerColors.querySelectorAll('.banner-color-dot').forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        BANNER_BOT_COLOR = dot.dataset.color;
+        logToConsole(`Bottom Banner Color changed to: ${BANNER_BOT_COLOR}`, 'system');
+        update();
+      });
+    }
+
+    // Prevent scroll chaining and redirect wheel events inside the phone frame to phone-screen scroll
+    if (phoneFrame && phoneScreen) {
+      phoneFrame.addEventListener('wheel', (e) => {
+        phoneScreen.scrollTop += e.deltaY;
+        e.preventDefault();
+      }, { passive: false });
+    }
 
     // ─────────────────────────────────────────────────────────────
     // Shell modes (Compact / Bottom / Top / PWA) — sets the simulated
@@ -1074,16 +1109,17 @@
         // Bottom: buttons pill (48) + 14 + 16 = ~78
         setSimInsets(104, 78);
       }
+      if (shellModeSelect && shellModeSelect.value !== mode) {
+        shellModeSelect.value = mode;
+      }
       logToConsole(`Safari Layout changed to: ${mode.replace('safari-', '').toUpperCase()}`, 'system');
     }
 
-    shellModes.addEventListener('click', (e) => {
-      const btn = e.target.closest('.option-btn');
-      if (!btn) return;
-      shellModes.querySelectorAll('.option-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      applyShellMode(btn.dataset.mode);
-    });
+    if (shellModeSelect) {
+      shellModeSelect.addEventListener('change', (e) => {
+        applyShellMode(e.target.value);
+      });
+    }
 
     // ─────────────────────────────────────────────────────────────
     // Scroll listener — drive update()
@@ -1112,7 +1148,6 @@
     applyShellMode('safari-compact');
     applyTopBanner('buggy');
     applyBottomBanner('buggy');
-    updateHotspots();
     updateCodeSnippet();
     requestAnimationFrame(update);
   </script>

@@ -466,124 +466,194 @@ footer.site-footer {
   50% { transform: translateY(4px); }
 }
 
-/* Hotspots markers styling */
-.hotspot-marker {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  z-index: 55;
+/* Header Master Toggle Switch */
+.header-toggle-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.top-hotspot {
-  top: 15px;
-  left: 82px;
-}
-.bottom-hotspot {
-  bottom: 22px;
-  left: 24px;
-}
-
-.hotspot-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  transition: background-color 0.4s ease;
-}
-.hotspot-pulse {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  animation: pulse-ring 1.8s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
-  transition: border-color 0.4s ease;
-}
-
-/* Colors for buggy / protected states */
-.hotspot-marker.buggy .hotspot-dot {
-  background-color: #ff4757;
-}
-.hotspot-marker.buggy .hotspot-pulse {
-  border: 3px solid rgba(255, 71, 87, 0.6);
-}
-
-.hotspot-marker.protected .hotspot-dot {
-  background-color: #2ed573;
-}
-.hotspot-marker.protected .hotspot-pulse {
-  border: 3px solid rgba(46, 213, 115, 0.6);
-}
-
-@keyframes pulse-ring {
-  0% { transform: scale(0.7); opacity: 1; }
-  100% { transform: scale(1.6); opacity: 0; }
-}
-
-/* Tooltip card */
-.hotspot-tooltip {
-  position: absolute;
-  background: rgba(12, 13, 16, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 0.8rem;
-  width: 240px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0.9) translateY(5px);
-  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
-  backdrop-filter: blur(10px);
-  z-index: 99;
-}
-
-.top-hotspot .hotspot-tooltip {
-  top: 24px;
-  left: -20px;
-  transform-origin: top left;
-}
-.bottom-hotspot .hotspot-tooltip {
-  bottom: 24px;
-  left: -20px;
-  transform-origin: bottom left;
-}
-
-.hotspot-marker:hover .hotspot-tooltip {
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1) translateY(0);
-}
-
-.hotspot-tooltip h4 {
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
   font-size: 0.85rem;
-  font-weight: bold;
-  margin-bottom: 0.35rem;
-  color: white;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.hotspot-tooltip p {
-  font-size: 0.75rem;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 0.5rem;
+.toggle-label {
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
-.hotspot-badge {
+.switch {
+  position: relative;
   display: inline-block;
-  font-size: 0.65rem;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-toggle {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: .3s;
+  border-radius: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.slider-toggle:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .slider-toggle {
+  background-color: #2ed573; /* Active green */
+  box-shadow: 0 0 10px rgba(46, 213, 115, 0.4);
+}
+
+input:checked + .slider-toggle:before {
+  transform: translateX(20px);
+}
+
+/* Styled Select Dropdown */
+.sim-select {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-weight: 600;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5fbfa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  padding-right: 32px;
+}
+
+.sim-select:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.sim-select option {
+  background-color: #0c0d10;
+  color: var(--text);
+}
+
+/* Consolidated Mockup Settings Layout */
+.mockup-settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.compact-theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.compact-theme-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.compact-presets {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.compact-presets .color-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background-origin: border-box;
+}
+
+.compact-presets .color-btn.active {
+  border-color: white;
+  transform: scale(1.15);
+}
+
+/* Custom Banner Options Panel (Dynamic Slide) */
+.banner-customizer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.banner-custom-input {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: var(--text);
+  outline: none;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.banner-custom-input:focus {
+  border-color: var(--accent);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.banner-color-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
   font-weight: bold;
-  padding: 0.15rem 0.4rem;
-  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.hotspot-badge.status-warning {
-  background: rgba(255, 71, 87, 0.15);
-  color: #ff4757;
-  border: 1px solid rgba(255, 71, 87, 0.3);
+
+.banner-color-swatches {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
 }
-.hotspot-badge.status-fixed {
-  background: rgba(46, 213, 115, 0.15);
-  color: #2ed573;
-  border: 1px solid rgba(46, 213, 115, 0.3);
+
+.banner-color-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s;
+}
+
+.banner-color-dot.active {
+  border-color: white;
+  box-shadow: 0 0 6px currentColor;
+  transform: scale(1.15);
 }
