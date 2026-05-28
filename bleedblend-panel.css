@@ -1,0 +1,61 @@
+/* bleedblend control-panel overlay — sits ON TOP of demodeck.css.
+   demodeck.css provides the control-panel layout + control kit (.dd-* / option
+   groups / popovers / console / code box). This file is bleedblend's brand
+   reskin of it + the few demo-specific panel bits demodeck doesn't ship.
+   Load AFTER demodeck.css. */
+
+/* ── App-level reset ──────────────────────────────────────────────────────
+   demodeck (a library) only resets box-sizing on .dd *; this demo (an app)
+   relies on a full reset for both the panel and the phone content. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── bleedblend teal retheme — demodeck's designed extension point ─────────
+   Override the --dd-* palette to bleedblend's teal (was indigo by default). */
+:root {
+  --dd-accent: #aceace;
+  --dd-accent-hover: #4fd1ca;
+  --dd-accent-ink: #084a4c;            /* dark teal ink drawn on the accent */
+  --dd-bg: #052829;
+  --dd-bg-gradient:
+    radial-gradient(circle at 10% 20%, rgba(10, 140, 142, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(226, 114, 91, 0.15) 0%, transparent 40%),
+    #052829;
+  --dd-text: #f5fbfa;
+  --dd-text-muted: rgba(245, 251, 250, 0.6);
+}
+
+/* ── Accent glow touchpoints ──────────────────────────────────────────────
+   demodeck hardcodes indigo rgba(139,139,255,…) glows that the :root retheme
+   can't reach — repaint them teal so nothing stays purple. */
+.dd-badge { box-shadow: 0 4px 15px rgba(79, 209, 202, 0.4); }
+.option-btn.active { box-shadow: 0 4px 12px rgba(172, 234, 206, 0.35); }
+
+/* ── Auto-tinting master toggle — keep bleedblend's green "on" ─────────────
+   The demo's signature toggle uses a semantic green for ON (not the accent),
+   matching demo-v1.0. */
+.switch input:checked + .slider-toggle {
+  background-color: #2ed573;
+  box-shadow: 0 0 10px rgba(46, 213, 115, 0.4);
+}
+
+/* ── Brand fonts — bleedblend wordmark/badge + section headers ─────────────
+   demodeck uses one neutral --dd-font; restore the demo's brand typography. */
+.dd-logo h1,
+.dd-badge { font-family: 'Comfortaa', sans-serif; }
+.panel-section h3,
+.panel-section-header h3 { font-family: 'Outfit', sans-serif; }
+
+/* ── Demo-specific panel bits demodeck doesn't ship ───────────────────────*/
+.mockup-settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-logo {
+  display: inline-block;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+.footer-logo:hover { opacity: 1; }
+.footer-logo img { width: 44px; height: 44px; }

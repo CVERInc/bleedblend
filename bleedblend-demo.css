@@ -310,7 +310,7 @@
 }
 
 .dummy-card h4 svg {
-  color: var(--accent);
+  color: var(--dd-accent);
 }
 
 .dummy-card p {
