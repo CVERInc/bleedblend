@@ -27,7 +27,10 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node -e \"require('./src/tailwind-plugin.js'); console.log('bleedblend loaded')\""
+    "test": "node -e \"require('./src/tailwind-plugin.js'); console.log('bleedblend loaded')\"",
+    "test:pure": "node test/pure.mjs",
+    "test:auto": "node test/integration.mjs",
+    "test:all": "node test/pure.mjs && node test/integration.mjs"
   },
   "keywords": [
     "ios",
