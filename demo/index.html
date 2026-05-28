@@ -55,21 +55,10 @@
           <!-- Popover Card for Mockup Settings -->
           <div class="popover-card" id="mockup-popover">
             <div class="popover-row">
-              <label class="popover-label">Theme Presets</label>
-              <div class="compact-presets" id="theme-presets" style="margin-top: 0.2rem; display: flex; gap: 0.4rem;">
-                <button class="color-btn active" data-theme="teal"   title="Teal (cver.net)"></button>
-                <button class="color-btn"        data-theme="ocean"  title="Ocean"></button>
-                <button class="color-btn"        data-theme="violet" title="Violet"></button>
-                <button class="color-btn"        data-theme="rose"   title="Rose"></button>
-                <button class="color-btn"        data-theme="forest" title="Forest"></button>
-                <button class="color-btn"        data-theme="black"  title="Solid black"></button>
-              </div>
-            </div>
-            <div class="popover-row" style="border-top: 1px dashed rgba(255, 255, 255, 0.08); padding-top: 0.6rem; margin-top: 0.2rem;">
-              <label class="popover-label">Custom Theme</label>
+              <label class="popover-label">Mockup Page Theme</label>
               <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 0.2rem;">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                  <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Top</span>
+                  <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Top Color</span>
                   <div style="display: flex; align-items: center; gap: 6px; flex-grow: 1; justify-content: flex-end;">
                     <label class="color-picker-label" style="width: 24px; height: 24px;">
                       <input type="color" id="theme-color-top" value="#a7f3d0" class="native-color-picker" />
@@ -79,7 +68,7 @@
                   </div>
                 </div>
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                  <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Bottom</span>
+                  <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500;">Bottom Color</span>
                   <div style="display: flex; align-items: center; gap: 6px; flex-grow: 1; justify-content: flex-end;">
                     <label class="color-picker-label" style="width: 24px; height: 24px;">
                       <input type="color" id="theme-color-bot" value="#064e3b" class="native-color-picker" />
@@ -499,7 +488,6 @@
     const topModes = document.getElementById('top-modes');
     const bottomModes = document.getElementById('bottom-modes');
     const shellModes = document.getElementById('shell-modes');
-    const themePresets = document.getElementById('theme-presets');
     const simHeader = document.getElementById('sim-header');
     const simFooter = document.getElementById('sim-footer');
     const innerBlurBox = document.getElementById('inner-blur-box');
@@ -596,61 +584,8 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    // Themes — gradient + section + footer color triples.
-    // Gradient palettes are derived from the CVER teal shape by rotating
-    // hue while preserving saturation/lightness, so every preset reads
-    // as the same "shape" of light → deep tinted background. Solid
-    // presets at the end paint a single color across the entire screen,
-    // for testing chrome tinting on edge cases (max contrast / no
-    // contrast at the viewport edges).
-    //
-    //   CVER reference  top: hsl(153°, 60%, 80%)  → #aceace
-    //                   bot: hsl(181°, 87%, 30%)  → #0a8c8e (+28° hue)
-    //                   belt: hsl(182°, 81%, 16%) → #084a4c
+    // Theme customizer — gradient + section + footer colors.
     // ─────────────────────────────────────────────────────────────
-    function hslToHex(h, s, l) {
-      s /= 100; l /= 100;
-      const c = (1 - Math.abs(2 * l - 1)) * s;
-      const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-      const m = l - c / 2;
-      let r = 0, g = 0, b = 0;
-      if (h < 60)       [r, g, b] = [c, x, 0];
-      else if (h < 120) [r, g, b] = [x, c, 0];
-      else if (h < 180) [r, g, b] = [0, c, x];
-      else if (h < 240) [r, g, b] = [0, x, c];
-      else if (h < 300) [r, g, b] = [x, 0, c];
-      else              [r, g, b] = [c, 0, x];
-      const hex = (v) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
-      return '#' + hex(r) + hex(g) + hex(b);
-    }
-
-    // Build a CVER-shaped gradient theme rotated to `hueTop`, with bot
-    // shifted +28° to match the original mint→teal feel.
-    function gradientTheme(hueTop) {
-      const hueBot = (hueTop + 28) % 360;
-      return {
-        top:    hslToHex(hueTop, 60, 80),
-        bot:    hslToHex(hueBot, 87, 30),
-        belt:   hslToHex(hueBot, 81, 16),
-        footer: hslToHex(hueBot, 87, 30),
-      };
-    }
-
-    function solidTheme(hex, beltHex) {
-      return { top: hex, bot: hex, belt: beltHex, footer: hex };
-    }
-
-    const themes = {
-      teal:   gradientTheme(153),       // CVER original
-      ocean:  gradientTheme(200),
-      violet: gradientTheme(270),
-      rose:   gradientTheme(330),
-      forest: gradientTheme(100),
-      // Solids — single-color screens for testing chrome edge cases.
-      black:  solidTheme('#0a0a0a', '#1a1a1a'),
-    };
-    let currentTheme = 'teal';
-
     function darkenColor(hexVal, factor = 0.55) {
       const c = parseColor(hexVal);
       if (!c) return hexVal;
@@ -667,50 +602,30 @@
       footer: '#064e3b'
     };
 
-    function applyTheme(name) {
-      const t = name === 'custom' ? CUSTOM_THEME : themes[name];
-      currentTheme = name;
-      phoneScreen.style.setProperty('--demo-grad-top', t.top);
-      phoneScreen.style.setProperty('--demo-grad-bot', t.bot);
-      phoneScreen.style.setProperty('--demo-belt', t.belt);
-      phoneScreen.style.setProperty('--demo-footer', t.footer);
+    function applyTheme() {
+      phoneScreen.style.setProperty('--demo-grad-top', CUSTOM_THEME.top);
+      phoneScreen.style.setProperty('--demo-grad-bot', CUSTOM_THEME.bot);
+      phoneScreen.style.setProperty('--demo-belt', CUSTOM_THEME.belt);
+      phoneScreen.style.setProperty('--demo-footer', CUSTOM_THEME.footer);
       // When bleedblend is OFF, chrome tinting stays on the html-bg fallback
       // (gradient START color = same as html bg in real cver.net usage).
-      phoneScreen.style.setProperty('--chrome-fallback', t.top);
+      phoneScreen.style.setProperty('--chrome-fallback', CUSTOM_THEME.top);
 
       // Sync custom theme editor picker values
-      if (name !== 'custom') {
-        if (themeColorTop && themeHexTop && themePreviewTop) {
-          themeColorTop.value = t.top;
-          themeHexTop.value = t.top;
-          themePreviewTop.style.backgroundColor = t.top;
-        }
-        if (themeColorBot && themeHexBot && themePreviewBot) {
-          themeColorBot.value = t.bot;
-          themeHexBot.value = t.bot;
-          themePreviewBot.style.backgroundColor = t.bot;
-        }
+      if (themeColorTop && themeHexTop && themePreviewTop) {
+        themeColorTop.value = CUSTOM_THEME.top;
+        themeHexTop.value = CUSTOM_THEME.top;
+        themePreviewTop.style.backgroundColor = CUSTOM_THEME.top;
+      }
+      if (themeColorBot && themeHexBot && themePreviewBot) {
+        themeColorBot.value = CUSTOM_THEME.bot;
+        themeHexBot.value = CUSTOM_THEME.bot;
+        themePreviewBot.style.backgroundColor = CUSTOM_THEME.bot;
       }
 
-      logToConsole(`Theme changed to: ${name.toUpperCase()} (top: ${t.top}, bottom: ${t.bot})`, 'system');
+      logToConsole(`Theme updated (top: ${CUSTOM_THEME.top}, bottom: ${CUSTOM_THEME.bot})`, 'system');
       update();
     }
-
-    // Paint each preset swatch with its own theme gradient so the dot
-    // previews the actual look users get when they click it.
-    themePresets.querySelectorAll('.color-btn').forEach((btn) => {
-      const t = themes[btn.dataset.theme];
-      if (!t) return;
-      btn.style.background = 'linear-gradient(180deg, ' + t.top + ' 0%, ' + t.bot + ' 100%)';
-    });
-
-    themePresets.addEventListener('click', (e) => {
-      const btn = e.target.closest('.color-btn');
-      if (!btn) return;
-      themePresets.querySelectorAll('.color-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      applyTheme(btn.dataset.theme);
-    });
 
     // ─────────────────────────────────────────────────────────────
     // Mini-bleed: sample colors at top/bottom of phone-screen and
@@ -750,8 +665,8 @@
 
     // body::before-style gradient lookup against the demo page gradient.
     function demoGradientAt(progress) {
-      const top = parseColor(themes[currentTheme].top);
-      const bot = parseColor(themes[currentTheme].bot);
+      const top = parseColor(CUSTOM_THEME.top);
+      const bot = parseColor(CUSTOM_THEME.bot);
       // Gradient: top color 10% → bot color 70% (same shape as cver.net body::before).
       let p = progress;
       if (p <= 0.1) return top;
@@ -810,7 +725,7 @@
         return { state: 'SAFE_NATURAL', color: boundary.color };
       }
       // gradient: compare with natural (html bg = gradient top color)
-      const natural = parseColor(themes[currentTheme].top);
+      const natural = parseColor(CUSTOM_THEME.top);
       if (colorsClose(natural, boundary.color)) {
         return { state: 'SAFE_NATURAL', color: boundary.color };
       }
@@ -938,7 +853,7 @@
       } else if (bleedblendEnabled && topBannerMode === 'none') {
         // Natural Safari: transparent at the very top, solid html bg when scrolled down
         if (phoneScreen.scrollTop > 0) {
-          statusBar.style.backgroundColor = themes[currentTheme].top;
+          statusBar.style.backgroundColor = CUSTOM_THEME.top;
         } else {
           statusBar.style.backgroundColor = 'transparent';
         }
@@ -977,7 +892,7 @@
           homeIndicatorArea.style.backgroundColor = colorToRgb(botResolved.color);
         } else if (!bleedblendEnabled) {
           // Off state: bottom safe area inherits/samples the solid top background color (fallback mismatch)
-          homeIndicatorArea.style.backgroundColor = themes[currentTheme].top;
+          homeIndicatorArea.style.backgroundColor = CUSTOM_THEME.top;
         } else {
           homeIndicatorArea.style.backgroundColor = 'transparent';
         }
@@ -986,7 +901,7 @@
       // Last-section overscroll tinting — only active when v2 is on AND no
       // bottom banner is taking over the bottom edge.
       if (bleedblendEnabled && lastInView && bottomBannerMode !== 'bleedblend') {
-        phoneScreen.style.backgroundColor = themes[currentTheme].footer;
+        phoneScreen.style.backgroundColor = CUSTOM_THEME.footer;
       } else {
         phoneScreen.style.backgroundColor = '';
       }
@@ -995,7 +910,7 @@
       // transparent, derive contrast from the underlying page content.
       const statusBg = statusBar.style.backgroundColor;
       if (!statusBg || statusBg === 'transparent') {
-        const pageBg = topC ? colorToRgb(topC.color) : themes[currentTheme].top;
+        const pageBg = topC ? colorToRgb(topC.color) : CUSTOM_THEME.top;
         statusBar.style.setProperty('--status-fg', pickStatusFg(pageBg));
       } else {
         statusBar.style.setProperty('--status-fg', pickStatusFg(statusBg));
@@ -1257,10 +1172,7 @@
           if (themeHexBot && source !== 'hex') themeHexBot.value = hexVal;
           if (themePreviewBot) themePreviewBot.style.backgroundColor = hexVal;
         }
-        if (themePresets) {
-          themePresets.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
-        }
-        applyTheme('custom');
+        applyTheme();
       }
     }
 
@@ -1396,7 +1308,7 @@
     // ─────────────────────────────────────────────────────────────
     // Initial setup
     // ─────────────────────────────────────────────────────────────
-    applyTheme('teal');
+    applyTheme();
     applyShellMode('safari-compact');
     applyTopBanner('buggy');
     applyBottomBanner('buggy');
