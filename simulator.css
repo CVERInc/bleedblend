@@ -94,18 +94,18 @@
 }
 
 .phone-btn-action {
-  top: 140px;
-  height: 24px;
+  top: 130px;
+  height: 32px;
 }
 
 .phone-btn-volup {
-  top: 185px;
-  height: 48px;
+  top: 180px;
+  height: 62px;
 }
 
 .phone-btn-voldown {
-  top: 245px;
-  height: 48px;
+  top: 252px;
+  height: 62px;
 }
 
 /* Right side buttons — protrude from the right titanium edge */
@@ -119,24 +119,8 @@
 }
 
 .phone-btn-power {
-  top: 185px;
-  height: 60px;
-}
-
-/* Camera Control — recessed capacitive glass pad, slightly less protrusion */
-.phone-btn-camera {
-  top: 500px;
-  height: 44px;
-  right: -11px; /* -(5.5 + 2 + 2 + 1.5) recessed */
-  width: 1.5px;
-  background: #111112;
-  border: 0.5px solid var(--titanium-outer);
-  border-radius: 3px;
-  z-index: 10;
-  box-shadow: 
-    inset 0 0 1.5px rgba(0, 0, 0, 0.9),
-    0.5px 0 0.5px rgba(255, 255, 255, 0.1);
-  transition: border-color 0.3s ease;
+  top: 176px;
+  height: 80px;
 }
 
 /* (Earpiece omitted per user request) */
