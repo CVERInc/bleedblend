@@ -647,13 +647,13 @@
     };
 
     function applyTheme() {
-      phoneScreen.style.setProperty('--demo-grad-top', CUSTOM_THEME.top);
-      phoneScreen.style.setProperty('--demo-grad-bot', CUSTOM_THEME.bot);
-      phoneScreen.style.setProperty('--demo-belt', CUSTOM_THEME.belt);
-      phoneScreen.style.setProperty('--demo-footer', CUSTOM_THEME.footer);
+      phoneViewport.style.setProperty('--demo-grad-top', CUSTOM_THEME.top);
+      phoneViewport.style.setProperty('--demo-grad-bot', CUSTOM_THEME.bot);
+      phoneViewport.style.setProperty('--demo-belt', CUSTOM_THEME.belt);
+      phoneViewport.style.setProperty('--demo-footer', CUSTOM_THEME.footer);
       // When bleedblend is OFF, chrome tinting stays on the html-bg fallback
       // (gradient START color = same as html bg in real cver.net usage).
-      phoneScreen.style.setProperty('--chrome-fallback', CUSTOM_THEME.top);
+      phoneViewport.style.setProperty('--chrome-fallback', CUSTOM_THEME.top);
 
       // Sync custom theme editor picker values
       if (themeColorTop && themeHexTop && themePreviewTop) {
@@ -973,9 +973,9 @@
       // Last-section overscroll tinting — only active when v2 is on AND no
       // bottom banner is taking over the bottom edge.
       if (bleedblendEnabled && lastInView && bottomBannerMode !== 'bleedblend') {
-        phoneScreen.style.backgroundColor = CUSTOM_THEME.footer;
+        phoneViewport.style.backgroundColor = CUSTOM_THEME.footer;
       } else {
-        phoneScreen.style.backgroundColor = '';
+        phoneViewport.style.backgroundColor = '';
       }
 
       // Auto-contrast for status bar text — when the status bar is
