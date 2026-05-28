@@ -107,15 +107,33 @@ main {
 .panel-section { margin-bottom: 2rem; }
 .panel-section:last-child { margin-bottom: 0; }
 
-.panel-section h3 {
+.panel-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.panel-section h3,
+.panel-section-header h3 {
   font-family: 'Outfit', sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   color: var(--text);
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.banner-color-swatches {
+  transition: all 0.3s ease;
+}
+
+.banner-color-swatches.inactive {
+  opacity: 0.15;
+  pointer-events: none;
+  filter: grayscale(80%);
 }
 
 /* Custom Radio Buttons */
