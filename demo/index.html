@@ -13,7 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Nunito:wght@300;400;600;700&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="cver-oss-showcase.css">
-  <link rel="stylesheet" href="simulator.css">
+  <link rel="stylesheet" href="liquidframe.css">
+  <link rel="stylesheet" href="bleedblend-demo.css">
 </head>
 <body>
 
@@ -211,7 +212,7 @@
     <div class="simulator-container">
 
       <!-- Phone Mock -->
-      <div class="phone-frame">
+      <div class="phone-frame chrome-compact">
 
         <!-- Physical hardware details (protruding side buttons) -->
         <div class="phone-btn phone-btn-action" title="Action Button"></div>
@@ -1336,49 +1337,23 @@
 
 
     // ─────────────────────────────────────────────────────────────
-    // Shell modes (Compact / Bottom / Top / PWA) — sets the simulated
-    // safe-area inset values directly on the root.
+    // Shell modes (Compact / Bottom / Top / PWA) — driven by liquidframe's
+    // chrome-* class on .phone-frame. liquidframe.css owns which Safari chrome
+    // shows and the safe-area insets; we just swap the class and re-tint.
     // ─────────────────────────────────────────────────────────────
-    function setSimInsets(top, bottom) {
-      root.style.setProperty('--sim-safe-top', top + 'px');
-      root.style.setProperty('--sim-safe-bottom', bottom + 'px');
-      update();
-    }
+    const SHELL_CHROME = {
+      'safari-compact': 'chrome-compact',
+      'safari-bottom': 'chrome-bottom',
+      'safari-top': 'chrome-top',
+      'pwa': 'chrome-pwa',
+    };
 
     function applyShellMode(mode) {
-      safariTopCapsule.style.display = 'none';
-      safariBottomBar.style.display = 'none';
-      safariBottomAddressRow.style.display = 'none';
-      safariBottomButtonsRow.style.display = 'none';
-      safariBottomBar.className = 'sim-safari-bottom-liquid-bar';
-      if (safariCompactBar) safariCompactBar.style.display = 'none';
+      const chromeClass = SHELL_CHROME[mode] || 'chrome-compact';
+      phoneFrame.classList.remove('chrome-compact', 'chrome-bottom', 'chrome-top', 'chrome-pwa');
+      phoneFrame.classList.add(chromeClass);
+      update();
 
-      // Safe-area values picked so the chrome region is just big enough to
-      // contain the simulated pill(s) (pill height + 14px bottom anchor +
-      // small breathing room). Matches what iOS reports for these layouts.
-      if (mode === 'pwa') {
-        setSimInsets(50, 34);
-      } else if (mode === 'safari-compact') {
-        // Use the 3-capsule bar (circle + pill + circle)
-        if (safariCompactBar) safariCompactBar.style.display = 'flex';
-        // Compact 3-capsule = ~44px tall + 14 anchor + 16 = ~74
-        setSimInsets(50, 94);
-      } else if (mode === 'safari-bottom') {
-        safariBottomBar.style.display = 'flex';
-        safariBottomAddressRow.style.display = 'block';
-        safariBottomButtonsRow.style.display = 'flex';
-        safariBottomBar.classList.add('mode-bottom');
-        // Bottom double-row = 98 + 14 + 16 = 128
-        setSimInsets(50, 128);
-      } else if (mode === 'safari-top') {
-        safariTopCapsule.style.display = 'flex';
-        safariBottomBar.style.display = 'flex';
-        safariBottomButtonsRow.style.display = 'flex';
-        safariBottomBar.classList.add('mode-top');
-        // Top: URL pill (42) + 12 anchor + 50 status bar = 104
-        // Bottom: buttons pill (48) + 14 + 16 = ~78
-        setSimInsets(104, 78);
-      }
       if (shellModes) {
         shellModes.querySelectorAll('.option-btn').forEach((btn) => {
           btn.classList.toggle('active', btn.dataset.mode === mode);
