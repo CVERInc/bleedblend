@@ -82,6 +82,17 @@
                 </div>
               </div>
             </div>
+            
+            <!-- Titanium Frame Selection -->
+            <div class="popover-row" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px;">
+              <label class="popover-label">Titanium Frame Finish</label>
+              <div style="display: flex; gap: 8px; margin-top: 0.4rem;">
+                <button class="titanium-color-btn active" data-color="natural" style="background: #a69f96; border: 1.5px solid transparent; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease;" title="Natural Titanium (原色鈦)"></button>
+                <button class="titanium-color-btn" data-color="desert" style="background: #c2b29f; border: 1.5px solid transparent; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease;" title="Desert Titanium (沙漠色鈦)"></button>
+                <button class="titanium-color-btn" data-color="black" style="background: #3c3d3a; border: 1.5px solid transparent; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease;" title="Black Titanium (黑色鈦)"></button>
+                <button class="titanium-color-btn" data-color="white" style="background: #e3e4e5; border: 1.5px solid transparent; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease;" title="White Titanium (白色鈦)"></button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="mockup-settings-row">
@@ -201,6 +212,14 @@
 
       <!-- Phone Mock -->
       <div class="phone-frame">
+
+        <!-- Physical hardware details (protruding side buttons & earpiece micro-slit) -->
+        <div class="phone-earpiece"></div>
+        <div class="phone-btn phone-btn-action" title="Action Button"></div>
+        <div class="phone-btn phone-btn-volup" title="Volume Up"></div>
+        <div class="phone-btn phone-btn-voldown" title="Volume Down"></div>
+        <div class="phone-btn phone-btn-power" title="Power Button"></div>
+        <div class="phone-btn phone-btn-camera" title="Camera Control"></div>
 
         <!-- Camera Notch — stays on the bezel hardware (not clipped by
              phone-screen so it overlays the screen edge like a real island). -->
@@ -1088,6 +1107,44 @@
       });
       mockupPopover.addEventListener('click', (e) => e.stopPropagation());
     }
+
+    // Titanium frame color selection logic
+    const titaniumBtns = document.querySelectorAll('.titanium-color-btn');
+    const savedTitanium = localStorage.getItem('phone-titanium-color') || 'natural';
+    
+    function updateTitaniumColor(color) {
+      if (!phoneFrame) return;
+      
+      // Remove all frame- classes
+      phoneFrame.classList.remove('frame-natural', 'frame-desert', 'frame-black', 'frame-white');
+      
+      // Add selected color class (natural is the default style base, others override variables)
+      if (color !== 'natural') {
+        phoneFrame.classList.add(`frame-${color}`);
+      }
+      
+      // Update active state on buttons
+      titaniumBtns.forEach(btn => {
+        if (btn.getAttribute('data-color') === color) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      
+      localStorage.setItem('phone-titanium-color', color);
+      logToConsole(`Titanium Frame Finish changed to: ${color}`, 'system');
+    }
+    
+    titaniumBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const color = btn.getAttribute('data-color');
+        updateTitaniumColor(color);
+      });
+    });
+    
+    // Initial load
+    updateTitaniumColor(savedTitanium);
 
     document.addEventListener('click', () => {
       if (topPopover) topPopover.classList.remove('visible');

@@ -12,34 +12,153 @@
   justify-content: center;
 }
 
-/* Phone Frame — iPhone 15/16/17 corner geometry. Apple uses a G2-
-   curvature-continuous squircle, not a circular border-radius; the
-   asymmetric `X / Y` shorthand stretches the arc transition zone and
-   approximates the squircle look in pure CSS. Values are tuned for the
-   "standard" (non-Max) class around 6.1–6.3". */
+/* Phone Frame — iPhone 16 Pro corner geometry. Apple uses a G2-
+   curvature-continuous squircle. Values are tuned for the
+   standard 6.3" Pro class around 375px width. */
 .phone-frame {
+  /* Titanium frame color variables (defaults to Natural Titanium) */
+  --titanium-outer: #a69f96;
+  --titanium-inner: #8c857c;
+  --titanium-highlight: rgba(255, 255, 255, 0.25);
+  --titanium-btn-shadow: rgba(0, 0, 0, 0.45);
+  
   width: 375px;
   height: 812px;
   background: #000;
-  border-radius: 48px 48px 48px 48px / 50px 50px 50px 50px;
-  border: 12px solid #27272a;
-  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.8),
-              inset 0 0 10px rgba(255, 255, 255, 0.1);
+  /* iPhone 16 Pro super thin bezel (7px bezel) */
+  border: 7px solid #000000; /* Obsidian black bezel */
+  border-radius: 52px; /* G2 continuous curvature outer frame */
   position: relative;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  
+  /* Dual-layer metallic titanium bezel reflections & shadows */
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.75),            /* Ambient drop shadow */
+    0 0 0 3px var(--titanium-outer),                  /* Titanium outer chamfer */
+    0 0 0 4.5px var(--titanium-inner),                /* Titanium mid-band (chassis thickness) */
+    0 0 0 5.5px #111112,                              /* Antenna/glass gasket seam */
+    inset 0 0 0 1.5px var(--titanium-highlight),      /* Inner metal chamfer highlight */
+    inset 0 0 8px rgba(0, 0, 0, 0.85);                /* Bezel-to-screen deep shading */
+    
+  transition: box-shadow 0.3s ease;
+}
+
+/* Titanium Finishes */
+.phone-frame.frame-desert {
+  --titanium-outer: #c2b29f;
+  --titanium-inner: #b09e8b;
+  --titanium-highlight: rgba(255, 245, 230, 0.3);
+}
+
+.phone-frame.frame-black {
+  --titanium-outer: #3c3d3a;
+  --titanium-inner: #252624;
+  --titanium-highlight: rgba(255, 255, 255, 0.12);
+}
+
+.phone-frame.frame-white {
+  --titanium-outer: #e3e4e5;
+  --titanium-inner: #c5c6c7;
+  --titanium-highlight: rgba(255, 255, 255, 0.5);
+}
+
+.titanium-color-btn.active {
+  border-color: #ffffff !important;
+  transform: scale(1.15);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+/* Phone Buttons — Protruding side buttons */
+.phone-btn {
+  position: absolute;
+  background: var(--titanium-outer);
+  z-index: 10;
+  box-shadow: 
+    -1px 0 2px rgba(0, 0, 0, 0.4),
+    inset 1px 0 1px var(--titanium-highlight);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Left side buttons protrude left */
+.phone-btn-action,
+.phone-btn-volup,
+.phone-btn-voldown {
+  left: -10px; /* Extends past outer gasket */
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+
+.phone-btn-action {
+  top: 140px;
+  height: 24px;
+}
+
+.phone-btn-volup {
+  top: 180px;
+  height: 48px;
+}
+
+.phone-btn-voldown {
+  top: 240px;
+  height: 48px;
+}
+
+/* Right side buttons protrude right */
+.phone-btn-power {
+  right: -10px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  box-shadow: 
+    1px 0 2px rgba(0, 0, 0, 0.4),
+    inset -1px 0 1px var(--titanium-highlight);
+}
+
+.phone-btn-power {
+  top: 180px;
+  height: 60px;
+}
+
+/* Camera Control is a recessed capacitive glass pad with a color-matched metal ring */
+.phone-btn-camera {
+  top: 500px;
+  height: 44px;
+  right: -8.5px;
+  width: 1.5px;
+  background: #111112;
+  border: 1px solid var(--titanium-outer);
+  border-radius: 4px;
+  z-index: 10;
+  box-shadow: 
+    inset 0 0 2px rgba(0, 0, 0, 0.9),
+    0.5px 0 1px rgba(255, 255, 255, 0.15);
+  transition: border-color 0.3s ease;
+}
+
+/* Earpiece speaker slit at top of screen */
+.phone-earpiece {
+  position: absolute;
+  top: 2px; /* Set directly above the viewport in the bezel area */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 1.5px;
+  background: #050505;
+  border-radius: 999px;
+  z-index: 1001;
+  opacity: 0.9;
+  box-shadow: 0 0.5px 0.5px rgba(255, 255, 255, 0.15);
 }
 
 /* Phone Viewport Inner Wrapper — clips everything inside the phone screen
-   and hosts the fixed chrome/overlays so they don't scroll with content. */
+   and hosts the fixed chrome/overlays. Matches G2 corner curvature. */
 .phone-viewport {
   position: relative;
   width: 100%;
   height: 100%;
   flex: 1;
   overflow: hidden;
-  border-radius: 38px 38px 38px 38px / 40px 40px 40px 40px;
+  border-radius: 45px; /* Perfect iPhone 16 Pro inner radius offset */
 }
 
 /* iPhone Screen Inner */
@@ -51,14 +170,13 @@
   );
   position: absolute;
   inset: 0;
-  /* Set per-theme via JS: --demo-grad-top / --demo-grad-bot / --demo-belt / --demo-footer */
+  /* Set per-theme via JS */
   background-color: var(--demo-grad-top, #aceace);
   overflow-y: scroll;
   overscroll-behavior: contain;
   scrollbar-width: none;
   transition: background-color 400ms ease;
-  /* Inner screen squircle, paired with .phone-frame above. */
-  border-radius: 38px 38px 38px 38px / 40px 40px 40px 40px;
+  border-radius: 45px;
   /* Expose the screen height as a container-query unit so .demo-hero
      can size itself to the full viewport on initial load — mirroring
      a real iPhone where the hero fills the screen before scroll. */
@@ -202,27 +320,27 @@
 /* Phone Notch Simulator (Dynamic Island Style) */
 .phone-notch {
   position: absolute;
-  top: 11px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%);
-  width: 110px;
-  height: 30px;
+  width: 90px;
+  height: 24px;
   background: #000;
   border-radius: 9999px;
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.25);
 }
 
 .phone-notch::before {
   content: '';
   position: absolute;
-  left: 15px;
-  width: 10px;
-  height: 10px;
-  background: #111;
+  left: 12px;
+  width: 8px;
+  height: 8px;
+  background: #0f1015;
   border-radius: 50%;
   opacity: 0.8;
   box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.4);
@@ -231,29 +349,30 @@
 .phone-notch::after {
   content: '';
   position: absolute;
-  right: 15px;
-  width: 12px;
-  height: 12px;
-  background: radial-gradient(circle, #0c2b45 10%, #000 70%);
+  right: 12px;
+  width: 9px;
+  height: 9px;
+  background: radial-gradient(circle, #0a2540 10%, #000 80%);
   border-radius: 50%;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 /* Status Bar Info — the band itself spans the full safe-area-top (so
    chrome tinting paints all the way to the top edge), but its contents
-   sit at the dynamic island's vertical center (.phone-notch is at
-   top:11 height:30, center = 26px). */
+   sit at the dynamic island's vertical center. The island is at top: 12px,
+   height: 24px, meaning the center is 24px. Height: 48px with flex centering
+   places the contents exactly at 24px. */
 .status-bar-info {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--sim-safe-top);
-  padding: 11px 2rem 0;
+  height: 48px;
+  padding: 0 1.5rem;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  font-size: 0.9rem;
+  align-items: center;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--status-fg, #fff);
   z-index: 1000;
@@ -263,12 +382,10 @@
   box-sizing: border-box;
 }
 .status-bar-info > div {
-  height: 30px;
+  height: 100%;
   align-items: center !important;
-  /* Tighten the line box so text glyphs sit at the optical center of
-     the 30px row — default line-height of 1.2 leaves leading that
-     makes the time read as floating above the SVG icons. */
   line-height: 1;
+  display: flex;
 }
 
 /* Bottom safe-area tint band — sits "below" the Safari bottom bar so the
