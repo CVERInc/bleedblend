@@ -34,7 +34,7 @@ import 'bleedblend/auto';
 
 That's it. After that one import, `bleedblend` watches scroll, resize, and `visualViewport` events, and:
 
-- **Top chrome tinting** stays light and unobtrusive (Safari's natural sampling of whatever's at viewport top).
+- **Top chrome tinting** stays light and unobtrusive by default (Safari's natural sampling of whatever's at viewport top). Want it to take your sticky nav's color instead? That's an opt-in — see [Make your own sticky header / footer tint the chrome](#make-your-own-sticky-header--footer-tint-the-chrome-bleedblend-top--bleedblend-bottom).
 - **Bottom chrome tinting** mirrors the page content: gradient interp when you're in gradient territory, section color when an opaque section reaches the edge, footer color when you're at page-end.
 - **Overscroll tinting** when the page-end section enters viewport — `bleedblend` overwrites `<html>`, `<body>`, AND `body::before` so the rubber-band exposed area tints the same color, not your fallback bg.
 - **No flickering** between belt and footer sections — boundary probe and last-section check use the same Y so state transitions are clean.
@@ -87,21 +87,36 @@ const bleed = createBleedblendAuto({
 bleed.destroy();
 ```
 
-### Sticky banners (`.bleedblend-top` / `.bleedblend-bottom`)
+### Make your own sticky header / footer tint the chrome (`.bleedblend-top` / `.bleedblend-bottom`)
 
-If you have your own sticky header or footer banner that already tints chrome correctly, mark it with `.bleedblend-top` / `.bleedblend-bottom`. `bleedblend` will detect it and **step out of the way** on that edge.
+Have a sticky nav or footer bar and want **the status bar / URL bar to take its color** — a cream nav giving you a cream status bar? Mark it `.bleedblend-top` / `.bleedblend-bottom` and import the stylesheet:
 
 ```html
 <header class="bleedblend-top">
-  <!-- Your sticky nav. bleedblend defers to you. -->
+  <!-- your sticky nav -->
 </header>
 ```
-
-The class also pins it `position: fixed` with proper safe-area padding and disables `backdrop-filter` on the outer wrapper (preventing WebKit's safe-area clipping bug). Import the stylesheet:
 
 ```js
 import 'bleedblend/style';
 ```
+
+**This is the recipe that *makes* a sticky bar tint — not just a "defer" flag for bars that already work.** The class does two things that turn "doesn't tint" into "tints":
+
+- **Pins it `position: fixed`, full-width, with `safe-area-inset` padding** — so it sits below the notch and Safari samples it as an edge element.
+- **Strips `backdrop-filter` off the outer element.** This is the **#1 reason a sticky nav silently refuses to tint**: a frosted-glass blur on the safe-area layer triggers WebKit's safe-area *clipping* bug and Safari stops sampling the bar. **If your bar looks perfect on screen but the chrome stays plain white, this is almost always why.**
+
+Keep the frosted-glass look by moving the blur to an **inner** element with `.bleedblend-inner-blur` (the outer stays blur-free so sampling survives):
+
+```html
+<header class="bleedblend-top">
+  <div class="bleedblend-inner-blur"><!-- your nav content, still frosted --></div>
+</header>
+```
+
+`bleedblend`'s controller also detects the marked bar (`STICKY_OWNED`, see below) and **steps back** on that edge so it never double-paints over you.
+
+> **Prerequisite:** the cover viewport (`viewport-fit=cover`) must be in your **server-rendered `<head>`** — injecting it via JS after load is unreliable on iOS, and without it there's no safe-area for the bar to fill.
 
 ### Tailwind CSS integration
 
