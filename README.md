@@ -1,6 +1,6 @@
 # bleedblend
 
-> **Zero-config iOS Safari chrome tinting.** Paints the status bar and URL bar to match your page content at each viewport edge — gradients, sections, rubber-band overscroll, all handled automatically. One import. No theme-color juggling. No tint configuration. It just works.
+> **Zero-config Safari chrome tinting.** Paints the browser chrome to match your page content at each viewport edge — across iPhone, iPad, and Mac. Gradients, sections, rubber-band overscroll, all handled automatically. One import. No theme-color juggling. No tint configuration. It just works.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![NPM Version](https://img.shields.io/npm/v/bleedblend.svg?color=blue)](https://www.npmjs.com/package/bleedblend)
