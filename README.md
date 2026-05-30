@@ -195,11 +195,24 @@ See `src/utils.d.ts` for full signatures.
 
 ## Browser support
 
-| Browser | Behavior |
-|---|---|
-| **iOS Safari 26+** | Full tinting with native chrome sampling. Tested extensively. |
-| **iOS Safari 15-25** | Falls back to `theme-color` metatinting (we update it in sync) plus tint rendering. |
-| **Desktop Safari, Chrome, Firefox** | No-op. Tint elements are kept `display: none` on non-iOS to avoid a colored band on browsers that don't tint chrome. |
+> **bleedblend does not *manufacture* chrome tinting — it *tames* the tinting Safari already does.** Safari 26's "Liquid Glass" design tints the browser chrome from your page content across the **whole Safari family — iPhone, iPad, *and* Mac** — by sampling the `<body>` background-color (or a top `position: fixed`/`sticky` element ≥6px tall). bleedblend's value reaches exactly as far as that native tinting does. So "it works on Mac/iPad too" is real — but the reason isn't that bleedblend renders something there; it's that the native behavior it rides on is now unified across the family. ([WebKit/Liquid Glass background](#background-the-safari-26-tinting-model))
+
+What bleedblend actually contributes differs per surface:
+
+| Surface | Native Safari 26 tinting | What bleedblend does |
+|---|---|---|
+| **iPhone Safari 26+** | Present, but quirky: bottom URL bar, rubber-band overscroll leaks `<html>` bg, compact tab bar shifts the sample point, `theme-color` ignored. | **Actively tames it.** JS runs: edge probing, gradient interpolation, 12px override tint, three-layer overscroll overwrite. This is the hard part. |
+| **iPad Safari 26+** | Same model as iPhone (iPadOS reports as `MacIntel` + touch). | **Actively tames it** — same code path as iPhone. |
+| **Mac Safari 26+** | Present and **well-behaved**: top toolbar only, driven by `<body>` bg, no bottom chrome, no rubber-band leak. | **Deliberately steps back** (`if (!isIOS) return` → tint elements `display: none`). The desktop model needs no taming, so bleedblend defers entirely to Safari's native sampling. Tinting you see on Mac is 100% Safari — and that's correct, not a gap. |
+| **iOS Safari 15–25** | No content sampling; `theme-color` honored. | Falls back to keeping `theme-color` in sync, plus tint rendering. |
+| **Chrome / Firefox (desktop)** | **No chrome tinting at all.** | No-op — there is nothing to tame. Tint elements stay `display: none` to avoid a stray colored band. |
+| **Chrome (Android)** | Tints the address bar via `theme-color` only (no edge sampling). | Currently no-op: the `theme-color` sync path exists internally but is gated behind `isIOS`. Unlocking it is tracked, not yet shipped/validated. |
+
+### Background: the Safari 26 tinting model
+
+Safari 26 (iOS/iPadOS/macOS) **dropped the `theme-color` meta tag** — it's still parsed but its value is ignored. Chrome tinting is now derived live from CSS: the `<body>` background-color, or a top `position: fixed`/`sticky` element that is full-width and ≥6px tall. This is the same model across iPhone, iPad, and Mac because Liquid Glass is a *unified* visual language — "unified visual language requires unified behavior." That unification is why bleedblend's mental model carries across the whole family even though its JS only actively engages on iOS/iPadOS.
+
+Sources: [Why iOS 26 Safari toolbar colors work differently — nasedk.in](https://nasedk.in/blog/ios26-safari-toolbar-colors/) · [Define the Theme Color for Safari 26 — grooovinger](https://grooovinger.com/notes/2026-02-27-safari-26-header-background) · [Meta Theme Color and Trickery — CSS-Tricks](https://css-tricks.com/meta-theme-color-and-trickery/) · [Turn off website tinting — MacRumors](https://www.macrumors.com/how-to/safari-macos-turn-off-website-tinting/)
 
 ---
 
