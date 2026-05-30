@@ -1,6 +1,6 @@
 {
   "name": "bleedblend",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Zero-config Safari chrome tinting — paints the browser chrome to match your page content at each viewport edge, across iPhone, iPad, and Mac. Handles gradients, sections, and rubber-band overscroll.",
   "main": "src/tailwind-plugin.js",
   "style": "src/index.css",
