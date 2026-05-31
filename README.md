@@ -22,7 +22,7 @@ iOS Safari tints the chrome (status bar + URL bar) with **whatever happens to be
 - `position: fixed` elements tint chrome correctly… except when they don't, depending on `opacity`, `display`, viewport edge proximity, and dark-mode mood.
 - You add `body::before { position: fixed; gradient }` to fake the bg — but it **stretches into the overscroll exposed area** and overrides whatever you set on `<html>` and `<body>`.
 
-This is a four-day rabbit hole. `bleedblend` walks it for you.
+This is a rabbit hole we fell down building real products. `bleedblend` walks it for you.
 
 ---
 
@@ -261,7 +261,7 @@ The `.bleedblend-top` / `.bleedblend-bottom` CSS classes and the Tailwind plugin
 
 ## Acknowledgements
 
-Built and refined through a four-day surgical iteration against [cver.net](https://www.cver.net)'s gradient + sections + footer page structure. Every iOS quirk in the "quirks navigated" list was discovered the hard way.
+bleedblend started as a bug. While building [reef](https://reef.cver.net), a `backdrop-filter` sticky banner kept getting its blur clipped at the notch — WebKit forces the filter's sample point below the safe area, exposing the background underneath. Instead of fighting it, we painted that exposed strip on purpose, so the status bar took the brand color cleanly. That bug-turned-feature insight got battle-tested across [cver.net](https://www.cver.net)'s full-bleed gradient + sections + footer homepage — where every iOS quirk in the "quirks navigated" list was discovered the hard way — and then extracted into bleedblend. It's not a weekend toy; it's the consolidation of a tool that shipped in production first.
 
 ## License
 
