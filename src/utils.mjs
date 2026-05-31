@@ -338,6 +338,36 @@ export function isInsideSection(y, lastSection, ignoreIds = []) {
   return false;
 }
 
+// Classify the page-end opaque section as a DESIGNED end-zone vs an INCIDENTAL
+// footer — the distinction that decides how far the page-end overwrite reaches.
+// See HANDOFF.md "footer flood".
+//   true  → designed end-zone: overscroll is meant to match it, so the full
+//           html + body + body::before overwrite is correct.
+//   false → incidental footer (short footer on a flat content page): only the
+//           rubber-band exposed <html> should be tinted; overwriting the fixed
+//           full-viewport body::before would flood the visible background.
+export function isDesignedEndZone(lastSection, fill) {
+  if (!lastSection) return false;
+  const vh = (typeof window !== 'undefined' && window.innerHeight) || 1;
+  const r = lastSection.getBoundingClientRect();
+  // A closing section that dominates the viewport (≥ half) reads as a designed
+  // ending: it already covers most of the screen, so matching body/overscroll
+  // to it is seamless, not a flood.
+  if (r.height >= vh * 0.5) return true;
+  // A page-spanning gradient behind the content is a designed gradient ending;
+  // the overscroll is meant to continue it down to the footer.
+  if (fill && fill.kind === 'gradient') return true;
+  // Flat opaque page background: seamless only when the footer continues that
+  // same color. A short, high-contrast footer is incidental → don't flood.
+  if (fill && fill.kind === 'solid') {
+    const footer = parseColor(getComputedStyle(lastSection).backgroundColor);
+    return colorsClose(fill.color, footer, 24);
+  }
+  // No detectable fill + short footer → treat as incidental (safe default:
+  // tint <html> for overscroll, leave the visible body alone).
+  return false;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // theme-color <meta>
 // ─────────────────────────────────────────────────────────────────────────────
@@ -559,11 +589,34 @@ export function createBleedblendAuto(options = {}) {
     }
     if (lastSectionColor) {
       const colorRgb = colorToRgb(lastSectionColor);
-      htmlEl.style.backgroundColor = colorRgb;
-      document.body.style.backgroundColor = colorRgb;
-      beforeOverrideEl.textContent = 'body::before { background: ' + colorRgb + ' !important; }';
-      const hex = colorToHex(lastSectionColor);
-      if (hex) setMetaThemeColor(hex);
+      // overscrollFill decides how far the page-end overwrite reaches:
+      //   'auto'   (default) heuristic — full overwrite on a designed end-zone,
+      //                      <html>-only tint on an incidental flat-page footer.
+      //   'always'           legacy behavior — always overwrite html+body+::before.
+      //   'never'            chrome-edge tint only — never touch html/body bg.
+      const mode = options.overscrollFill || 'auto';
+      const tintHtml = mode !== 'never';
+      const flood =
+        mode === 'always' ? true : mode === 'never' ? false : isDesignedEndZone(lastSection, fill);
+
+      // <html> bg is what iOS rubber-band overscroll exposes — tint it for the
+      // correct overscroll color in every non-'never' case.
+      htmlEl.style.backgroundColor = tintHtml ? colorRgb : '';
+      if (flood) {
+        // Designed end-zone: also overwrite body + the fixed full-viewport
+        // body::before so the whole ending matches.
+        document.body.style.backgroundColor = colorRgb;
+        beforeOverrideEl.textContent = 'body::before { background: ' + colorRgb + ' !important; }';
+      } else {
+        // Incidental footer: leave the visible body + body::before untouched so
+        // a flat content page's background isn't flooded with the footer color.
+        document.body.style.backgroundColor = '';
+        beforeOverrideEl.textContent = '';
+      }
+      if (tintHtml) {
+        const hex = colorToHex(lastSectionColor);
+        if (hex) setMetaThemeColor(hex);
+      }
     } else {
       htmlEl.style.backgroundColor = '';
       document.body.style.backgroundColor = '';
