@@ -81,6 +81,13 @@ const bleed = createBleedblendAuto({
   onPageLoad: (update) => {
     document.addEventListener('astro:page-load', update);
   },
+
+  // How far the page-end overwrite reaches. Default 'auto'.
+  //   'auto'   — full overwrite on a designed end-zone, <html>-only on an
+  //              incidental short footer (no "footer flood" on flat pages)
+  //   'always' — legacy: always overwrite html + body + body::before
+  //   'never'  — chrome-edge tint only, never touch html/body bg
+  overscrollFill: 'auto',
 });
 
 // later, if you ever need to:
@@ -151,7 +158,9 @@ For the bottom edge specifically:
 
 - **Gradient territory**: extend the gradient interpolation into the chrome.
 - **Mid-page section** (e.g. a belt between gradient and footer): step back — let Safari's edge sampling render the natural translucent chrome.
-- **Last section** (footer at page-end): engage and tint the section color. Also overwrites `<html>`, `<body>`, and `body::before` so iOS rubber-band overscroll tints the same color and you don't see the html-bg mint leak through.
+- **Last section** (footer at page-end): engage and tint the section color. How far that tint reaches into the background depends on what *kind* of ending it is (controlled by `overscrollFill`, default `'auto'`):
+  - **Designed end-zone** — a gradient ending, or a closing section ≥ 50% of the viewport, or a flat page whose background already matches the footer: overwrite `<html>`, `<body>`, **and** `body::before` so rubber-band overscroll tints the same color and you don't see the html-bg fallback leak through.
+  - **Incidental footer** — a short, high-contrast footer sitting over a flat light page: tint **`<html>` only**. The rubber-band-exposed strip gets the right color, but the *visible* body is left alone so it doesn't flood to the footer color.
 
 For the top edge: always `SAFE_NATURAL` unless the user owns it via `.bleedblend-top`. Top chrome should feel light.
 
@@ -165,7 +174,7 @@ Things `bleedblend` figured out (the hard way) so you don't have to:
 - **Safari samples non-fixed sections at the viewport edge**, not just fixed elements. The official docs and prior research suggested fixed-only.
 - **`opacity: 0` is still sampled** — to truly "step back", you need `display: none`.
 - **`100lvh - 100svh` is a static value** (the max dynamic chrome height), not the current chrome height. Don't use it for tint sizing — pick a small constant (e.g. 12px) that satisfies Safari's ≥3px sampling threshold.
-- **`body::before { position: fixed; inset: 0 }` stretches into iOS rubber-band overscroll exposed area** and covers your `<html>` background. To paint overscroll a section color, you have to override all three: `<html>` bg, `<body>` bg, and `body::before` bg via injected `<style>`.
+- **`body::before { position: fixed; inset: 0 }` stretches into iOS rubber-band overscroll exposed area** and covers your `<html>` background. To paint overscroll a section color, you have to override all three: `<html>` bg, `<body>` bg, and `body::before` bg via injected `<style>`. But that three-layer overwrite is a *fixed full-viewport* layer, so on a flat light page with a short high-contrast footer it floods the whole visible background to the footer color. bleedblend now does the full overwrite **only for designed end-zones**; an incidental footer tints `<html>` alone (see `overscrollFill`).
 - **`safe-area-inset-*` reports `0` on iPhone Mirroring** — active probing is needed, with fallbacks for the 0 case.
 - **`transparent` keyword has a dark band during alpha transitions** (WebKit treats it as `rgba(0,0,0,0)` = black with alpha 0). Use `rgba(R,G,B,0)` instead if you ever need alpha-0.
 - **Boundary probe Y and "is this the last section" check must use the SAME Y** — otherwise you get a 12px flicker zone where one says "belt" and the other says "footer".
@@ -186,6 +195,14 @@ import { createBleedblendAuto } from 'bleedblend/utils';
 interface BleedblendAutoOptions {
   sectionSelector?: string;
   onPageLoad?: (update: () => void) => void;
+  // Page-end overwrite reach (the "footer flood" control). Default 'auto'.
+  //   'auto'   — full html+body+body::before overwrite on a designed end-zone
+  //              (gradient ending / closing section ≥ 50vh / footer color ≈
+  //              page bg); <html>-only tint on an incidental short footer over
+  //              a flat bg, so the visible body isn't flooded.
+  //   'always' — legacy: always overwrite html + body + body::before.
+  //   'never'  — chrome-edge tint only; never touch html/body background.
+  overscrollFill?: 'auto' | 'always' | 'never';
 }
 
 interface BleedblendController {
@@ -201,7 +218,7 @@ All the internals are exported in case you want to roll your own controller:
 - Color: `parseColor`, `parseColorWithAlpha`, `colorToRgb`, `colorToHex`, `isOpaque`, `colorsClose`
 - Gradient: `parseGradient`, `gradientColorAt`, `gradientColorAtY`
 - Sampling: `measureInset`, `detectBackgroundFill`, `sampleColorAt`, `naturalSafariColor`
-- Section: `findLastOpaqueSection`, `isInsideSection`
+- Section: `findLastOpaqueSection`, `isInsideSection`, `isDesignedEndZone`
 - Meta: `setMetaThemeColor`
 
 See `src/utils.d.ts` for full signatures.
