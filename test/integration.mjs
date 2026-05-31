@@ -141,6 +141,67 @@ const CASES = [
     ],
   },
   {
+    // The "footer flood" regression (see HANDOFF.md): a flat light content page
+    // with a SHORT high-contrast footer must NOT dye the visible body — only the
+    // rubber-band <html> gets tinted; body + body::before stay untouched.
+    name: 'N flat page + short footer (incidental, no flood)', ua: 'ios',
+    html: page('body{background:#f7fafc}main{min-height:180vh}.card{background:#fff;margin:24px;height:200px}footer{height:250px;background:#4a3526}',
+      '<main><div class="card">a</div></main><footer>foot</footer>'),
+    check: (t, b) => [
+      ['bottom footer BLEED_OVERRIDE (chrome edge still tints)', b.botState === 'BLEED_OVERRIDE'],
+      ['bottom tint ~brown', near(b.botBg, 74, 53, 38, 10)],
+      ['overscroll html tinted ~brown', near(b.htmlBg, 74, 53, 38, 10)],
+      ['body NOT flooded', b.bodyBg === ''],
+      ['body::before NOT overwritten', (b.beforeOverride || '') === ''],
+    ],
+  },
+  {
+    // Same flat page, escape hatch overscrollFill:'always' → legacy full overwrite.
+    name: 'N2 flat page + overscrollFill always (legacy flood)', ua: 'ios',
+    html: page('body{background:#f7fafc}main{min-height:180vh}.card{background:#fff;margin:24px;height:200px}footer{height:250px;background:#4a3526}',
+      '<main><div class="card">a</div></main><footer>foot</footer>',
+      '<script type="module">import {createBleedblendAuto} from "/src/utils.mjs"; window.__c=createBleedblendAuto({overscrollFill:"always"});</script>'),
+    check: (t, b) => [
+      ['body flooded (always)', near(b.bodyBg, 74, 53, 38, 10)],
+      ['body::before overwritten', /background:\s*rgb\(74,\s*53,\s*38\)/.test(b.beforeOverride || '')],
+      ['overscroll html ~brown', near(b.htmlBg, 74, 53, 38, 10)],
+    ],
+  },
+  {
+    // Same flat page, escape hatch overscrollFill:'never' → chrome-edge tint only.
+    name: 'N3 flat page + overscrollFill never (chrome-edge only)', ua: 'ios',
+    html: page('body{background:#f7fafc}main{min-height:180vh}.card{background:#fff;margin:24px;height:200px}footer{height:250px;background:#4a3526}',
+      '<main><div class="card">a</div></main><footer>foot</footer>',
+      '<script type="module">import {createBleedblendAuto} from "/src/utils.mjs"; window.__c=createBleedblendAuto({overscrollFill:"never"});</script>'),
+    check: (t, b) => [
+      ['bottom tint still ~brown (chrome edge survives)', near(b.botBg, 74, 53, 38, 10)],
+      ['html NOT touched', b.htmlBg === ''],
+      ['body NOT touched', b.bodyBg === ''],
+      ['body::before NOT touched', (b.beforeOverride || '') === ''],
+    ],
+  },
+  {
+    // A TALL closing footer (≥50% viewport) on a flat bg is a designed end-zone
+    // → it SHOULD still flood (it already covers most of the screen).
+    name: 'N4 flat page + tall footer (designed end-zone floods)', ua: 'ios',
+    html: page('body{background:#f7fafc}main{min-height:120vh}footer{min-height:70vh;background:#4a3526}',
+      '<main><div>a</div></main><footer>foot</footer>'),
+    check: (t, b) => [
+      ['tall footer floods body', near(b.bodyBg, 74, 53, 38, 10)],
+      ['body::before overwritten', /background:\s*rgb\(74,\s*53,\s*38\)/.test(b.beforeOverride || '')],
+    ],
+  },
+  {
+    // Footer color continuous with a flat opaque body bg → seamless end-zone,
+    // overwrite is invisible so flooding is fine.
+    name: 'N5 footer color ≈ flat body bg (continuous, floods)', ua: 'ios',
+    html: page('body{background:#101418}main{min-height:120vh}footer{height:250px;background:#141a20}',
+      '<main><div>a</div></main><footer>foot</footer>'),
+    check: (t, b) => [
+      ['continuous color → body flooded (seamless)', near(b.bodyBg, 20, 26, 32, 10)],
+    ],
+  },
+  {
     name: 'K desktop UA -> no-op (browser-support claim)', ua: 'desktop',
     html: page(`html{background:#fff}body::before{content:"";position:fixed;inset:0;z-index:-1;background:${GRAD}}`, '<div style="height:300vh"></div>'),
     check: (t, b) => [

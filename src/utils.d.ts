@@ -34,6 +34,20 @@ export interface BleedblendAutoOptions {
    *     document.addEventListener('astro:page-load', update)
    */
   onPageLoad?: (update: () => void) => void;
+  /**
+   * How far the page-end overwrite reaches when the last opaque section is in
+   * view (controls the "footer flood" on flat content pages).
+   *
+   * - `'auto'` (default): heuristic — full `html` + `body` + `body::before`
+   *   overwrite on a designed end-zone (gradient ending or a tall closing
+   *   section), but only the rubber-band-exposed `<html>` is tinted on an
+   *   incidental short footer over a flat background, so the visible body
+   *   isn't flooded with the footer color.
+   * - `'always'`: legacy behavior — always overwrite `html` + `body` +
+   *   `body::before`. Correct for pages designed to end in the footer color.
+   * - `'never'`: chrome-edge tint only — never touch `html`/`body` background.
+   */
+  overscrollFill?: 'auto' | 'always' | 'never';
 }
 
 export interface BleedblendController {
@@ -63,6 +77,7 @@ export declare function sampleColorAt(x: number, y: number, ignoreIds?: string[]
 export declare function naturalSafariColor(): Rgba | null;
 export declare function findLastOpaqueSection(selector?: string): Element | null;
 export declare function isInsideSection(y: number, lastSection: Element | null, ignoreIds?: string[]): boolean;
+export declare function isDesignedEndZone(lastSection: Element | null, fill: BackgroundFill): boolean;
 
 // ── theme-color meta ───────────────────────────────────────────────────────
 export declare function setMetaThemeColor(hex: string | null | undefined): void;
