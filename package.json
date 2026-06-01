@@ -34,6 +34,8 @@
   },
   "keywords": [
     "ios",
+    "ipados",
+    "macos",
     "safari",
     "webkit",
     "status-bar",
@@ -54,7 +56,7 @@
   "bugs": {
     "url": "https://github.com/CVERInc/bleedblend/issues"
   },
-  "homepage": "https://github.com/CVERInc/bleedblend#readme",
+  "homepage": "https://oss.cver.net/bleedblend/",
   "peerDependencies": {
     "tailwindcss": ">=3.0.0"
   },
