@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![NPM Version](https://img.shields.io/npm/v/bleedblend.svg?color=blue)](https://www.npmjs.com/package/bleedblend)
-[![iOS Safari 26](https://img.shields.io/badge/iOS%20Safari-26+-blue?logo=safari&logoColor=white)](#)
+[![Safari 26](https://img.shields.io/badge/Safari-26+-blue?logo=safari&logoColor=white)](#)
 [![Zero Config](https://img.shields.io/badge/Zero-Config-success)](#)
 
 > 🎮 **[Live Demo →](https://cverinc.github.io/bleedblend/)**
@@ -13,7 +13,7 @@
 
 ## The Despair
 
-iOS Safari tints the chrome (status bar + URL bar) with **whatever happens to be at the viewport edge** — but the rules are quirky, undocumented, and shift between iOS versions. You ship a page with a gradient hero, and it looks great… until:
+Safari 26 derives the chrome tint (status bar + URL bar) from **whatever sits at the viewport edge** — the same model across **iPhone, iPad, and Mac**. But the rules are quirky, undocumented, and shift between versions, and on **iPhone and iPad they bite hardest**:
 
 - The viewport bottom tints mint while your belt section is dark teal — a visible **seam** at the chrome boundary.
 - Compact tab bar appears, the tinting "shifts" by 30px because `100lvh - 100svh` doesn't match the current chrome height.
@@ -22,7 +22,7 @@ iOS Safari tints the chrome (status bar + URL bar) with **whatever happens to be
 - `position: fixed` elements tint chrome correctly… except when they don't, depending on `opacity`, `display`, viewport edge proximity, and dark-mode mood.
 - You add `body::before { position: fixed; gradient }` to fake the bg — but it **stretches into the overscroll exposed area** and overrides whatever you set on `<html>` and `<body>`.
 
-This is a rabbit hole we fell down building real products. `bleedblend` walks it for you.
+This is a rabbit hole we fell down building real products. `bleedblend` walks it for you — and goes one step further: it doesn't just patch the quirks, it hands you the controls to make any sticky header, footer, or banner tint the chrome **on purpose**, across the whole Safari family.
 
 ---
 
