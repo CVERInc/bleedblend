@@ -16,10 +16,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { createRequire } from 'node:module';
-import { isDesignedEndZone as isDesignedEndZoneMjs } from '../src/utils.mjs';
+import * as utilsMjs from '../src/utils.mjs';
 
 const require = createRequire(import.meta.url);
-const { isDesignedEndZone: isDesignedEndZoneCjs } = require('../src/utils.js');
+const utilsCjs = require('../src/utils.js');
+const { isDesignedEndZone: isDesignedEndZoneMjs } = utilsMjs;
+const { isDesignedEndZone: isDesignedEndZoneCjs } = utilsCjs;
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
 
@@ -59,7 +61,9 @@ console.log('=== dual-implementation sync-marker: utils.js ⇄ utils.mjs ===');
 
 // Mechanical drift guard: each file's header carries a `sync-marker: vN` line
 // bumped whenever the pair is edited together. This doesn't verify semantic
-// equivalence — it just catches "edited one file, forgot the other."
+// equivalence — it just catches "edited one file, forgot the other." The
+// behavioural guards are the parity checks below and the integration suite,
+// which runs every case against both engines.
 {
   const syncMarker = (text) => (text.match(/sync-marker:\s*(\S+)/) || [])[1] || null;
   const jsText = readFileSync(join(root, 'src', 'utils.js'), 'utf8');
@@ -69,6 +73,39 @@ console.log('=== dual-implementation sync-marker: utils.js ⇄ utils.mjs ===');
   check('utils.js has a sync-marker', !!jsMarker);
   check('utils.mjs has a sync-marker', !!mjsMarker);
   check(`utils.js sync-marker (${jsMarker}) ≡ utils.mjs sync-marker (${mjsMarker})`, jsMarker != null && jsMarker === mjsMarker);
+}
+
+console.log('\n=== dual-implementation parity: same exports, same answers ===');
+{
+  const keys = (m) => Object.keys(m).sort().join(',');
+  check('utils.js exports ≡ utils.mjs exports', keys(utilsCjs) === keys(utilsMjs));
+
+  const a = { r: 10, g: 10, b: 10 };
+  const PURE_CALLS = [
+    ['parseColor', '#0a8c8e'], ['parseColor', '#80808080'], ['parseColor', 'rgba(10, 20, 30, 0.5)'],
+    ['parseColor', 'rgb(10,20,30)'], ['parseColor', 'red'], ['parseColor', ''], ['parseColor', null],
+    ['parseColorWithAlpha', 'rgba(0,0,0,0)'], ['parseColorWithAlpha', '#fff'],
+    ['colorToRgb', { r: 10.4, g: 140.6, b: 142 }], ['colorToRgb', null],
+    ['colorToHex', { r: 10, g: 140, b: 142 }], ['colorToHex', null],
+    ['isOpaque', 'rgb(1,2,3)'], ['isOpaque', 'rgba(1,2,3,0.95)'], ['isOpaque', 'rgba(1,2,3,0.5)'], ['isOpaque', null],
+    ['colorsClose', a, { r: 12, g: 12, b: 12 }], ['colorsClose', a, { r: 19, g: 10, b: 10 }],
+    ['colorsClose', a, { r: 18, g: 10, b: 10 }], ['colorsClose', a, { r: 10, g: 10, b: 10 }, 0],
+    ['colorsClose', a, { r: 11, g: 10, b: 10 }, 0], ['colorsClose', a, { r: 30, g: 10, b: 10 }, 24],
+    ['colorsClose', a, { r: 12, g: 12, b: 12 }, null], ['colorsClose', a, null],
+    ['parseGradient', 'linear-gradient(180deg, rgb(172, 234, 206) 0%, rgb(10, 140, 142) 100%)'],
+    ['parseGradient', 'linear-gradient(90deg, rgb(0,0,0), rgb(100,100,100), rgb(200,200,200))'],
+    ['parseGradient', 'none'], ['parseGradient', null],
+  ];
+  for (const [fn, ...args] of PURE_CALLS) {
+    const run = (m) => { try { return JSON.stringify(m[fn](...args)); } catch (e) { return 'threw ' + e.message; } };
+    const mjs = run(utilsMjs), cjs = run(utilsCjs);
+    check(`${fn}(${args.map((x) => JSON.stringify(x)).join(', ')}) mjs ≡ js (${mjs} vs ${cjs})`, mjs === cjs);
+  }
+  const stops = utilsMjs.parseGradient('linear-gradient(rgb(0,0,0) 0%, rgb(128,128,128) 50%, rgb(255,255,255) 100%)');
+  for (const t of [0, 0.25, 0.5, 0.9, 1]) {
+    const mjs = JSON.stringify(utilsMjs.gradientColorAt(stops, t)), cjs = JSON.stringify(utilsCjs.gradientColorAt(stops, t));
+    check(`gradientColorAt(3-stop, ${t}) mjs ≡ js`, mjs === cjs);
+  }
 }
 
 console.log('\n=== isDesignedEndZone: designed end-zones flood, incidental footers do not ===');

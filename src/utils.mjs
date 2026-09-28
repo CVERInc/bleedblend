@@ -7,7 +7,7 @@
  * edge — gradient interp, opaque sections, page-end overscroll all handled.
  *
  * ESM source of truth; src/utils.js is the CommonJS mirror. Keep them in sync.
- * sync-marker: v1
+ * sync-marker: v2
  * See HANDOFF.md (in repo root during dev) for the mental model and the
  * iOS 26 quirks this library navigates around.
  */
@@ -96,9 +96,10 @@ export function isOpaque(colorStr) {
   return !!c && c.a >= 0.9;
 }
 
-export function colorsClose(a, b, threshold = 8) {
+export function colorsClose(a, b, threshold) {
   if (!a || !b) return false;
-  return Math.abs(a.r - b.r) <= threshold && Math.abs(a.g - b.g) <= threshold && Math.abs(a.b - b.b) <= threshold;
+  const t = threshold == null ? 8 : threshold;
+  return Math.abs(a.r - b.r) <= t && Math.abs(a.g - b.g) <= t && Math.abs(a.b - b.b) <= t;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -462,6 +463,35 @@ export function createBleedblendAuto(options = {}) {
   const sectionSelector = options.sectionSelector || DEFAULT_SECTION_SELECTOR;
   const cleanups = [];
 
+  // theme-color bookkeeping so destroy() can undo it: the meta we inserted is
+  // removed, page-authored ones get their original content back.
+  let themeMetaSnapshot = null;
+  let insertedThemeMeta = null;
+  function syncThemeColor(hex) {
+    if (!hex) return;
+    if (!themeMetaSnapshot) {
+      themeMetaSnapshot = Array.from(document.querySelectorAll('meta[name="theme-color"]')).map((m) => [
+        m,
+        m.getAttribute('content'),
+      ]);
+    }
+    setMetaThemeColor(hex);
+    if (themeMetaSnapshot.length === 0 && !insertedThemeMeta) {
+      insertedThemeMeta = document.querySelector('meta[name="theme-color"]');
+    }
+  }
+  function restoreThemeColor() {
+    if (insertedThemeMeta) insertedThemeMeta.remove();
+    if (themeMetaSnapshot) {
+      themeMetaSnapshot.forEach(([m, content]) => {
+        if (content == null) m.removeAttribute('content');
+        else m.setAttribute('content', content);
+      });
+    }
+    themeMetaSnapshot = null;
+    insertedThemeMeta = null;
+  }
+
   function pickVisible(sel) {
     const list = document.querySelectorAll(sel);
     for (const el of list) {
@@ -577,7 +607,7 @@ export function createBleedblendAuto(options = {}) {
 
     // theme-color follows top probe (iOS 15-18 compat; iOS 26 ignores it).
     const topHex = colorToHex(topC && topC.color);
-    if (topHex) setMetaThemeColor(topHex);
+    if (topHex) syncThemeColor(topHex);
 
     // Page-end overscroll tinting — body::before stretches into iOS rubber-band
     // exposed area, so html bg alone isn't enough. Overwrite html, body,
@@ -617,7 +647,7 @@ export function createBleedblendAuto(options = {}) {
       }
       if (tintHtml) {
         const hex = colorToHex(lastSectionColor);
-        if (hex) setMetaThemeColor(hex);
+        if (hex) syncThemeColor(hex);
       }
     } else {
       htmlEl.style.backgroundColor = '';
@@ -681,6 +711,7 @@ export function createBleedblendAuto(options = {}) {
       if (transition) transition.remove();
       document.documentElement.style.backgroundColor = '';
       document.body.style.backgroundColor = '';
+      restoreThemeColor();
     },
   };
 }

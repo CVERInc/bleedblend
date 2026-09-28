@@ -12,12 +12,46 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { startServer, launchChrome, CDP, openPage, evaluate, sleep } from './cdp-lib.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '..');
 const GEN = path.join(__dirname, '__generated__');
 const GEN_URL = '/test/__generated__';
+
+// Every case runs twice: once against the ESM source (src/*.mjs) and once
+// against the hand-maintained CommonJS mirror (src/*.js), so drift between the
+// two engines shows up as a failing case instead of shipping.
+const ENGINES = ['esm', 'cjs'];
+const UTILS_KEYS = Object.keys(createRequire(import.meta.url)('../src/utils.js'));
+
+// Browser-side CommonJS loader: evaluates the real src/utils.js and src/auto.js
+// with a tiny module/require shim and re-exports utils.js as ES module bindings.
+const CJS_UTILS_SHIM = `const load = async (url, req) => {
+  const src = await (await fetch(url)).text();
+  const module = { exports: {} };
+  new Function('module', 'exports', 'require', src)(module, module.exports, req);
+  return module.exports;
+};
+const m = await load('/src/utils.js', () => { throw new Error('utils.js must not require()'); });
+export const { ${UTILS_KEYS.filter((k) => k !== 'default').join(', ')} } = m;
+export default m.default;
+export const loadAuto = () => load('/src/auto.js', (id) => {
+  if (id === './utils.js') return m;
+  throw new Error('unexpected require ' + id);
+});
+`;
+const CJS_AUTO_SHIM = `import { loadAuto } from './utils.mjs';
+await loadAuto();
+`;
+
+function forEngine(html, engine) {
+  if (engine === 'esm') return html;
+  return html
+    .replaceAll('"/src/auto.mjs"', `"${GEN_URL}/cjs/auto.mjs"`)
+    .replaceAll('"/src/utils.mjs"', `"${GEN_URL}/cjs/utils.mjs"`);
+}
 
 const PORT = 8731;
 const DBG = 9341;
@@ -252,10 +286,10 @@ async function configure(cdp, sessionId, c) {
   await cdp.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: c.dark ? 'dark' : 'light' }] }, sessionId);
 }
 
-async function runCase(cdp, c) {
+async function runCase(cdp, c, engine) {
   const { sessionId, errors } = await openPage(cdp);
   await configure(cdp, sessionId, c);
-  const url = `http://localhost:${PORT}${GEN_URL}/${slug(c.name)}.html`;
+  const url = `http://localhost:${PORT}${GEN_URL}/${engine}/${slug(c.name)}.html`;
   const loaded = cdp.once('Page.loadEventFired', sessionId);
   await cdp.send('Page.navigate', { url }, sessionId);
   await loaded;
@@ -265,11 +299,11 @@ async function runCase(cdp, c) {
   return { results: c.check(top, bot), errors, top, bot };
 }
 
-async function colorSerializationProbe(cdp) {
+async function colorSerializationProbe(cdp, engine) {
   const { sessionId } = await openPage(cdp);
   await cdp.send('Emulation.setUserAgentOverride', { userAgent: UA_IOS }, sessionId);
   const loaded = cdp.once('Page.loadEventFired', sessionId);
-  await cdp.send('Page.navigate', { url: `http://localhost:${PORT}${GEN_URL}/domunit.html` }, sessionId);
+  await cdp.send('Page.navigate', { url: `http://localhost:${PORT}${GEN_URL}/${engine}/domunit.html` }, sessionId);
   await loaded; await sleep(50);
   const expr = `(() => {
     const U = window.U;
@@ -282,75 +316,101 @@ async function colorSerializationProbe(cdp) {
   return evaluate(cdp, sessionId, expr, false);
 }
 
-async function lifecycleProbe(cdp) {
+async function lifecycleProbe(cdp, engine) {
   const { sessionId } = await openPage(cdp);
   await cdp.send('Emulation.setUserAgentOverride', { userAgent: UA_IOS }, sessionId);
   await cdp.send('Emulation.setDeviceMetricsOverride', { width: 393, height: 852, deviceScaleFactor: 3, mobile: true }, sessionId);
   const loaded = cdp.once('Page.loadEventFired', sessionId);
-  await cdp.send('Page.navigate', { url: `http://localhost:${PORT}${GEN_URL}/domunit.html` }, sessionId);
+  await cdp.send('Page.navigate', { url: `http://localhost:${PORT}${GEN_URL}/${engine}/domunit.html` }, sessionId);
   await loaded; await sleep(50);
   const expr = `(async () => {
     const U = window.U;
+    // theme-color: a meta the controller inserted must go away on destroy(), and
+    // a page-authored one must get its original content back.
+    const metas = () => Array.from(document.querySelectorAll('meta[name="theme-color"]')).map(m => m.content);
+    const metaBefore = metas();
     const c1 = U.createBleedblendAuto();
     const c2 = U.createBleedblendAuto();
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const tintNodes = document.querySelectorAll('#bleedblend-tint-top, #bleedblend-tint-bottom').length;
+    const metaDuring = metas();
     c1.destroy(); c2.destroy();
+    const metaAfter = metas();
     const leftover = document.querySelectorAll('#bleedblend-tint-top,#bleedblend-tint-bottom,#bleedblend-before-override,#bleedblend-transition-style').length;
     const bgCleared = document.documentElement.style.backgroundColor === '' && document.body.style.backgroundColor === '';
-    return { tintNodes, leftover, bgCleared };
+    const own = document.createElement('meta'); own.name = 'theme-color'; own.content = '#abcdef';
+    document.head.appendChild(own);
+    const c4 = U.createBleedblendAuto();
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const authoredDuring = metas();
+    c4.destroy();
+    const authoredAfter = metas();
+    own.remove();
+    return { tintNodes, leftover, bgCleared, metaBefore, metaDuring, metaAfter, authoredDuring, authoredAfter };
   })()`;
   return evaluate(cdp, sessionId, expr);
 }
 
 (async () => {
   fs.rmSync(GEN, { recursive: true, force: true });
-  fs.mkdirSync(GEN, { recursive: true });
-  for (const c of CASES) fs.writeFileSync(path.join(GEN, `${slug(c.name)}.html`), c.html);
-  fs.writeFileSync(path.join(GEN, 'domunit.html'),
-    page('body{background:#ffffff}.ov{min-height:220vh;background:rgba(0,0,0,0.5)}', '<div class="ov"></div>',
-      '<script type="module">import * as U from "/src/utils.mjs"; window.U=U;</script>'));
+  const domunit = page('body{background:#ffffff}.ov{min-height:220vh;background:rgba(0,0,0,0.5)}', '<div class="ov"></div>',
+    '<script type="module">import * as U from "/src/utils.mjs"; window.U=U;</script>');
+  for (const engine of ENGINES) {
+    const dir = path.join(GEN, engine);
+    fs.mkdirSync(dir, { recursive: true });
+    for (const c of CASES) fs.writeFileSync(path.join(dir, `${slug(c.name)}.html`), forEngine(c.html, engine));
+    fs.writeFileSync(path.join(dir, 'domunit.html'), forEngine(domunit, engine));
+  }
+  fs.writeFileSync(path.join(GEN, 'cjs', 'utils.mjs'), CJS_UTILS_SHIM);
+  fs.writeFileSync(path.join(GEN, 'cjs', 'auto.mjs'), CJS_AUTO_SHIM);
 
   const server = await startServer(PORT, REPO_ROOT);
   const { proc, wsUrl } = await launchChrome(DBG);
   const cdp = await CDP.connect(wsUrl);
 
   let pass = 0, fail = 0; const failLines = [];
-  console.log('\n================ INTEGRATION: state machine across site shapes ================\n');
-  for (const c of CASES) {
+  for (const engine of ENGINES) {
+    console.log(`\n================ INTEGRATION: state machine across site shapes [${engine}] ================\n`);
+    for (const c of CASES) {
+      try {
+        const { results, errors, top, bot } = await runCase(cdp, c, engine);
+        console.log(`• ${c.name}   [${c.ua}]`);
+        for (const [label, ok] of results) { console.log(`    ${ok ? 'PASS' : 'FAIL'}  ${label}`); if (ok) pass++; else { fail++; failLines.push(`[${engine}] ${c.name} :: ${label}`); } }
+        const realErrors = errors.filter((e) => !/favicon/.test(e));
+        if (realErrors.length) { fail++; failLines.push(`[${engine}] ${c.name} :: errors`); console.log(`    FAIL  no console errors -> ${realErrors.join(' | ')}`); }
+        else { pass++; console.log('    PASS  no console errors'); }
+      } catch (e) { fail++; failLines.push(`[${engine}] ${c.name} :: THREW ${e.message}`); console.log(`• ${c.name}  THREW: ${e.message}`); }
+    }
+
+    console.log(`\n================ COLOR SERIALIZATION (what parseColor actually receives) [${engine}] ================\n`);
     try {
-      const { results, errors, top, bot } = await runCase(cdp, c);
-      console.log(`• ${c.name}   [${c.ua}]`);
-      for (const [label, ok] of results) { console.log(`    ${ok ? 'PASS' : 'FAIL'}  ${label}`); if (ok) pass++; else { fail++; failLines.push(`${c.name} :: ${label}`); } }
-      const realErrors = errors.filter((e) => !/favicon/.test(e));
-      if (realErrors.length) { fail++; failLines.push(`${c.name} :: errors`); console.log(`    FAIL  no console errors -> ${realErrors.join(' | ')}`); }
-      else { pass++; console.log('    PASS  no console errors'); }
-    } catch (e) { fail++; failLines.push(`${c.name} :: THREW ${e.message}`); console.log(`• ${c.name}  THREW: ${e.message}`); }
+      const { ser, sample } = await colorSerializationProbe(cdp, engine);
+      for (const row of ser) console.log(`    ${row.parses ? 'parses OK ' : 'parses ✗  '} authored=${JSON.stringify(row.authored).padEnd(26)} -> "${row.serialized}"`);
+      console.log(`\n    alpha compositing (50% black over white) = ${JSON.stringify(sample)}  (expect ~127.5)`);
+      if (sample && Math.abs(sample.r - 127.5) < 2) pass++; else { fail++; failLines.push(`[${engine}] compositing wrong`); }
+      const oklchRow = ser.find((r) => r.authored.startsWith('oklch('));
+      const p3Row = ser.find((r) => r.authored.startsWith('color(display-p3'));
+      for (const [label, ok] of [
+        ['oklch() now resolves via canvas readback', !!oklchRow && oklchRow.parses],
+        ['color(display-p3) now resolves via canvas readback', !!p3Row && p3Row.parses],
+      ]) { console.log(`    ${ok ? 'PASS' : 'FAIL'}  ${label}`); if (ok) pass++; else { fail++; failLines.push(`[${engine}] serialization :: ${label}`); } }
+    } catch (e) { fail++; failLines.push(`[${engine}] serialization :: THREW ${e.message}`); console.log('    serialization probe THREW: ' + e.message); }
+
+    console.log(`\n================ LIFECYCLE: double-init idempotency + destroy [${engine}] ================\n`);
+    try {
+      const lc = await lifecycleProbe(cdp, engine);
+      console.log(`    theme-color meta: ${JSON.stringify({ before: lc.metaBefore, during: lc.metaDuring, after: lc.metaAfter, authoredDuring: lc.authoredDuring, authoredAfter: lc.authoredAfter })}`);
+      for (const [label, ok] of [
+        ['double-init => exactly 2 tint nodes (reused, not duplicated)', lc.tintNodes === 2],
+        ['destroy() removes all injected nodes', lc.leftover === 0],
+        ['destroy() clears html/body bg overrides', lc.bgCleared === true],
+        ['controller inserts a theme-color meta when the page has none', lc.metaBefore.length === 0 && lc.metaDuring.length === 1],
+        ['destroy() removes the theme-color meta it inserted', lc.metaAfter.length === 0],
+        ['controller overwrites a page-authored theme-color', lc.authoredDuring.length === 1 && lc.authoredDuring[0] !== '#abcdef'],
+        ['destroy() restores a page-authored theme-color', lc.authoredAfter.length === 1 && lc.authoredAfter[0] === '#abcdef'],
+      ]) { console.log(`    ${ok ? 'PASS' : 'FAIL'}  ${label}`); if (ok) pass++; else { fail++; failLines.push(`[${engine}] lifecycle :: ${label}`); } }
+    } catch (e) { fail++; failLines.push(`[${engine}] lifecycle :: THREW ${e.message}`); console.log('    THREW ' + e.message); }
   }
-
-  console.log('\n================ COLOR SERIALIZATION (what parseColor actually receives) ================\n');
-  try {
-    const { ser, sample } = await colorSerializationProbe(cdp);
-    for (const row of ser) console.log(`    ${row.parses ? 'parses OK ' : 'parses ✗  '} authored=${JSON.stringify(row.authored).padEnd(26)} -> "${row.serialized}"`);
-    console.log(`\n    alpha compositing (50% black over white) = ${JSON.stringify(sample)}  (expect ~127.5)`);
-    if (sample && Math.abs(sample.r - 127.5) < 2) pass++; else { fail++; failLines.push('compositing wrong'); }
-    const oklchRow = ser.find((r) => r.authored.startsWith('oklch('));
-    const p3Row = ser.find((r) => r.authored.startsWith('color(display-p3'));
-    for (const [label, ok] of [
-      ['oklch() now resolves via canvas readback', !!oklchRow && oklchRow.parses],
-      ['color(display-p3) now resolves via canvas readback', !!p3Row && p3Row.parses],
-    ]) { console.log(`    ${ok ? 'PASS' : 'FAIL'}  ${label}`); if (ok) pass++; else { fail++; failLines.push('serialization :: ' + label); } }
-  } catch (e) { fail++; console.log('    serialization probe THREW: ' + e.message); }
-
-  console.log('\n================ LIFECYCLE: double-init idempotency + destroy ================\n');
-  try {
-    const lc = await lifecycleProbe(cdp);
-    for (const [label, ok] of [
-      ['double-init => exactly 2 tint nodes (reused, not duplicated)', lc.tintNodes === 2],
-      ['destroy() removes all injected nodes', lc.leftover === 0],
-      ['destroy() clears html/body bg overrides', lc.bgCleared === true],
-    ]) { console.log(`    ${ok ? 'PASS' : 'FAIL'}  ${label}`); if (ok) pass++; else { fail++; failLines.push('lifecycle :: ' + label); } }
-  } catch (e) { fail++; failLines.push('lifecycle :: THREW ' + e.message); console.log('    THREW ' + e.message); }
 
   console.log('\n================ SUMMARY ================');
   console.log(`pass=${pass} fail=${fail}`);

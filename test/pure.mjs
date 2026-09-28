@@ -44,6 +44,10 @@ check('isOpaque rgba .95', isOpaque('rgba(1,2,3,0.95)') === true);
 check('isOpaque rgba .5', isOpaque('rgba(1,2,3,0.5)') === false);
 check('colorsClose within 8', colorsClose({ r: 10, g: 10, b: 10 }, { r: 12, g: 12, b: 12 }) === true);
 check('colorsClose far', colorsClose({ r: 10, g: 10, b: 10 }, { r: 200, g: 10, b: 10 }) === false);
+check('colorsClose threshold 0: identical colors are close', colorsClose({ r: 10, g: 10, b: 10 }, { r: 10, g: 10, b: 10 }, 0) === true);
+check('colorsClose threshold 0: off by one is not close', colorsClose({ r: 10, g: 10, b: 10 }, { r: 11, g: 10, b: 10 }, 0) === false);
+check('colorsClose threshold is inclusive (Δ=8 at default)', colorsClose({ r: 10, g: 10, b: 10 }, { r: 18, g: 10, b: 10 }) === true);
+check('colorsClose null threshold falls back to the default 8', colorsClose({ r: 10, g: 10, b: 10 }, { r: 12, g: 12, b: 12 }, null) === true);
 
 console.log('\n=== colorToHex / colorToRgb ===');
 check('toHex', colorToHex({ r: 10, g: 140, b: 142 }) === '#0a8c8e');
