@@ -3,14 +3,35 @@
 // No npm install required: drives the locally installed Chrome over CDP using
 // only Node's built-in modules (http, child_process, and the global
 // WebSocket available in Node >= 22). Set BLEEDBLEND_CHROME to override the
-// Chrome binary path.
+// Chrome binary path; otherwise the usual macOS / Linux install locations and
+// PATH are searched, so the suite runs on a CI runner as well as a Mac.
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 
-const CHROME = process.env.BLEEDBLEND_CHROME ||
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const CHROME_CANDIDATES = [
+  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  '/Applications/Chromium.app/Contents/MacOS/Chromium',
+  'google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser',
+];
+
+function which(name) {
+  if (name.includes('/')) return fs.existsSync(name) ? name : null;
+  for (const dir of (process.env.PATH || '').split(path.delimiter)) {
+    const p = path.join(dir, name);
+    if (dir && fs.existsSync(p)) return p;
+  }
+  return null;
+}
+
+function resolveChrome() {
+  if (process.env.BLEEDBLEND_CHROME) return process.env.BLEEDBLEND_CHROME;
+  for (const c of CHROME_CANDIDATES) { const p = which(c); if (p) return p; }
+  return CHROME_CANDIDATES[0];
+}
+
+const CHROME = resolveChrome();
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -38,7 +59,7 @@ export function startServer(port, rootDir) {
 
 export async function launchChrome(port) {
   if (!fs.existsSync(CHROME)) {
-    throw new Error(`Chrome not found at "${CHROME}". Set BLEEDBLEND_CHROME to the binary path.`);
+    throw new Error(`Chrome not found (tried BLEEDBLEND_CHROME, ${CHROME_CANDIDATES.join(', ')}). Set BLEEDBLEND_CHROME to the binary path.`);
   }
   const userDir = `${tmpDir()}/bbchrome-${port}`;
   fs.rmSync(userDir, { recursive: true, force: true });
@@ -48,6 +69,8 @@ export async function launchChrome(port) {
     `--user-data-dir=${userDir}`,
     '--no-first-run', '--no-default-browser-check',
     '--disable-gpu', '--disable-extensions', '--mute-audio',
+    // Chrome refuses to start as root without this (containers, some CI images).
+    ...(process.getuid && process.getuid() === 0 ? ['--no-sandbox'] : []),
     'about:blank',
   ], { stdio: 'ignore' });
   const deadline = Date.now() + 15000;

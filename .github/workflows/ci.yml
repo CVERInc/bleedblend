@@ -1,16 +1,17 @@
 # CVER OSS shared delivery baseline — Node CI (dim 7).
 # Source template: ~/cver-oss-baseline/workflows/node-ci.yml
 #
-# CI runs the deterministic gate: the pure + unit decision-logic suites plus the
-# shared release-readiness check. The integration suite (test:auto) drives a real
-# Chrome over CDP and is bound to `prepublishOnly`, so it runs locally (where
-# Chrome lives) before every publish — keeping CI fast and robust rather than
-# depending on a browser in the runner.
+# CI runs the deterministic gate (the pure + unit decision-logic suites plus the
+# shared release-readiness check) and the integration suite (test:auto), which
+# drives the runner's preinstalled Google Chrome over CDP and exercises the
+# createBleedblendAuto() state machine against both the ESM source and the
+# CommonJS mirror. Pushing a vX.Y.Z tag also runs the release-tag ⇄ version check.
 name: ci
 
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
     branches: [main]
 
@@ -35,8 +36,8 @@ jobs:
       - name: Test (deterministic decision-logic suites)
         run: npm run test:ci
 
-      - name: Build
-        run: npm run build --if-present
+      - name: Test (integration, real Chrome over CDP)
+        run: npm run test:auto
 
       - name: Release readiness
         run: node scripts/check-release-readiness.mjs

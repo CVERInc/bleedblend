@@ -6,6 +6,24 @@ project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- `createBleedblendAuto().destroy()` now undoes its `<meta name="theme-color">`
+  changes: the meta it inserted is removed and a page-authored one gets its original
+  `content` back. Previously the last tint color stayed behind after `destroy()`.
+- `colorsClose(a, b, threshold)` includes the threshold (`<=`), so `threshold = 0`
+  treats identical colors as close instead of never matching.
+- `colorsClose(a, b, null)` in the ESM build now falls back to the default threshold
+  of 8, like the CommonJS build already did (it previously returned `false`).
+
+### Changed
+
+- CI now runs the integration suite (`test:auto`) in real Chrome against both the ESM
+  source and the CommonJS mirror, and `test/units.mjs` checks the two builds export
+  the same API and return the same answers.
+- The integration suite finds Chrome on Linux (`google-chrome`, `chromium`, … on
+  `PATH`) as well as macOS; `BLEEDBLEND_CHROME` still overrides.
+
 ## [2.3.0] - 2026-06-16
 
 ### Added

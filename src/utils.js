@@ -2,7 +2,7 @@
  * bleedblend v2 — utils (CommonJS)
  *
  * CommonJS mirror of utils.mjs. Keep these two files in sync.
- * sync-marker: v1
+ * sync-marker: v2
  * See utils.mjs for documentation and HANDOFF.md for the mental model.
  */
 
@@ -409,6 +409,39 @@ function createBleedblendAuto(options) {
   const sectionSelector = opts.sectionSelector || DEFAULT_SECTION_SELECTOR;
   const cleanups = [];
 
+  // theme-color bookkeeping so destroy() can undo it: the meta we inserted is
+  // removed, page-authored ones get their original content back.
+  let themeMetaSnapshot = null;
+  let insertedThemeMeta = null;
+  function syncThemeColor(hex) {
+    if (!hex) return;
+    if (!themeMetaSnapshot) {
+      themeMetaSnapshot = Array.prototype.map.call(
+        document.querySelectorAll('meta[name="theme-color"]'),
+        function (m) {
+          return [m, m.getAttribute('content')];
+        }
+      );
+    }
+    setMetaThemeColor(hex);
+    if (themeMetaSnapshot.length === 0 && !insertedThemeMeta) {
+      insertedThemeMeta = document.querySelector('meta[name="theme-color"]');
+    }
+  }
+  function restoreThemeColor() {
+    if (insertedThemeMeta) insertedThemeMeta.remove();
+    if (themeMetaSnapshot) {
+      themeMetaSnapshot.forEach(function (pair) {
+        const m = pair[0];
+        const content = pair[1];
+        if (content == null) m.removeAttribute('content');
+        else m.setAttribute('content', content);
+      });
+    }
+    themeMetaSnapshot = null;
+    insertedThemeMeta = null;
+  }
+
   function pickVisible(sel) {
     const list = document.querySelectorAll(sel);
     for (let i = 0; i < list.length; i++) {
@@ -511,7 +544,7 @@ function createBleedblendAuto(options) {
     applyTint(botEl, botResolved, false);
 
     const topHex = colorToHex(topC && topC.color);
-    if (topHex) setMetaThemeColor(topHex);
+    if (topHex) syncThemeColor(topHex);
 
     let lastSectionColor = null;
     if (lastSection) {
@@ -548,7 +581,7 @@ function createBleedblendAuto(options) {
       }
       if (tintHtml) {
         const hex = colorToHex(lastSectionColor);
-        if (hex) setMetaThemeColor(hex);
+        if (hex) syncThemeColor(hex);
       }
     } else {
       htmlEl.style.backgroundColor = '';
@@ -604,6 +637,7 @@ function createBleedblendAuto(options) {
       if (transition) transition.remove();
       document.documentElement.style.backgroundColor = '';
       document.body.style.backgroundColor = '';
+      restoreThemeColor();
     },
   };
 }
