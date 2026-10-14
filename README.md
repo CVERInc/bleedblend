@@ -38,7 +38,7 @@ import 'bleedblend/auto';
 
 That's it. After that one import, `bleedblend` watches scroll, resize, and `visualViewport` events, and:
 
-- **Top chrome tinting** stays light and unobtrusive by default (Safari's natural sampling of whatever's at viewport top). Want it to take your sticky nav's color instead? That's an opt-in — see [Make your own sticky header / footer tint the chrome](#make-your-own-sticky-header--footer-tint-the-chrome-bleedblend-top--bleedblend-bottom).
+- **Top chrome tinting** is left to Safari by default: bleedblend doesn't paint the top edge, so the chrome takes the color of whatever your page puts there. Want it to take your sticky nav's color instead? That's an opt-in — see [Make your own sticky header / footer tint the chrome](#make-your-own-sticky-header--footer-tint-the-chrome-bleedblend-top--bleedblend-bottom).
 - **Bottom chrome tinting** mirrors the page content: gradient interp when you're in gradient territory, section color when an opaque section reaches the edge, footer color when you're at page-end.
 - **Overscroll tinting** when the page-end section enters viewport — `bleedblend` overwrites `<html>`, `<body>`, AND `body::before` so the rubber-band exposed area tints the same color, not your fallback bg.
 - **No flickering** between belt and footer sections — boundary probe and last-section check use the same Y so state transitions are clean.
@@ -127,6 +127,17 @@ Keep the frosted-glass look by moving the blur to an **inner** element with `.bl
 
 `bleedblend`'s controller also detects the marked bar (`STICKY_OWNED`, see below) and **steps back** on that edge so it never double-paints over you.
 
+**The bar's background is the chrome color — in every color scheme.** bleedblend doesn't pick or adjust it, so if your page has a dark mode, give the bar a dark-mode background too:
+
+```css
+.my-banner { background: #c4ece0; }
+@media (prefers-color-scheme: dark) {
+  .my-banner { background: #1f7a79; }
+}
+```
+
+A bar that stays light on a dark page puts a light stripe across the top of the window — and we've seen macOS Safari in dark mode decline to tint from a light bar at all, leaving the chrome its default gray.
+
 > **Prerequisite:** the cover viewport (`viewport-fit=cover`) must be in your **server-rendered `<head>`** — injecting it via JS after load is unreliable on iOS, and without it there's no safe-area for the bar to fill.
 
 #### Push content down instead of overlaying it (`.bleedblend-push`)
@@ -178,7 +189,7 @@ For the bottom edge specifically:
   - **Designed end-zone** — a gradient ending, or a closing section ≥ 50% of the viewport, or a flat page whose background already matches the footer: overwrite `<html>`, `<body>`, **and** `body::before` so rubber-band overscroll tints the same color and you don't see the html-bg fallback leak through.
   - **Incidental footer** — a short, high-contrast footer sitting over a flat light page: tint **`<html>` only**. The rubber-band-exposed strip gets the right color, but the *visible* body is left alone so it doesn't flood to the footer color.
 
-For the top edge: always `SAFE_NATURAL` unless the user owns it via `.bleedblend-top`. Top chrome should feel light.
+For the top edge: always `SAFE_NATURAL` unless the user owns it via `.bleedblend-top`. bleedblend never paints the top edge itself, so the chrome there is exactly the color your page (or your marked bar) puts there.
 
 ---
 
