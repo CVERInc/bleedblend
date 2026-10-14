@@ -6,6 +6,8 @@ project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [2.3.1] - 2026-10-14
+
 ### Fixed
 
 - `createBleedblendAuto().destroy()` now undoes its `<meta name="theme-color">`
@@ -23,6 +25,13 @@ project adheres to [Semantic Versioning](https://semver.org/).
   the same API and return the same answers.
 - The integration suite finds Chrome on Linux (`google-chrome`, `chromium`, … on
   `PATH`) as well as macOS; `BLEEDBLEND_CHROME` still overrides.
+- README corrections. The top edge is described plainly: bleedblend never paints it,
+  so the chrome takes whatever color the page (or a `.bleedblend-top` bar) puts
+  there — the old "top chrome should feel light" read as "keep the top
+  light-colored". The `.bleedblend-top` recipe now says the bar needs a dark-mode
+  background of its own. The `backdrop-filter` note names the real cause (the
+  compositing layer, not safe-area; it reproduces on macOS Safari too), and the
+  `safe-area-inset-top` note is corrected. Docs only — no behaviour change.
 
 ## [2.3.0] - 2026-06-16
 
